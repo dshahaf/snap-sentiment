@@ -74,7 +74,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    
+
 )
 
 # List of finder classes that know how to find static files in
@@ -109,8 +109,6 @@ ROOT_URLCONF = 'sentiment.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'sentiment.wsgi.application'
-
-PROJECT_DIR = os.path.dirname(__file__)
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -182,6 +180,8 @@ ALLOWED_HOSTS = ['*']
 # Static asset configuration
 import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
+
 STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
 
