@@ -12,6 +12,7 @@ Links
 - <a href="http://127.0.0.1:8000/" target="_blank">Local Application</a>
 - <a href="http://snap-sentiment.herokuapp.com/" target="_blank">Deployed Application</a>
 - <a href="https://www.heroku.com" target="_blank">Heroku Main Page</a>
+- <a href="http://getbootstrap.com/2.3.2/" target="_blank">Twitter Bootstrap 2</a>
 
 ###Django Documentation
 - <a href="https://devcenter.heroku.com/articles/getting-started-with-django" target="_blank">Heroku - Getting Started with Django</a>
@@ -23,6 +24,7 @@ Links
 ###Related Repositories
 - <a href="https://github.com/snap-stanford/MetroMaps" target="_blank">SNAP - MetroMaps</a>
 - <a href="https://github.com/namejames91/django" target="_blank">Django Practice</a>
+- <a href="https://github.com/dyve/django-bootstrap-toolkit" target="_blank">Django Bootstrap Toolkit</a>
 
 Commands
 ---
@@ -42,6 +44,10 @@ Creating Django project
 Creating Django app (run in the same directory as manage.py)
 
 	python manage.py startapp <app-name>
+
+Collect static files
+
+	python manage.py collectstatic
 
 Syncing DB
 

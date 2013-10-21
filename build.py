@@ -20,6 +20,7 @@ def getLessPaths():
 # Major Methods
 ################
 def compileLess():
+	console('Compiling Less Files...')
 	lessPaths = getLessPaths()
 	for lessPath in lessPaths:
 		newPath = lessPath[:-4] + 'css'
