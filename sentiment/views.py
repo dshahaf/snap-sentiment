@@ -1,5 +1,8 @@
 # Create your views here.
-from django.http import HttpResponse
+from django.shortcuts import render
+from django.template import RequestContext, loader
 
 def index(request):
-	return HttpResponse("Hello, world. You're at the sentiment index.")
+	template = loader.get_template('sentiment/index.html')
+	context = {}
+	return render(request, 'sentiment/index.html', context)
