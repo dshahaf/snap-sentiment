@@ -13,7 +13,7 @@ def error(s):
 
 def getLessPaths():
 	ret = []
-	ret.append('sentiment/static/sentiment/style.less')
+	ret.append('sentiment/static/style.less')
 	return ret
 
 ################
