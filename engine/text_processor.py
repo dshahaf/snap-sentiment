@@ -30,17 +30,25 @@ class TextProcessor:
 				retArr.append(word)
 		return ' '.join(retArr)
 
-	def process(self, lower, removeStop, alphabetsOnly):
-		if alphabetsOnly:
-			self.text = extractAlphabetWords(self.text)
+	def process(self, lower, alphabetsOnly, removeStop):
 		if lower:
 			self.text = self.text.lower()
+		if alphabetsOnly:
+			tmp = ''
+			for c in self.text:
+				if c.isalpha():
+					tmp += c
+				else:
+					tmp += ' '
+			self.text = tmp
 		arr = self.text.split()
 		if removeStop:
 			tmp = []
 			for w in arr:
-				if w not in self.dictionaries.stop:
+				if w not in self.dictionaries['stop']:
 					tmp.append(w)
 			arr = tmp
 		self.text = ' '.join(arr)
 
+	def get(self):
+		return self.text

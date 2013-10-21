@@ -2,6 +2,7 @@
 from django.shortcuts import render
 from django.template import RequestContext, loader
 from django import forms
+from engine.text_processor import TextProcessor
 
 """
 result = {
@@ -45,6 +46,12 @@ def index(request):
 	if request.method == 'POST':
 		form = request.POST
 		value = form.get('textarea')
+		removeStop = (form.get('checkbox-remove-stop-words') is not None)
 		result = {}
-		context = {'text': value, 'result': result}
+		tp = TextProcessor(value)
+		tp.process(lower = True, alphabetsOnly = True, removeStop = removeStop)
+		result['test'] = tp.get()
+		context = {'text': value, 'result': result, 'setup': {}}
+		if removeStop:
+			context['setup']['remove_stop_words_value'] = 'checked'
 	return render(request, 'word.html', context)

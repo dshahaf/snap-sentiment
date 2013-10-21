@@ -1,11 +1,15 @@
 #!/usr/bin/env python
 
-class Words:
-	positiveWordsPath = 'positive-words.txt'
-	negativeWordsPath = 'negative-words.txt'
-	stopWordsSmallPath = 'stop-words-small.txt'
+import os
 
-	def arrayToDict(arr):
+class Words:
+	dirPath = os.path.dirname(os.path.abspath(__file__))
+	positiveWordsPath = os.path.join(dirPath, 'positive-words.txt')
+	negativeWordsPath = os.path.join(dirPath, 'negative-words.txt')
+	stopWordsSmallPath = os.path.join(dirPath, 'stop-words-small.txt')
+
+	
+	def arrayToDict(self, arr):
 		ret = {}
 		for s in arr:
 			if s not in ret:
@@ -17,18 +21,18 @@ class Words:
 		with open(self.positiveWordsPath, 'r') as f:
 			for line in f:
 				ret.append(line.rstrip())
-		return arrayToDict(ret)
+		return self.arrayToDict(ret)
 
 	def negativeWords(self):
 		ret = []
 		with open(self.negativeWordsPath, 'r') as f:
 			for line in f:
 				ret.append(line.rstrip())
-		return arrayToDict(ret)
+		return self.arrayToDict(ret)
 
 	def stopWords(self):
 		ret = []
 		with open(self.stopWordsSmallPath, 'r') as f:
 			for line in f:
 				ret.append(line.rstrip())
-		return arrayToDict(ret)
+		return self.arrayToDict(ret)
