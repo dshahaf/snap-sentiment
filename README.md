@@ -47,6 +47,10 @@ Syncing DB
 
 	python manage.py syncdb
 
+Shell
+
+	python manage.py shell
+
 Archive
 ---
 ###Django advice
