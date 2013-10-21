@@ -1,10 +1,5 @@
 Sentiment Analysis (SNAP)
 ===
-TODO
----
-- positive, negative words ratio
-- sentiment analysis
-- new approach
 
 Links
 ---
@@ -13,6 +8,7 @@ Links
 - <a href="http://snap-sentiment.herokuapp.com/" target="_blank">Deployed Application</a>
 - <a href="https://www.heroku.com" target="_blank">Heroku Main Page</a>
 - <a href="http://getbootstrap.com/2.3.2/" target="_blank">Twitter Bootstrap 2</a>
+- <a href="https://github.com/namejames91/snap-sentiment/wiki/TODO" target="_blank">TODO</a>
 
 ###Django Documentation
 - <a href="https://devcenter.heroku.com/articles/getting-started-with-django" target="_blank">Heroku - Getting Started with Django</a>
