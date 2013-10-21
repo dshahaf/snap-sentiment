@@ -19,8 +19,8 @@
 			<div class="nav-collapse collapse">
 				<ul class="nav">
 				{% block navbar_home %}<li><a href="/">Home</a></li>{% endblock %}
-				{% block navbar_word %}<li><a href="/word">Word</a></li>{% endblock %}
-				{% block navbar_sentence %}<li><a href="/sentence">Sentence</a></li>{% endblock %}
+				{% block navbar_word %}<li><a href="/simple">Simple</a></li>{% endblock %}
+				<!-- {% block navbar_sentence %}<li><a href="/sentence">Sentence</a></li>{% endblock %} -->
 				</ul>
 			</div><!--/.nav-collapse -->
 		</div>
@@ -31,6 +31,9 @@
 	<h1 class="main-title">
 		{% block main-title %} {% endblock %}
 	</h1>
+	<div class="main-description">
+		{% block main-description %} {% endblock %}
+	</div>
 	<div class="main-content">
 		{% block main-content %} {% endblock %}
 	</div>
