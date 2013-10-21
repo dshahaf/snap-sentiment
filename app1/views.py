@@ -1,5 +1,7 @@
 # Create your views here.
-from django.http import HttpResponse
+from django.shortcuts import render
+from django.template import RequestContext, loader
 
 def index(request):
-	return HttpResponse("Hello, world. You're at the WORD index.")
+	context = {}
+	return render(request, 'word.html', context)
