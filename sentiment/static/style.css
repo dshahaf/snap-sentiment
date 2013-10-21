@@ -34,3 +34,15 @@ a.brand {
 .result {
   margin-left: 5px;
 }
+.color-light-green {
+  color: #8cca8c;
+}
+.color-light-red {
+  color: #e79b9b;
+}
+.font-bold {
+  font-weight: bold;
+}
+.font-normal {
+  font-weight: normal;
+}
