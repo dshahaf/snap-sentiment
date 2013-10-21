@@ -8,3 +8,9 @@ a.brand {
 .main-container .main-title {
   margin-bottom: 15px;
 }
+.textarea-full {
+  width: 100%;
+}
+.input-submit {
+  width: 50px;
+}
