@@ -11,18 +11,61 @@
 {% block main-content %}
 	<div class="row">
 		<div class="span6">
+			<div class="text-center"><h4>Input</h4></div>
 			<form action="/word/" method="POST">
 				{% csrf_token %}
-				<textarea class="textarea-full" rows="20" name="textarea">{{ orig }}</textarea>
-				
+				<textarea class="textarea-full textarea" rows="20" name="textarea">{{ text }}</textarea>
+				<div class="muted" style="margin-bottom: 0px; font-size: 13px;">
+					(Default action(s): Convert to lowercase)
+				</div>
 				<input type="checkbox" name="options" value="stop_words" class="checkbox" checked> Remove stop words<br />
 				<input type="checkbox" name="options" value="stem" class="checkbox"> Perform stemming<br />
-				
-				<input type="submit" value="Go" class="btn btn-success btn-large offset2"/>
+				<input type="submit" value="Go" class="btn btn-success btn-large offset2" style="margin-top: 5px;"/>
 			</form>
 		</div>
 		<div class="span6">
-			{{ orig }}
+			<div class="text-center"><h4>Output</h4></div>
+			{% if result %}
+				<div class="result">
+
+					<div class="section words">
+						<div class="section-header">
+							<span class="section-title">Processed text</span>
+						</div>
+						{% for word in result.words %}
+							<span class="sentiment-{{ word.sentiment }}">{{ word.value }} </span>
+						{% endfor %}
+					</div>
+
+					<div class="section overall-sentiment">
+						<div class="section-header">
+							<span class="section-title">Overall Sentiment</span>
+						</div>
+						<span class="sentiment-{{ result.overall_sentiment }}">{{ result.overall_sentiment }}</span>
+					</div>
+
+					<div class="section positive-words">
+						<div class="section-header">
+							<span class="section-title">Positive Words <small>({{ result.sentimental_words.count.positive }})</small></span>
+						</div>
+						<div class="muted"><small>(word : count)</small></div>
+						{% for word in result.sentimental_words.positive %}
+							{{ word.value }} : {{ word.count }}<br />
+						{% endfor %}
+					</div>
+
+					<div class="section negative-words">
+						<div class="section-header">
+							<span class="section-title">Negative Words <small>({{ result.sentimental_words.count.negative }})</small></span>
+						</div>
+						<div class="muted"><small>(word : count)</small></div>
+						{% for word in result.sentimental_words.negative %}
+							{{ word.value }} : {{ word.count }}<br />
+						{% endfor %}
+					</div>
+
+				</div>
+			{% endif %}
 		</div>
 	</div>
 {% endblock %}

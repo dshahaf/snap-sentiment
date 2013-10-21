@@ -2,15 +2,35 @@ a.brand {
   pointer-events: none;
   color: #4ab0e9 !important;
 }
+.textarea-full {
+  width: 100%;
+  max-width: 100%;
+}
+.checkbox {
+  margin-top: 0 !important;
+}
+.textarea {
+  margin-bottom: 5px;
+}
+.sentiment-positive {
+  color: green;
+}
+.sentiment-negative {
+  color: red;
+}
+.section {
+  margin-bottom: 15px;
+}
+.section .section-header .section-title {
+  font-size: 20px;
+  font-weight: bold;
+}
 .main-container {
   margin-top: 50px;
 }
 .main-container .main-title {
   margin-bottom: 15px;
 }
-.textarea-full {
-  width: 100%;
-}
-.checkbox {
-  margin-top: 0 !important;
+.result {
+  margin-left: 5px;
 }
