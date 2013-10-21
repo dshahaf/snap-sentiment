@@ -25,6 +25,10 @@ a.brand {
   font-size: 20px;
   font-weight: bold;
 }
+.section .subsection-header .section-title {
+  font-size: 15px;
+  font-weight: bold;
+}
 .main-container {
   margin-top: 50px;
 }

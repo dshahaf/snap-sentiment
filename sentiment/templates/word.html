@@ -66,24 +66,30 @@
 					</div>
 					{% endif %}
 
-					<!-- SECTION 3: Positive Word Counts -->
-					<div class="section positive-words">
-						<div class="section-header">
-							<span class="section-title">Positive Word Counts <small>({{ result.sentimental_words.count.positive }})</small></span>
+					<!-- SECTION 3: Statistics -->
+					<div class="section">
+						<div class="section-header" style="margin-bottom: 3px;">
+							<span class="section-title">Statistics</span>
 						</div>
-						{% for word in result.sentimental_words.positive %}
-							<div class="muted"><span class="color-light-green">{{ word.value }}</span> : <span>{{ word.count }}</span></div>
-						{% endfor %}
-					</div>
 
-					<!-- SECTION 4: Negative Word Counts -->
-					<div class="section negative-words">
-						<div class="section-header">
-							<span class="section-title">Negative Word Counts <small>({{ result.sentimental_words.count.negative }})</small></span>
+						<div class="section positive-words">
+							<div class="subsection-header">
+								<span class="section-title">Positive Word Counts ({{ result.sentimental_words.count.positive }})</span>
+							</div>
+							{% for word in result.sentimental_words.positive %}
+								<div class="muted"><span class="color-light-green">{{ word.value }}</span> : <span>{{ word.count }}</span></div>
+							{% endfor %}
 						</div>
-						{% for word in result.sentimental_words.negative %}
-							<div class="muted"><span class="color-light-red">{{ word.value }}</span> : <span>{{ word.count }}</span></div>
-						{% endfor %}
+
+						<!-- SECTION 4: Negative Word Counts -->
+						<div class="section negative-words">
+							<div class="subsection-header">
+								<span class="section-title">Negative Word Counts ({{ result.sentimental_words.count.negative }})</span>
+							</div>
+							{% for word in result.sentimental_words.negative %}
+								<div class="muted"><span class="color-light-red">{{ word.value }}</span> : <span>{{ word.count }}</span></div>
+							{% endfor %}
+						</div>
 					</div>
 
 				</div>
