@@ -21,7 +21,7 @@ Links
 - <a href="https://docs.djangoproject.com/en/1.5/topics/" target="_blank">Using Django</a>
 
 ###Related Repositories
-- <a href="https://github.com/namejames91/django" target="_blank">SNAP - MetroMaps</a>
+- <a href="https://github.com/snap-stanford/MetroMaps" target="_blank">SNAP - MetroMaps</a>
 - <a href="https://github.com/namejames91/django" target="_blank">Django Practice</a>
 
 Commands
