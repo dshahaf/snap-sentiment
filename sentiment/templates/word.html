@@ -16,7 +16,7 @@
 				{% csrf_token %}
 				<textarea class="textarea-full textarea" rows="20" name="textarea">{{ text }}</textarea>
 				<div class="muted" style="margin-bottom: 0px; font-size: 13px;">
-					(Default action(s): Convert to lowercase, Consider alphabet words only)
+					(Default actions: Convert to lowercase, Consider alphabet words only)
 				</div>
 				<input type="checkbox" name="checkbox-remove-stop-words" value="stop_words" class="checkbox" {{ setup.remove_stop_words_value }}> Remove stop words<br />
 <!-- 				<input type="checkbox" name="options" value="stem" class="checkbox"> Perform stemming<br />
@@ -29,16 +29,6 @@
 				<div class="result">
 
 					<div class="section words">
-						<div class="section-header">
-							<span class="section-title">Raw Processed text</span>
-						</div>
-						{{ result.test }}
-					</div>
-
-					<div class="section words">
-						<div class="section-header">
-							<span class="section-title">Processed text</span>
-						</div>
 						{% for word in result.words %}
 							<span class="sentiment-{{ word.sentiment }}">{{ word.value }} </span>
 						{% endfor %}

@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.template import RequestContext, loader
 from django import forms
 from engine.text_processor import TextProcessor
+from engine.sentiment_analysis import SentimentAnalysis
 
 """
 result = {
@@ -45,13 +46,18 @@ def index(request):
 	context = {}
 	if request.method == 'POST':
 		form = request.POST
-		value = form.get('textarea')
 		removeStop = (form.get('checkbox-remove-stop-words') is not None)
-		result = {}
+		if removeStop:
+			context['setup'] = {}
+			context['setup']['remove_stop_words_value'] = 'checked'
+		
+		value = form.get('textarea')
+		context['text'] = value
 		tp = TextProcessor(value)
 		tp.process(lower = True, alphabetsOnly = True, removeStop = removeStop)
-		result['test'] = tp.get()
-		context = {'text': value, 'result': result, 'setup': {}}
-		if removeStop:
-			context['setup']['remove_stop_words_value'] = 'checked'
+		processedText = tp.get()
+
+		sa = SentimentAnalysis(processedText)
+		context['result'] = sa.wordAnalysis()
+
 	return render(request, 'word.html', context)

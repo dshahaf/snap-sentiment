@@ -8,8 +8,6 @@ class TextProcessor:
 		self.text = text
 		w = Words()
 		words = {}
-		words['positive'] = w.positiveWords()
-		words['negative'] = w.negativeWords()
 		words['stop'] = w.stopWords()
 		self.dictionaries = words
 
@@ -21,14 +19,6 @@ class TextProcessor:
 				stemCache[w] = pstem(w)
 			ret.append(stemCache[w])
 		return ret
-
-	def extractAlphabetWords(text):
-		arr = text.split()
-		retArr = []
-		for word in arr:
-			if word.isalpha():
-				retArr.append(word)
-		return ' '.join(retArr)
 
 	def process(self, lower, alphabetsOnly, removeStop):
 		if lower:
