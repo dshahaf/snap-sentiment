@@ -18,11 +18,9 @@
 			<a class="brand" href="#">Sentiment Analysis</a>
 			<div class="nav-collapse collapse">
 				<ul class="nav">
-				{% block navbar %}
-					<li><a href="">Home</a></li>
-					<li><a href="">Word</a></li>
-					<li><a href="">Sentence</a></li>
-				{% endblock %}
+				{% block navbar_home %}<li><a href="/">Home</a></li>{% endblock %}
+				{% block navbar_word %}<li><a href="/word">Word</a></li>{% endblock %}
+				{% block navbar_sentence %}<li><a href="/sentence">Sentence</a></li>{% endblock %}
 				</ul>
 			</div><!--/.nav-collapse -->
 		</div>
