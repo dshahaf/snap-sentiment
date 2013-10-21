@@ -1,3 +1,7 @@
-body {
-  color: green;
+a.brand {
+  pointer-events: none;
+  color: #4ab0e9 !important;
+}
+.main-container {
+  margin-top: 50px;
 }

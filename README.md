@@ -20,6 +20,7 @@ Links
 - <a href="https://docs.djangoproject.com/en/1.5/" target="_blank">Everything you need to know about Django</a>
 - <a href="https://docs.djangoproject.com/en/1.5/intro/" target="_blank">Getting Started</a>
 - <a href="https://docs.djangoproject.com/en/1.5/topics/" target="_blank">Using Django</a>
+- <a href="https://devcenter.heroku.com/categories/python" target="_blank">Herok - Python</a>
 
 ###Related Repositories
 - <a href="https://github.com/snap-stanford/MetroMaps" target="_blank">SNAP - MetroMaps</a>
