@@ -1,29 +1,17 @@
-{% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}" />
+{% extends "base.html" %}
 
-<div class="navbar navbar-inverse navbar-fixed-top">
-	<div class="navbar-inner">
-		<div class="container">
-			<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="brand" href="#">Sentiment Analysis</a>
-			<div class="nav-collapse collapse">
-				<ul class="nav">
-					<li class="active"><a href="">Home</a></li>
-					<li class=""><a href="">Word</a></li>
-					<li><a href="">Sentence</a></li>
-				</ul>
-			</div><!--/.nav-collapse -->
-		</div>
-	</div>
-</div>
+{% block title %}Home{% endblock %}
 
-<div class="container main-container">
-	<h1>Sentiment Analysis</h1>
-	<p>Sentiment analysis project by James Nam.</p>
+{% block navbar %}
+<li class="active"><a href="">Home</a></li>
+<li><a href="">Word</a></li>
+<li><a href="">Sentence</a></li>
+{% endblock %}
 
-</div> <!-- /container -->
+{% block main-title %}
+	Sentiment Analysis
+{% endblock %}
+
+{% block main-content %}
+	Senior project by James Nam.
+{% endblock %}

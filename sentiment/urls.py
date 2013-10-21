@@ -16,5 +16,5 @@ urlpatterns = patterns('',
 	# url(r'^admin/', include(admin.site.urls)),
 
 	url(r'^$', 'sentiment.views.index', name='index'),
-	url(r'^app1/', include('app1.urls')),
+	url(r'^word/', include('app1.urls')),
 )
