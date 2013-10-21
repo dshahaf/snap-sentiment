@@ -16,46 +16,60 @@
 				{% csrf_token %}
 				<textarea class="textarea-full textarea" rows="20" name="textarea">{{ text }}</textarea>
 				<div class="muted" style="margin-bottom: 0px; font-size: 13px;">
-					(Default actions: Convert to lowercase, Consider alphabet words only)
+					(Text Processing: Convert to lowercase, Consider alphabet words only)
 				</div>
-				<input type="checkbox" name="checkbox-remove-stop-words" value="stop_words" class="checkbox" {{ setup.remove_stop_words_value }}> Remove stop words<br />
+<!-- 				<input type="checkbox" name="checkbox-remove-stop-words" value="stop_words" class="checkbox" {{ setup.remove_stop_words_value }}> Remove stop words<br /> -->
 <!-- 				<input type="checkbox" name="options" value="stem" class="checkbox"> Perform stemming<br />
  -->				<input type="submit" value="Go" class="btn btn-success btn-large offset2" style="margin-top: 5px;"/>
 			</form>
 		</div>
+
 		<div class="span6">
 			<div class="text-center"><h4>Output</h4></div>
 			{% if result %}
 				<div class="result">
 
-					<div class="section words">
+					<!-- SECTION 1: Processed, color-coded text -->
+					{% if result.words|length > 0 %}
+					<div class="section words" >
 						{% for word in result.words %}
 							<span class="sentiment-{{ word.sentiment }}">{{ word.value }} </span>
 						{% endfor %}
 					</div>
+					{% endif %}
 
+					<!-- SECTION 2: Overall sentiment -->
 					<div class="section overall-sentiment">
 						<div class="section-header">
 							<span class="section-title">Overall Sentiment</span>
 						</div>
-						<span class="sentiment-{{ result.overall_sentiment }}">{{ result.overall_sentiment }}</span>
+						<!-- <span class="sentiment-{{ result.overall_sentiment }}"> -->
+						{% if result.overall_sentiment|stringformat:"s" == "Positive"  %}
+							<span class="sentiment-positive">Positive</span>
+						{% else %}
+							{% if result.overall_sentiment|stringformat:"s" == "Negative"  %}
+								<span class="sentiment-negative">Negative</span>
+							{% else %}
+								<span class="">Neither</span>
+							{% endif %}
+						{% endif %}
 					</div>
 
+					<!-- SECTION 3: Positive Word Counts -->
 					<div class="section positive-words">
 						<div class="section-header">
-							<span class="section-title">Positive Words <small>({{ result.sentimental_words.count.positive }})</small></span>
+							<span class="section-title">Positive Word Counts <small>({{ result.sentimental_words.count.positive }})</small></span>
 						</div>
-						<div class="muted"><small>(word : count)</small></div>
 						{% for word in result.sentimental_words.positive %}
 							{{ word.value }} : {{ word.count }}<br />
 						{% endfor %}
 					</div>
 
+					<!-- SECTION 4: Negative Word Counts -->
 					<div class="section negative-words">
 						<div class="section-header">
-							<span class="section-title">Negative Words <small>({{ result.sentimental_words.count.negative }})</small></span>
+							<span class="section-title">Negative Word Counts <small>({{ result.sentimental_words.count.negative }})</small></span>
 						</div>
-						<div class="muted"><small>(word : count)</small></div>
 						{% for word in result.sentimental_words.negative %}
 							{{ word.value }} : {{ word.count }}<br />
 						{% endfor %}
