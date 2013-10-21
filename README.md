@@ -51,6 +51,10 @@ Shell
 
 	python manage.py shell
 
+Compile Less
+
+	npm install -g less
+
 Archive
 ---
 ###Django advice
