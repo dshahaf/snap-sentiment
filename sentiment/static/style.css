@@ -11,6 +11,6 @@ a.brand {
 .textarea-full {
   width: 100%;
 }
-.input-submit {
-  width: 50px;
+.checkbox {
+  margin-top: 0 !important;
 }
