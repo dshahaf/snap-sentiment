@@ -7,9 +7,42 @@
 {% block main-title %}Noun Analysis{% endblock %}
 
 {% block main-description %}
-<p>We inspect the sentiment for the nouns or objects in the text.</p>
+<p>We inspect the sentiment for the nouns in the text.</p>
 {% endblock %}
 
 {% block main-content %}
-Main content
+
+	<div class="row">
+		<div class="span6">
+			<div class="text-center"><h4>Input</h4></div>
+			<form action="/noun/" method="POST">
+				{% csrf_token %}
+				<textarea class="textarea-full textarea" rows="20" name="textarea">{{ text }}</textarea>
+				<div class="muted" style="margin-bottom: 0px; font-size: 13px;">
+					(Text Processing: Convert to lowercase)
+				</div>
+				<input type="submit" value="Go" class="btn btn-success btn-large offset2" style="margin-top: 5px;"/>
+			</form>
+		</div>
+
+		<div class="span6">
+			<div class="text-center"><h4>Output</h4></div>
+				{% if result %}
+				<div class="result">
+
+					<!-- SECTION 1: Processed, color-coded text -->
+					{% if result.words|length > 0 %}
+					<div class="section words" >
+						<div class="section-header">
+							<span class="section-title">Processed Text</span>
+						</div>
+						{% for word in result.words %}{{ word }}<br/>{% endfor %}
+					</div>
+					{% endif %}
+
+				</div>
+				{% endif %}
+		</div>
+	</div>
+
 {% endblock %}
