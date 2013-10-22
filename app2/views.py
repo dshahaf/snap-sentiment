@@ -4,4 +4,4 @@ from django.template import RequestContext, loader
 
 def index(request):
 	context = {}
-	return render(request, 'sentence.html', context)
+	return render(request, 'noun.html', context)

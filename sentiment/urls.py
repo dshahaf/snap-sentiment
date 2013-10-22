@@ -17,5 +17,5 @@ urlpatterns = patterns('',
 
 	url(r'^$', 'sentiment.views.index', name='index'),
 	url(r'^simple/', include('app1.urls')),
-	url(r'^sentence/', include('app2.urls')),
+	url(r'^noun/', include('app2.urls')),
 )

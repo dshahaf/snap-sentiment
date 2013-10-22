@@ -4,7 +4,7 @@
 	{% load staticfiles %}
 	<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
 	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}" />
-    <title>{% block title %} My amazing site{% endblock %}</title>
+    <title>{% block title %}Sentiment Analysis{% endblock %}</title>
 </head>
 
 <div class="navbar navbar-inverse navbar-fixed-top">
@@ -19,8 +19,9 @@
 			<div class="nav-collapse collapse">
 				<ul class="nav">
 				{% block navbar_home %}<li><a href="/">Home</a></li>{% endblock %}
-				{% block navbar_word %}<li><a href="/simple">Simple</a></li>{% endblock %}
-				<!-- {% block navbar_sentence %}<li><a href="/sentence">Sentence</a></li>{% endblock %} -->
+				{% block navbar_simple %}<li><a href="/simple">Simple</a></li>{% endblock %}
+				{% block navbar_noun %}<li><a href="/noun">Noun</a></li>{% endblock %}
+				{% block navbar_reference %}<li><a href="/reference">Reference</a></li>{% endblock %}
 				</ul>
 			</div><!--/.nav-collapse -->
 		</div>
