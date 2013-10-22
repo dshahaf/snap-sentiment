@@ -48,22 +48,17 @@
 								{% endif %}
 							{% endif %}
 							{% for word in sentence.words %}
-
-								
-
-								{% if word.sentiment|stringformat:"s" == "positive" %}
-								<span style="color: green; font-weight: bold;">
-								{% else %}
-									{% if word.sentiment|stringformat:"s" == "negative" %}
-									<span style="color: red; font-weight: bold;">
-									{% else %}
-										<span>
+								<span style='
+									{% if word.sentiment|stringformat:"s" == "positive" %}
+										color:green; font-weight:bold;
 									{% endif %}
-								{% endif %}
-									{{ word.value }}
-								</span>
-
-
+									{% if word.sentiment|stringformat:"s" == "negative" %}
+										color:red; font-weight:bold;
+									{% endif %}								
+									{% if word.isNoun|stringformat:"s" == "true" %}
+										text-decoration: underline;
+									{% endif %}	
+								'>{{ word.value }}</span>
 							{% endfor %}
 							</span><br/>
 							</div>

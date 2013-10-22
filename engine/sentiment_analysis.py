@@ -8,6 +8,7 @@ class SentimentAnalysis:
 	def __init__(self, text):
 		# pre-processing
 		text = text.replace('"', ' ')
+		text = text.replace('-', ' ')
 
 		self.text = text
 		w = Words()
@@ -110,7 +111,7 @@ class SentimentAnalysis:
 					{
 						'value' : ''
 						'sentiment' : '' # positive, negative, or neither
-						'isNoun': True or False
+						'isNoun': 'true' or 'false'
 					},
 					...
 				]
@@ -144,7 +145,9 @@ class SentimentAnalysis:
 				else:
 					sentiment = 'neither'
 				wordType = tagged_word[1]
-				isNoun = (wordType is 'N' or wordType is 'NP')
+				isNoun = 'false'
+				if (wordType == 'NN') or (wordType == 'NNS'):
+					isNoun = 'true'
 				entry['words'].append({
 					'value' : value,
 					'sentiment' : sentiment,
