@@ -1,6 +1,7 @@
 # Create your views here.
 from django.shortcuts import render
 from django.template import RequestContext, loader
+import nltk
 
 """
 {
@@ -17,5 +18,5 @@ def index(request):
 		value = form.get('textarea')
 		context['text'] = value
 		context['result'] = {}
-		context['result']['words'] = value.split()
+		context['result']['words'] = nltk.word_tokenize(value)
 	return render(request, 'noun.html', context)
