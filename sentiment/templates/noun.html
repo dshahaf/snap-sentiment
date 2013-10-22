@@ -4,10 +4,10 @@
 
 {% block navbar_noun %}<li class="active"><a href="/noun">Noun</a></li>{% endblock %}
 
-{% block main-title %}Noun Analysis{% endblock %}
+{% block main-title %}Noun Analysis <small>(In progress)</small>{% endblock %}
 
 {% block main-description %}
-<p>We inspect the sentiment for the nouns in the text.</p>
+<p>We determine the sentiment for each sentence based on the number of positive/negative words used. Then we identify the nouns in the sentences to fathom the author's sentiment for these objects.</p>
 {% endblock %}
 
 {% block main-content %}
@@ -19,7 +19,7 @@
 				{% csrf_token %}
 				<textarea class="textarea-full textarea" rows="20" name="textarea">{{ text }}</textarea>
 				<div class="muted" style="margin-bottom: 0px; font-size: 13px;">
-					(Text Processing: Convert to lowercase)
+					(Text Processing: Convert to lowercase, Remove non-ASCII characteres)
 				</div>
 				<input type="submit" value="Go" class="btn btn-success btn-large offset2" style="margin-top: 5px;"/>
 			</form>

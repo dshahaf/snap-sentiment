@@ -19,6 +19,6 @@ def index(request):
 		form = request.POST
 		value = form.get('textarea')
 		context['text'] = value
-		sa = SentimentAnalysis(value.lower())
+		sa = SentimentAnalysis(value)
 		context['result'] = sa.nounAnalysis()
 	return render(request, 'noun.html', context)
