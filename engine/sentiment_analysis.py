@@ -1,10 +1,14 @@
 #!/usr/bin/env python
 from lib.words import Words
 from nltk.tokenize import word_tokenize, wordpunct_tokenize, sent_tokenize
+from nltk import pos_tag
 
 class SentimentAnalysis:
 
 	def __init__(self, text):
+		# pre-processing
+		text = text.replace('"', ' ')
+
 		self.text = text
 		w = Words()
 		words = {}
@@ -12,6 +16,9 @@ class SentimentAnalysis:
 		words['negative'] = w.negativeWords()
 		self.dictionaries = words
 
+	###################
+	# Simple Analysis
+	###################
 	def tokenize(self, text):
 		ret = []
 		sentences = sent_tokenize(text)
@@ -88,4 +95,66 @@ class SentimentAnalysis:
 		else:
 			ret['overall_sentiment'] = 'Neither'
 
+		return ret
+
+	##################
+	# Noun Analysis
+	##################
+
+	"""
+	{
+		'sentences': [
+			{
+				'sentiment' : '' # positive, negative, or neither
+				'words': [
+					{
+						'value' : ''
+						'sentiment' : '' # positive, negative, or neither
+						'isNoun': True or False
+					},
+					...
+				]
+			},
+			...
+		]
+	}
+	"""
+	def nounAnalysis(self):
+		ret = {}
+		ret['sentences'] = []
+		sentences = sent_tokenize(self.text)
+		for sentence in sentences:
+			entry = {
+				'sentiment' : '',
+				'words': []
+			}
+			numPos = 0
+			numNeg = 0
+			words = word_tokenize(sentence)
+			tagged_words = pos_tag(words)
+			for tagged_word in tagged_words:
+				value = tagged_word[0]
+				sentiment = ''
+				if value in self.dictionaries['positive']:
+					sentiment = 'positive'
+					numPos += 1
+				elif value in self.dictionaries['negative']:
+					sentiment = 'negative'
+					numNeg += 1
+				else:
+					sentiment = 'neither'
+				wordType = tagged_word[1]
+				isNoun = (wordType is 'N' or wordType is 'NP')
+				entry['words'].append({
+					'value' : value,
+					'sentiment' : sentiment,
+					'isNoun' : isNoun
+				})
+			if numPos > numNeg:
+				entry['sentiment'] = 'positive'
+			elif numPos < numNeg:
+				entry['sentiment'] = 'negative'
+			else:
+				entry['sentiment'] = 'neither'
+			ret['sentences'].append(entry)
 		return ret

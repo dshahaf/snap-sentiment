@@ -53,3 +53,12 @@ a.brand {
 .font-small {
   font-size: 11px;
 }
+.background-verylightgreen {
+  background-color: #d8ffd8;
+}
+.background-verylightred {
+  background-color: #ffd8d8;
+}
+.div-sentence {
+  margin-bottom: 10px;
+}

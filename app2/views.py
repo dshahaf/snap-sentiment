@@ -1,6 +1,8 @@
 # Create your views here.
 from django.shortcuts import render
 from django.template import RequestContext, loader
+from django import forms
+from engine.sentiment_analysis import SentimentAnalysis
 import nltk
 
 """
@@ -17,6 +19,6 @@ def index(request):
 		form = request.POST
 		value = form.get('textarea')
 		context['text'] = value
-		context['result'] = {}
-		context['result']['words'] = nltk.word_tokenize(value)
+		sa = SentimentAnalysis(value.lower())
+		context['result'] = sa.nounAnalysis()
 	return render(request, 'noun.html', context)

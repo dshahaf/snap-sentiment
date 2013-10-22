@@ -31,12 +31,43 @@
 				<div class="result">
 
 					<!-- SECTION 1: Processed, color-coded text -->
-					{% if result.words|length > 0 %}
+					{% if result.sentences|length > 0 %}
 					<div class="section words" >
 						<div class="section-header">
 							<span class="section-title">Processed Text</span>
 						</div>
-						{% for word in result.words %}{{ word }}<br/>{% endfor %}
+						{% for sentence in result.sentences %}
+							<div class="div-sentence">
+							{% if sentence.sentiment|stringformat:"s" == "positive" %}
+							<span class="background-verylightgreen">
+							{% else %}
+								{% if sentence.sentiment|stringformat:"s" == "negative" %}
+								<span class="background-verylightred">
+								{% else %}
+									<span>
+								{% endif %}
+							{% endif %}
+							{% for word in sentence.words %}
+
+								
+
+								{% if word.sentiment|stringformat:"s" == "positive" %}
+								<span style="color: green; font-weight: bold;">
+								{% else %}
+									{% if word.sentiment|stringformat:"s" == "negative" %}
+									<span style="color: red; font-weight: bold;">
+									{% else %}
+										<span>
+									{% endif %}
+								{% endif %}
+									{{ word.value }}
+								</span>
+
+
+							{% endfor %}
+							</span><br/>
+							</div>
+						{% endfor %}
 					</div>
 					{% endif %}
 
