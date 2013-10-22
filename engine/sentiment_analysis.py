@@ -3,12 +3,16 @@ from lib.words import Words
 from nltk.tokenize import word_tokenize, wordpunct_tokenize, sent_tokenize
 import nltk
 from nltk import pos_tag
-
+import os
 
 class SentimentAnalysis:
 
 	def __init__(self, text):
-		nltk.data.path.append('./nltk_data/')
+		path_to_nltk_data = os.path.join(
+			os.path.dirname(os.path.abspath(__file__)),
+			'nltk_data'
+		)
+		nltk.data.path.append(path_to_nltk_data)
 
 		# pre-processing
 		text = text.replace('"', ' ')
