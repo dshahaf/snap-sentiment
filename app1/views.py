@@ -8,20 +8,11 @@ from engine.sentiment_analysis import SentimentAnalysis
 def index(request):
 	context = {}
 	if request.method == 'POST':
-		form = request.POST
-		removeStop = (form.get('checkbox-remove-stop-words') is not None)
-		if removeStop:
-			context['setup'] = {}
-			context['setup']['remove_stop_words_value'] = 'checked'
-		
+		form = request.POST		
 		value = form.get('textarea')
 		context['text'] = value
-		tp = TextProcessor(value)
-		tp.process(lower = True, alphabetsOnly = True, removeStop = removeStop)
-		processedText = tp.get()
-
-		sa = SentimentAnalysis(processedText)
-		context['result'] = sa.wordAnalysis()
+		sa = SentimentAnalysis(value.lower())
+		context['result'] = sa.simpleAnalysis()
 
 	return render(request, 'simple.html', context)
 

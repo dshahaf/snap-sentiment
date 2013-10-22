@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from lib.words import Words
+from nltk.tokenize import word_tokenize, wordpunct_tokenize, sent_tokenize
 
 class SentimentAnalysis:
 
@@ -11,7 +12,16 @@ class SentimentAnalysis:
 		words['negative'] = w.negativeWords()
 		self.dictionaries = words
 
-	def wordAnalysis(self):
+	def tokenize(self, text):
+		ret = []
+		sentences = sent_tokenize(text)
+		for sentence in sentences:
+			words = word_tokenize(sentence)
+			for word in words:
+				ret.append(word)
+		return ret
+
+	def simpleAnalysis(self):
 		ret = {
 			'words' : [],  # { 'value' : ?, 'count' : ? }
 			'overall_sentiment' : '', # positive or negative
@@ -25,7 +35,7 @@ class SentimentAnalysis:
 			},
 		}
 
-		arr = self.text.split()
+		arr = self.tokenize(self.text)
 		positiveWords = {}
 		negativeWords = {}
 

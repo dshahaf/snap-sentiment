@@ -2,6 +2,9 @@
 from lib.porter2 import stem as pstem
 from lib.words import Words
 
+"""
+Not used at the moment
+"""
 class TextProcessor:
 
 	def __init__(self, text):
