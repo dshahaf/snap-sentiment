@@ -1,3 +1,7 @@
+body {
+  padding-bottom: 30px;
+  margin-bottom: 30px;
+}
 a.brand {
   color: #4ab0e9 !important;
 }

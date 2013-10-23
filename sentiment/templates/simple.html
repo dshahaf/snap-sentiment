@@ -117,7 +117,7 @@
 							<span class="section-title">Stats</span>
 						</div>
 
-						<div class="section positive-words">
+						<div class="section positive-words" style="position: absolute; padding-bottom: 20px;">
 							<div class="subsection-header">
 								<span class="section-title">Positive Words ({{ result.sentimental_words.count.positive }})</span>
 							</div>
@@ -126,8 +126,7 @@
 							{% endfor %}
 						</div>
 
-						<!-- SECTION 4: Negative Word Counts -->
-						<div class="section negative-words">
+						<div class="section negative-words offset3">
 							<div class="subsection-header">
 								<span class="section-title">Negative Words ({{ result.sentimental_words.count.negative }})</span>
 							</div>
@@ -137,6 +136,8 @@
 						</div>
 					</div>
 
+					<div style="height: 20px;">
+					</div>
 				</div>
 			{% endif %}
 		</div>
