@@ -28,8 +28,13 @@ def compileLess():
 		console("Compiled %s" % newPath)
 	return
 
+def compileCoffee():
+	console('Compiling Coffeescript Files...')
+	command = ""
+
 def main():
 	compileLess()
+	compileCoffee()
 	return
 
 if __name__ == "__main__":

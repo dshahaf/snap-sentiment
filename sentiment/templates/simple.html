@@ -12,13 +12,38 @@
 
 {% block main-content %}
 	<div class="row">
+		<div class="span12">
+			If you want to run on sample data:
+			<ul>
+				<li>
+					<a href="" class="link-example" id="get-positive-movie-review">Positive movie review (from nltk corpus)</a>
+				</li>
+				<li>
+					<a href="" class="link-example" id="get-negative-movie-review">Negative Movie Review (from nltk corpus)</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		function getData(event) {
+		    target = event.target
+		    id = target.id
+		    console.debug("id: " + id)
+		    return false;
+		}
+		$('.link-example').click(getData)
+		// document.getElementById('get-positive-movie-review').onclick = getData;
+		// document.getElementById('get-negative-movie-review').onclick = getData;
+	</script>
+
+	<div class="row">
 		<div class="span6">
 			<div class="text-center"><h4>Input</h4></div>
 			<form action="/simple/" method="POST">
 				{% csrf_token %}
 				<textarea class="textarea-full textarea" rows="20" name="textarea">{{ text }}</textarea>
 				<div class="muted" style="margin-bottom: 0px; font-size: 13px;">
-					(Text processing: convert to lowercase, remove non-ASCII characters)
 				</div>
 <!-- 				<input type="checkbox" name="checkbox-remove-stop-words" value="stop_words" class="checkbox" {{ setup.remove_stop_words_value }}> Remove stop words<br /> -->
 <!-- 				<input type="checkbox" name="options" value="stem" class="checkbox"> Perform stemming<br />
