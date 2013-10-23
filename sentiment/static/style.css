@@ -61,3 +61,7 @@ a.brand {
 .div-sentence {
   margin-bottom: 10px;
 }
+.table-sample-data td,
+.table-sample-data th {
+  text-align: center !important;
+}

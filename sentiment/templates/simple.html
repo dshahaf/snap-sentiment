@@ -12,30 +12,47 @@
 
 {% block main-content %}
 	<div class="row">
-		<div class="span12">
-			If you want to run on sample data:
-			<ul>
-				<li>
-					<a href="" class="link-example" id="get-positive-movie-review">Positive movie review (from nltk corpus)</a>
-				</li>
-				<li>
-					<a href="" class="link-example" id="get-negative-movie-review">Negative Movie Review (from nltk corpus)</a>
-				</li>
-			</ul>
+		<div class="offset3 span6">
+			<table class="table-sample-data table table-striped table-condensed table-bordered">
+
+				<thead>
+					<tr>
+						<th>Sample Data</th>
+						<th>Positive</th>
+						<th>Negative</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr>
+						<td>Movie Review</td>
+						<td>
+							<form action="/simple/" method="POST" style="margin-bottom: 0px;">
+								{% csrf_token %}
+								<input type="hidden" name="sample-data" value="positive-movie-review" />
+								<input type="submit" value="Go" class="btn btn-success btn-small"/>
+								{% if sample_data|stringformat:"s" == "positive-movie-review"  %}
+								<span class="symbol-check" style="opacity: 0.5;">&#10003;</span>
+								{% endif %}
+							</form>
+						</td>
+
+						<td>
+							<form action="/simple/" method="POST" style="margin-bottom: 0px;">
+								{% csrf_token %}
+								<input type="hidden" name="sample-data" value="negative-movie-review" />
+								<input type="submit" value="Go" class="btn btn-danger btn-small"/>
+								{% if sample_data|stringformat:"s" == "negative-movie-review"  %}
+								<span class="symbol-check" style="opacity: 0.5;">&#10003;</span>
+								{% endif %}
+							</form>
+						</td>
+					</tr>
+				</tbody>
+
+			</table>
 		</div>
 	</div>
-
-	<script type="text/javascript">
-		function getData(event) {
-		    target = event.target
-		    id = target.id
-		    console.debug("id: " + id)
-		    return false;
-		}
-		$('.link-example').click(getData)
-		// document.getElementById('get-positive-movie-review').onclick = getData;
-		// document.getElementById('get-negative-movie-review').onclick = getData;
-	</script>
 
 	<div class="row">
 		<div class="span6">
