@@ -28,7 +28,8 @@ def index(request):
 			elif sampleData == 'negative-movie-review':
 				category = 'negative'
 				context['sample_data'] = 'negative-movie-review'
-			text = Corpus.getRandomMovieReview(category)
+			corpus = Corpus()
+			text = corpus.getRandomMovieReview(category)
 			context['text'] = text
 			sa = SentimentAnalysis(text)
 			context['result'] = sa.simpleAnalysis()
