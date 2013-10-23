@@ -27,6 +27,7 @@
 
 		<div class="span6">
 			<div class="text-center"><h4>Output</h4></div>
+
 				{% if result %}
 				<div class="result">
 
@@ -41,11 +42,11 @@
 							{% if sentence.sentiment|stringformat:"s" == "positive" %}
 							<span class="background-verylightgreen">
 							{% else %}
-								{% if sentence.sentiment|stringformat:"s" == "negative" %}
-								<span class="background-verylightred">
-								{% else %}
-									<span>
-								{% endif %}
+							{% if sentence.sentiment|stringformat:"s" == "negative" %}
+							<span class="background-verylightred">
+							{% else %}
+								<span>
+							{% endif %}
 							{% endif %}
 							{% for word in sentence.words %}
 								<span style='
@@ -66,7 +67,7 @@
 					</div>
 					{% endif %}
 
-				</div>
+				</div> <!-- result -->
 				{% endif %}
 		</div>
 	</div>

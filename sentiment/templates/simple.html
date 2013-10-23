@@ -30,21 +30,20 @@
 			<div class="text-center"><h4>Output</h4></div>
 			{% if result %}
 				<div class="result">
+
 					<!-- SECTION 1: Overall sentiment -->
 					<div class="section overall-sentiment">
 						<div class="section-header">
-							<span class="section-title">
-								Overall Sentiment
-							</span>
+							<span class="section-title">Overall Sentiment</span>
 						</div>
 						{% if result.overall_sentiment|stringformat:"s" == "Positive"  %}
 							<span class="sentiment-positive font-bold">Positive</span>
 						{% else %}
-							{% if result.overall_sentiment|stringformat:"s" == "Negative"  %}
-								<span class="sentiment-negative font-bold">Negative</span>
-							{% else %}
-								<span class="font-bold">Neither</span>
-							{% endif %}
+						{% if result.overall_sentiment|stringformat:"s" == "Negative"  %}
+							<span class="sentiment-negative font-bold">Negative</span>
+						{% else %}
+							<span class="font-bold">Neither</span>
+						{% endif %}
 						{% endif %}
 					</div>
 
@@ -58,11 +57,11 @@
 							{% if word.sentiment|stringformat:"s" == "positive"  %}
 								<span class="sentiment-positive font-bold">{{ word.value }}</span>
 							{% else %}
-								{% if word.sentiment|stringformat:"s" == "negative"  %}
-									<span class="sentiment-negative font-bold">{{ word.value }}</span>
-								{% else %}
-									<span class="muted">{{ word.value }}</span>
-								{% endif %}
+							{% if word.sentiment|stringformat:"s" == "negative"  %}
+								<span class="sentiment-negative font-bold">{{ word.value }}</span>
+							{% else %}
+								<span class="muted">{{ word.value }}</span>
+							{% endif %}
 							{% endif %}
 						{% endfor %}
 					</div>
@@ -71,25 +70,25 @@
 					<!-- SECTION 3: Statistics -->
 					<div class="section">
 						<div class="section-header" style="margin-bottom: 3px;">
-							<span class="section-title">Statistics</span>
+							<span class="section-title">Stats</span>
 						</div>
 
 						<div class="section positive-words">
 							<div class="subsection-header">
-								<span class="section-title">Positive Word Counts ({{ result.sentimental_words.count.positive }})</span>
+								<span class="section-title">Positive Words ({{ result.sentimental_words.count.positive }})</span>
 							</div>
 							{% for word in result.sentimental_words.positive %}
-								<div class="muted"><span class="color-light-green">{{ word.value }}</span> : <span>{{ word.count }}</span></div>
+								<div class="muted"><span class="color-light-green">{{ word.value }}</span> (<span>{{ word.count }}</span>)</div>
 							{% endfor %}
 						</div>
 
 						<!-- SECTION 4: Negative Word Counts -->
 						<div class="section negative-words">
 							<div class="subsection-header">
-								<span class="section-title">Negative Word Counts ({{ result.sentimental_words.count.negative }})</span>
+								<span class="section-title">Negative Words ({{ result.sentimental_words.count.negative }})</span>
 							</div>
 							{% for word in result.sentimental_words.negative %}
-								<div class="muted"><span class="color-light-red">{{ word.value }}</span> : <span>{{ word.count }}</span></div>
+								<div class="muted"><span class="color-light-red">{{ word.value }}</span> (<span>{{ word.count }}</span>)</div>
 							{% endfor %}
 						</div>
 					</div>
