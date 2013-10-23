@@ -9,7 +9,7 @@ from text_processor import TextProcessor
 class SentimentAnalysis:
 
 	def __init__(self, text):
-		# prepare to use nltk
+		# prepare to use nltk_data
 		path_to_nltk_data = os.path.join(
 			os.path.dirname(os.path.abspath(__file__)),
 			'nltk_data'
@@ -21,7 +21,7 @@ class SentimentAnalysis:
 		text = tp.getProcessedText()
 		self.text = text
 
-		# dictionaries
+		# setup dictionaries
 		w = Words()
 		words = {}
 		words['positive'] = w.positiveWords()
@@ -31,7 +31,10 @@ class SentimentAnalysis:
 	###################
 	# Simple Analysis
 	###################
-	def tokenize(self, text):
+	"""
+	Returns array of tokens
+	"""
+	def tokensFromText(self, text):
 		ret = []
 		sentences = sent_tokenize(text)
 		for sentence in sentences:
@@ -40,72 +43,107 @@ class SentimentAnalysis:
 				ret.append(word)
 		return ret
 
+	"""
+	Returns array of,
+	{
+		value: <token>
+		sentiment: "positive" or "negative" or "neither"
+	}
+	"""
+	def getTaggedTokens(self):
+		tokens = self.tokensFromText(self.text)
+		ret = []
+		for token in tokens:
+			entry = {
+				'value' : token,
+				'sentiment' : 'neither'
+			}
+			if token in self.dictionaries['positive']:
+				entry['sentiment'] = 'positive'
+			elif token in self.dictionaries['negative']:
+				entry['sentiment'] = 'negative'
+			ret.append(entry)
+		return ret
+
+	"""
+	Returns,
+	{
+		'words' : array of { 'value': str, 'sentiment': 'positive' or 'negative' or 'neither' },
+		'overall_sentiment' : 'positive' or 'negative' or 'neither',
+		'sentimental_words' : {
+			'positive' : array of { 'value': str, 'count': int },
+			'negative' : array of { 'value': str, 'count': int },
+			'count': {
+				'positive' : int,
+				'negative' : int,
+			}
+		},
+	}
+	"""
 	def simpleAnalysis(self):
 		ret = {
-			'words' : [],  # { 'value' : ?, 'count' : ? }
-			'overall_sentiment' : '', # positive or negative
+			'words' : [],
+			'overall_sentiment' : '',
 			'sentimental_words' : {
-				'positive' : [], # { 'value' : ?, 'count' : ? }
+				'positive' : [],
 				'negative' : [],
 				'count': {
 					'positive': 0,
-					'negative': 0
+					'negative': 0,
 				},
 			},
 		}
 
-		arr = self.tokenize(self.text)
-		positiveWords = {}
-		negativeWords = {}
+		positiveWords = {} # word -> count
+		negativeWords = {} # word -> count
+		taggedTokens = self.getTaggedTokens()
 
-		for word in arr:
-			if word in self.dictionaries['positive']:
-				ret['words'].append({
-					'value' : word,
-					'sentiment' : 'positive'	
-				})
-				if word not in positiveWords:
-					positiveWords[word] = 0
-				positiveWords[word] += 1
+		# ret['words']
+		for taggedToken in taggedTokens:
+			ret['words'].append(taggedToken)
+			token = taggedToken['value']
+			sentiment = taggedToken['sentiment']
+			if sentiment == 'positive':
+				if token not in positiveWords:
+					positiveWords[token] = 0
+				positiveWords[token] += 1
+			elif sentiment == 'negative':
+				if token not in negativeWords:
+					negativeWords[token] = 0
+				negativeWords[token] += 1
+		
+		pcount = 0
+		ncount = 0
 
-			elif word in self.dictionaries['negative']:
-				ret['words'].append({
-					'value' : word,
-					'sentiment' : 'negative'
-				})
-				if word not in negativeWords:
-					negativeWords[word] = 0
-				negativeWords[word] += 1
-			else:
-				ret['words'].append({
-					'value' : word,
-					'sentiment' : 'neither'
-				})
-
-		for positiveWord in positiveWords.keys():
-			count = positiveWords[positiveWord]
+		# ret['sentimental_words']['positive']
+		for pword in sorted(positiveWords.keys()):
+			count = positiveWords[pword]
+			pcount += count
 			ret['sentimental_words']['positive'].append({
-				'value' : positiveWord,
-				'count' : count
+				'value' : pword,
+				'count' : count	
 			})
-			ret['sentimental_words']['count']['positive'] += count
 
-		for negativeWord in negativeWords.keys():
-			count = negativeWords[negativeWord]
+		# ret['sentimental_words']['negative']
+		for nword in sorted(negativeWords.keys()):
+			count = negativeWords[nword]
+			ncount += count
 			ret['sentimental_words']['negative'].append({
-				'value' : negativeWord,
-				'count' : count
+				'value' : nword,
+				'count' : count	
 			})
-			ret['sentimental_words']['count']['negative'] += count
 
-		pcount = ret['sentimental_words']['count']['positive']
-		ncount = ret['sentimental_words']['count']['negative']
+		# ret['sentimental_words']['count']
+		ret['sentimental_words']['count']['positive'] = pcount
+		ret['sentimental_words']['count']['negative'] = ncount
+
+		# ret['overall_sentiment']
 		if pcount > ncount:
-			ret['overall_sentiment'] = 'Positive'
+			ret['overall_sentiment'] = 'positive'
 		elif pcount < ncount:
-			ret['overall_sentiment'] = 'Negative'
+			ret['overall_sentiment'] = 'negative'
 		else:
-			ret['overall_sentiment'] = 'Neither'
+			ret['overall_sentiment'] = 'neither'
 
 		return ret
 
@@ -114,6 +152,7 @@ class SentimentAnalysis:
 	##################
 
 	"""
+	Returns,
 	{
 		'sentences': [
 			{
@@ -131,6 +170,7 @@ class SentimentAnalysis:
 		]
 	}
 	"""
+	# TODO
 	def nounAnalysis(self):
 		ret = {}
 		ret['sentences'] = []

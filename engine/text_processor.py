@@ -2,9 +2,6 @@
 from lib.porter2 import stem as pstem
 from lib.words import Words
 
-"""
-Not used at the moment
-"""
 class TextProcessor:
 
 	def __init__(self, text):
@@ -12,13 +9,17 @@ class TextProcessor:
 
 	def getProcessedText(self):
 		ret = ''
+
+		# lower case		
 		origText = self.text.lower()
+
 		# replace non-ascii letters with ' '
 		for c in origText:
 			if (ord(c) < 128):
 				ret += c
 			else:
 				ret += ' '
+
 		return ret
 
 	# def __init__(self, text):
