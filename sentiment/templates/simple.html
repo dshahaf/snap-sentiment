@@ -36,10 +36,10 @@
 						<div class="section-header">
 							<span class="section-title">Overall Sentiment</span>
 						</div>
-						{% if result.overall_sentiment|stringformat:"s" == "Positive"  %}
+						{% if result.overall_sentiment|stringformat:"s" == "positive"  %}
 							<span class="sentiment-positive font-bold">Positive</span>
 						{% else %}
-						{% if result.overall_sentiment|stringformat:"s" == "Negative"  %}
+						{% if result.overall_sentiment|stringformat:"s" == "negative"  %}
 							<span class="sentiment-negative font-bold">Negative</span>
 						{% else %}
 							<span class="font-bold">Neither</span>
