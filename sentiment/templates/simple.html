@@ -56,7 +56,9 @@
 
 	<div class="row">
 		<div class="span6">
-			<div class="text-center"><h4>Input</h4></div>
+			<div class="text-center"><h4>Input
+				<a href="/simple/" style="font-size:13px; font-weight: normal; text-decoration: underline; margin-left: 3px;">(clear)</a>
+			</h4></div>
 			<form action="/simple/" method="POST">
 				{% csrf_token %}
 				<textarea class="textarea-full textarea" rows="20" name="textarea">{{ text }}</textarea>
