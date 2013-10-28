@@ -36,6 +36,7 @@ a.brand {
 }
 .result {
   margin-left: 5px;
+  padding-top: 3px;
 }
 .color-light-green {
   color: #8cca8c;
@@ -64,4 +65,19 @@ a.brand {
 .table-centered td,
 .table-centered th {
   text-align: center !important;
+}
+.table-action .progress-container {
+  position: absolute;
+}
+.table-action .progress-container .spinner {
+  margin-top: 20px;
+  margin-left: 10px;
+}
+form.form-user-input .progress-container {
+  position: absolute;
+  margin-top: 14px;
+}
+form.form-user-input .progress-container .spinner {
+  margin-left: 20px;
+  margin-top: 20px;
 }

@@ -12,7 +12,7 @@ def index(request):
 	if request.method == 'POST':
 		form = request.POST
 		action = form.get('action')
-
+		context['action'] = action
 		if action == 'user-input':
 			value = form.get('textarea')
 			context['text'] = value
@@ -20,7 +20,6 @@ def index(request):
 			context['result_single'] = sa.simpleAnalysis()
 
 		elif action[:6] == 'sample':
-			context['action'] = action
 			words = action.split('-')
 			category = words[1]
 			dataset = words[2]
@@ -33,12 +32,11 @@ def index(request):
 				context['result_single'] = sa.simpleAnalysis()
 
 		elif action[:4] == 'test':
-			context['action'] = action
 			words = action.split('-')
 			dataset = words[1]
 			if dataset == 'movie':
 				tester = Tester()
-				count = 100
+				count = 200
 				context['result_test'] = tester.test('simple', 'movie', count)
 
 	return render(request, 'simple.html', context)

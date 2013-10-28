@@ -6,7 +6,7 @@ import os, sys
 # Helpers
 ############
 def console(s):
-	sys.stdout.write(">> %s" % s)
+	sys.stdout.write(">> %s\n" % s)
 
 def error(s):
 	sys.stderr.write(">> [ERROR] %s" % s)
