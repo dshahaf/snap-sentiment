@@ -5,6 +5,7 @@ import nltk
 from nltk import pos_tag
 import os
 from text_processor import TextProcessor
+from corpus import Corpus
 
 class SentimentAnalysis:
 
@@ -22,11 +23,14 @@ class SentimentAnalysis:
 		self.text = text
 
 		# setup dictionaries
-		w = Words()
+		corpus = Corpus()
 		words = {}
-		words['positive'] = w.positiveWords()
-		words['negative'] = w.negativeWords()
+		words['positive'] = corpus.positiveWordDict()
+		words['negative'] = corpus.negativeWordDict()
 		self.dictionaries = words
+
+	def setText(self, text):
+		self.text = text
 
 	###################
 	# Simple Analysis
@@ -63,6 +67,26 @@ class SentimentAnalysis:
 			elif token in self.dictionaries['negative']:
 				entry['sentiment'] = 'negative'
 			ret.append(entry)
+		return ret
+
+	"""
+	Returns 1 if sentiment is determined positive, -1 if negative, 0 if neither
+	"""
+	def simpleAnalysisInt(self):
+		ret = 0
+		taggedTokens = self.getTaggedTokens()
+		posCount = 0;
+		negCount = 0;
+		for taggedToken in taggedTokens:
+			sentiment = taggedToken['sentiment']
+			if sentiment == "positive":
+				posCount += 1
+			elif sentiment == "negative":
+				negCount += 1
+		if posCount > negCount:
+			ret = 1
+		elif posCount < negCount:
+			ret = -1
 		return ret
 
 	"""
@@ -170,6 +194,7 @@ class SentimentAnalysis:
 		]
 	}
 	"""
+
 	# TODO
 	def nounAnalysis(self):
 		ret = {}
