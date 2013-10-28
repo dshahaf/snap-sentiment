@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from lib.porter2 import stem as pstem
-from lib.words import Words
 
 class TextProcessor:
 
