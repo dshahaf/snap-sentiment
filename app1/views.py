@@ -5,33 +5,40 @@ from django import forms
 from engine.text_processor import TextProcessor
 from engine.sentiment_analysis import SentimentAnalysis
 from engine.corpus import Corpus
+from engine.tester import Tester
 
 def index(request):
 	context = {}
 	if request.method == 'POST':
 		form = request.POST
-		sampleData = form.get('sample-data')
+		action = form.get('action')
 
-		if sampleData is None:
-			# not using sample data
+		if action == 'user-input':
 			value = form.get('textarea')
 			context['text'] = value
 			sa = SentimentAnalysis(value)
-			context['result'] = sa.simpleAnalysis()
+			context['result_single'] = sa.simpleAnalysis()
 
-		else:
-			# using sample data
-			category = ''
-			if sampleData == 'positive-movie-review':
-				category = 'positive'
-				context['sample_data'] = 'positive-movie-review'
-			elif sampleData == 'negative-movie-review':
-				category = 'negative'
-				context['sample_data'] = 'negative-movie-review'
-			corpus = Corpus()
-			text = corpus.getRandomMovieReview(category)
-			context['text'] = text
-			sa = SentimentAnalysis(text)
-			context['result'] = sa.simpleAnalysis()
+		elif action[:6] == 'sample':
+			context['action'] = action
+			words = action.split('-')
+			category = words[1]
+			dataset = words[2]
+
+			if (dataset == 'movie'):			
+				corpus = Corpus()
+				text = corpus.getRandomMovieReview(category)
+				context['text'] = text
+				sa = SentimentAnalysis(text)
+				context['result_single'] = sa.simpleAnalysis()
+
+		elif action[:4] == 'test':
+			context['action'] = action
+			words = action.split('-')
+			dataset = words[1]
+			if dataset == 'movie':
+				tester = Tester()
+				count = 100
+				context['result_test'] = tester.test('simple', 'movie', count)
 
 	return render(request, 'simple.html', context)

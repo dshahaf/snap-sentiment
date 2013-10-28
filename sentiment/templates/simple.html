@@ -12,14 +12,15 @@
 
 {% block main-content %}
 	<div class="row">
-		<div class="offset3 span6">
-			<table class="table-sample-data table table-striped table-condensed table-bordered">
-
+		<div class="offset2 span8">
+			<table class="table-centered table table-striped table-condensed table-bordered">
+				<caption><strong>Available Data Set Actions</strong></caption>
 				<thead>
 					<tr>
-						<th>Sample Data</th>
-						<th>Positive</th>
-						<th>Negative</th>
+						<th>Data Set</th>
+						<th>Positive Sample</th>
+						<th>Negative Sample</th>
+						<th>Accuracy Test</th>
 					</tr>
 				</thead>
 
@@ -29,9 +30,9 @@
 						<td>
 							<form action="/simple/" method="POST" style="margin-bottom: 0px;">
 								{% csrf_token %}
-								<input type="hidden" name="sample-data" value="positive-movie-review" />
+								<input type="hidden" name="action" value="sample-positive-movie" />
 								<input type="submit" value="Go" class="btn btn-success btn-small"/>
-								{% if sample_data|stringformat:"s" == "positive-movie-review"  %}
+								{% if action|stringformat:"s" == "sample-positive-movie"  %}
 								<span class="symbol-check" style="opacity: 0.5;">&#10003;</span>
 								{% endif %}
 							</form>
@@ -40,9 +41,20 @@
 						<td>
 							<form action="/simple/" method="POST" style="margin-bottom: 0px;">
 								{% csrf_token %}
-								<input type="hidden" name="sample-data" value="negative-movie-review" />
+								<input type="hidden" name="action" value="sample-negative-movie" />
 								<input type="submit" value="Go" class="btn btn-danger btn-small"/>
-								{% if sample_data|stringformat:"s" == "negative-movie-review"  %}
+								{% if action|stringformat:"s" == "sample-negative-movie"  %}
+								<span class="symbol-check" style="opacity: 0.5;">&#10003;</span>
+								{% endif %}
+							</form>
+						</td>
+
+						<td>
+							<form action="/simple/" method="POST" style="margin-bottom: 0px;">
+								{% csrf_token %}
+								<input type="hidden" name="action" value="test-movie" />
+								<input type="submit" value="Go" class="btn btn-danger btn-info btn-small"/>
+								{% if action|stringformat:"s" == "test-movie"  %}
 								<span class="symbol-check" style="opacity: 0.5;">&#10003;</span>
 								{% endif %}
 							</form>
@@ -64,26 +76,52 @@
 				<textarea class="textarea-full textarea" rows="20" name="textarea">{{ text }}</textarea>
 				<div class="muted" style="margin-bottom: 0px; font-size: 13px;">
 				</div>
-<!-- 				<input type="checkbox" name="checkbox-remove-stop-words" value="stop_words" class="checkbox" {{ setup.remove_stop_words_value }}> Remove stop words<br /> -->
-<!-- 				<input type="checkbox" name="options" value="stem" class="checkbox"> Perform stemming<br />
- -->				<input type="submit" value="Go" class="btn btn-success btn-large offset2" style="margin-top: 5px;"/>
+				<input type="hidden" name="action" value="user-input" />
+				<input type="submit" value="Go" class="btn btn-success btn-large offset2" style="margin-top: 5px;" />
 			</form>
 		</div>
 
 		<div class="span6">
 			<div class="text-center"><h4>Output</h4></div>
-			{% if result %}
 				<div class="result">
+					{% if result_test %}
+						<table class="table table-centered table-bordered table-condensed">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Total </th>
+									<th>Correctly Categorized</th>
+									<th>Accuracy</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Positive</td>
+									<td>{{ result_test.total.positive }}</td>
+									<td>{{ result_test.correct.positive }}</td>
+									<td>{{ result_test.accuracy.positive }}</td>
+								</tr>
+								<tr>
+									<td>Negative</td>
+									<td>{{ result_test.total.negative }}</td>
+									<td>{{ result_test.correct.negative }}</td>
+									<td>{{ result_test.accuracy.negative }}</td>
+								</tr>
+							</tbody>
+						</table>
+					{% endif %}
+
+					{% if result_single %}
 
 					<!-- SECTION 1: Overall sentiment -->
 					<div class="section overall-sentiment">
 						<div class="section-header">
 							<span class="section-title">Overall Sentiment</span>
 						</div>
-						{% if result.overall_sentiment|stringformat:"s" == "positive"  %}
+						{% if result_single.overall_sentiment|stringformat:"s" == "positive"  %}
 							<span class="sentiment-positive font-bold">Positive</span>
 						{% else %}
-						{% if result.overall_sentiment|stringformat:"s" == "negative"  %}
+						{% if result_single.overall_sentiment|stringformat:"s" == "negative"  %}
 							<span class="sentiment-negative font-bold">Negative</span>
 						{% else %}
 							<span class="font-bold">Neither</span>
@@ -92,12 +130,12 @@
 					</div>
 
 					<!-- SECTION 2: Processed, color-coded text -->
-					{% if result.words|length > 0 %}
+					{% if result_single.words|length > 0 %}
 					<div class="section words" >
 						<div class="section-header">
 							<span class="section-title">Processed Text</span>
 						</div>
-						{% for word in result.words %}
+						{% for word in result_single.words %}
 							{% if word.sentiment|stringformat:"s" == "positive"  %}
 								<span class="sentiment-positive font-bold">{{ word.value }}</span>
 							{% else %}
@@ -119,18 +157,18 @@
 
 						<div class="section positive-words" style="position: absolute; padding-bottom: 20px;">
 							<div class="subsection-header">
-								<span class="section-title">Positive Words ({{ result.sentimental_words.count.positive }})</span>
+								<span class="section-title">Positive Words ({{ result_single.sentimental_words.count.positive }})</span>
 							</div>
-							{% for word in result.sentimental_words.positive %}
+							{% for word in result_single.sentimental_words.positive %}
 								<div class="muted"><span class="color-light-green">{{ word.value }}</span> (<span>{{ word.count }}</span>)</div>
 							{% endfor %}
 						</div>
 
 						<div class="section negative-words offset3">
 							<div class="subsection-header">
-								<span class="section-title">Negative Words ({{ result.sentimental_words.count.negative }})</span>
+								<span class="section-title">Negative Words ({{ result_single.sentimental_words.count.negative }})</span>
 							</div>
-							{% for word in result.sentimental_words.negative %}
+							{% for word in result_single.sentimental_words.negative %}
 								<div class="muted"><span class="color-light-red">{{ word.value }}</span> (<span>{{ word.count }}</span>)</div>
 							{% endfor %}
 						</div>
@@ -138,8 +176,9 @@
 
 					<div style="height: 20px;">
 					</div>
-				</div>
-			{% endif %}
+					
+					{% endif %}
+				</div> <!-- result -->
 		</div>
 	</div>
 {% endblock %}

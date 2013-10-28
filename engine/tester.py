@@ -11,15 +11,41 @@ class Tester:
 	"""
 	method: 'simple'
 	dataName: 'movie'
-	Returns {
-		'positive' : float (success ratio on positive data)
-		'negative' : float (success ratio on negative data)
+	Returns,
+	{
+		'total': {
+			'positive': int,
+			'negative': int,
+		},
+		'correct': {
+			'positive': int,
+			'negative': int,
+		},
+		'accuracy': {
+			'positive': float,
+			'negative': float,
+		}
 	}
 	"""
 	def test(self, method, dataName, count = 100):
 		posData = []
 		negData = []
-		ret = {}
+
+		ret = {
+			'total': {
+				'positive': 0,
+				'negative': 0,
+			},
+			'correct': {
+				'positive': 0,
+				'negative': 0,
+			},
+			'accuracy': {
+				'positive': 0.0,
+				'negative': 0.0,
+			}
+		}
+
 		posCorrectCount = 0
 		negCorrectCount = 0
 		if dataName == 'movie':
@@ -36,6 +62,11 @@ class Tester:
 				sentimentInt = self.analysis.simpleAnalysisInt()
 				if sentimentInt is -1:
 					negCorrectCount += 1
-		ret['positive'] = 1.0 * posCorrectCount / count
-		ret['negative'] = 1.0 * negCorrectCount / count
+		ret['total']['positive'] = count
+		ret['total']['negative'] = count
+		ret['correct']['positive'] = posCorrectCount
+		ret['correct']['negative'] = negCorrectCount
+		ret['accuracy']['positive'] = 1.0 * posCorrectCount / count
+		ret['accuracy']['negative'] = 1.0 * negCorrectCount / count
+
 		return ret
