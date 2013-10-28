@@ -68,6 +68,9 @@ a.brand {
 }
 .table-action .progress-container {
   position: absolute;
+  font-size: 18px;
+  margin-top: 2px;
+  opacity: 0.5;
 }
 .table-action .progress-container .spinner {
   margin-top: 20px;
@@ -76,8 +79,16 @@ a.brand {
 form.form-user-input .progress-container {
   position: absolute;
   margin-top: 14px;
+  opacity: 0.5;
+  font-size: 22px;
 }
 form.form-user-input .progress-container .spinner {
   margin-left: 20px;
   margin-top: 20px;
+}
+.div-input .link-clear {
+  opacity: 0.6;
+}
+.div-input .link-clear:hover {
+  opacity: 0.8;
 }

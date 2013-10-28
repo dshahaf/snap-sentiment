@@ -48,9 +48,14 @@ class Tester:
 
 		posCorrectCount = 0
 		negCorrectCount = 0
+
 		if dataName == 'movie':
 			posData = self.corpus.movieReviews('positive', count)
 			negData = self.corpus.movieReviews('negative', count)
+		elif dataName == 'celebrity':
+			posData = self.corpus.celebrityArticles('positive')
+			negData = self.corpus.celebrityArticles('negative')
+
 		if method == 'simple':
 			for posText in posData:
 				self.analysis.setText(posText)
@@ -62,11 +67,12 @@ class Tester:
 				sentimentInt = self.analysis.simpleAnalysisInt()
 				if sentimentInt is -1:
 					negCorrectCount += 1
-		ret['total']['positive'] = count
-		ret['total']['negative'] = count
+
+		ret['total']['positive'] = len(posData)
+		ret['total']['negative'] = len(negData)
 		ret['correct']['positive'] = posCorrectCount
 		ret['correct']['negative'] = negCorrectCount
-		ret['accuracy']['positive'] = 1.0 * posCorrectCount / count
-		ret['accuracy']['negative'] = 1.0 * negCorrectCount / count
+		ret['accuracy']['positive'] = round(1.0 * posCorrectCount / len(posData), 2)
+		ret['accuracy']['negative'] = round(1.0 * negCorrectCount / len(negData), 3)
 
 		return ret

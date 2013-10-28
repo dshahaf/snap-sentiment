@@ -9,6 +9,7 @@ from engine.tester import Tester
 
 def index(request):
 	context = {}
+
 	if request.method == 'POST':
 		form = request.POST
 		action = form.get('action')
@@ -24,12 +25,17 @@ def index(request):
 			category = words[1]
 			dataset = words[2]
 
-			if (dataset == 'movie'):			
-				corpus = Corpus()
+			corpus = Corpus()
+			text = ''
+
+			if dataset == 'movie':
 				text = corpus.getRandomMovieReview(category)
-				context['text'] = text
-				sa = SentimentAnalysis(text)
-				context['result_single'] = sa.simpleAnalysis()
+			elif dataset == 'celebrity':
+				text = corpus.celebrityArticle(category)
+
+			context['text'] = text
+			sa = SentimentAnalysis(text)
+			context['result_single'] = sa.simpleAnalysis()
 
 		elif action[:4] == 'test':
 			words = action.split('-')
@@ -38,5 +44,8 @@ def index(request):
 				tester = Tester()
 				count = 200
 				context['result_test'] = tester.test('simple', 'movie', count)
+			elif dataset == 'celebrity':
+				tester = Tester()
+				context['result_test'] = tester.test('simple', 'celebrity', None)
 
 	return render(request, 'simple.html', context)

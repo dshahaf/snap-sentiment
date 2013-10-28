@@ -93,7 +93,7 @@ window.onload = function() {
 	<div class="row">
 		<div class="offset2 span8">
 			<table class="table-action table-centered table table-striped table-condensed table-bordered">
-				<caption><strong>Available Data Set Actions</strong></caption>
+				<caption><strong>Available Data Sets</strong></caption>
 				<thead>
 					<tr>
 						<th>Data Set</th>
@@ -104,16 +104,15 @@ window.onload = function() {
 				</thead>
 
 				<tbody>
+
 					<tr>
-						<td>Movie Review</td>
+						<!-- Movie Reviews -->
+						<td>Movie Reviews</td>
 						<td>
-							<form action="/simple/" method="POST" style="margin-bottom: 0px;">
-								{% csrf_token %}
+							<form action="/simple/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
 								<input type="hidden" name="action" value="sample-positive-movie" />
-								<div class="progress-container" style="opacity:0.5; margin-left:105px; margin-top:2px;">
-								{% if action|stringformat:"s" == "sample-positive-movie" %}
-									&#10003;
-								{% endif %}
+								<div class="progress-container" style="margin-left:105px;">
+								{% if action|stringformat:"s" == "sample-positive-movie" %}&#9754;{% endif %}
 								</div>
 								<input type="submit" value="Go" class="btn btn-success btn-small" />
 								
@@ -121,31 +120,61 @@ window.onload = function() {
 						</td>
 
 						<td>
-							<form action="/simple/" method="POST" style="margin-bottom: 0px;">
-								{% csrf_token %}
+							<form action="/simple/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
 								<input type="hidden" name="action" value="sample-negative-movie" />
-								<div class="progress-container" style="opacity:0.5; margin-left:108px; margin-top:2px;">
-								{% if action|stringformat:"s" == "sample-negative-movie" %}
-									&#10003;
-								{% endif %}
+								<div class="progress-container" style="margin-left:108px;">
+								{% if action|stringformat:"s" == "sample-negative-movie" %}&#9754;{% endif %}
 								</div>
 								<input type="submit" value="Go" class="btn btn-danger btn-small" />
 							</form>
 						</td>
 
 						<td>
-							<form action="/simple/" method="POST" style="margin-bottom: 0px;">
-								{% csrf_token %}
+							<form action="/simple/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
 								<input type="hidden" name="action" value="test-movie" />
-								<div class="progress-container" style="opacity:0.5; margin-left:100px; margin-top:2px;">
-								{% if action|stringformat:"s" == "test-movie" %}
-									&#10003;
-								{% endif %}
+								<div class="progress-container" style="margin-left:100px;">
+								{% if action|stringformat:"s" == "test-movie" %}&#9754;{% endif %}
 								</div>
 								<input type="submit" value="Go" class="btn btn-info btn-small" />
 							</form>
 						</td>
 					</tr>
+
+					<tr>
+						<!-- Bieber -->
+						<td>Celebrity News</td>
+						<td>
+							<form action="/simple/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="sample-positive-celebrity" />
+								<div class="progress-container" style="margin-left:105px;">
+								{% if action|stringformat:"s" == "sample-positive-celebrity" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-success btn-small" />
+								
+							</form>
+						</td>
+
+						<td>
+							<form action="/simple/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="sample-negative-celebrity" />
+								<div class="progress-container" style="margin-left:108px;">
+								{% if action|stringformat:"s" == "sample-negative-celebrity" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-danger btn-small" />
+							</form>
+						</td>
+
+						<td>
+							<form action="/simple/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="test-celebrity" />
+								<div class="progress-container" style="margin-left:100px;">
+								{% if action|stringformat:"s" == "test-celebrity" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-info btn-small" />
+							</form>
+						</td>
+					</tr>
+
 				</tbody>
 
 			</table>
@@ -153,32 +182,32 @@ window.onload = function() {
 	</div>
 
 	<div class="row">
-		<div class="span6">
+		<div class="span6 div-input">
 			<div class="text-center"><h4>Input
-				<a href="/simple/" style="font-size:13px; font-weight: normal; text-decoration: underline; margin-left: 3px;">(clear)</a>
+				<a class="link-clear" href="/simple/" style="font-size:13px; font-weight: normal; text-decoration: underline; margin-left: 3px;">(clear)</a>
 			</h4></div>
 			<form action="/simple/" method="POST" class="form-user-input">
 				{% csrf_token %}
-				<textarea class="textarea-full textarea" rows="20" name="textarea">{{ text }}</textarea>
+				<textarea class="textarea-full textarea" rows="18" name="textarea">{{ text }}</textarea>
 				<div class="muted" style="margin-bottom: 0px; font-size: 13px;">
 				</div>
 				<input type="hidden" name="action" value="user-input" />
-				<div class="offset3 progress-container" style="font-size:20px; opacity:0.5;">
+				<div class="offset3 progress-container">
 				{% if action|stringformat:"s" == "user-input" %}
-					&#10003;
+					&#9754;
 				{% endif %}
 				</div>
 				<input type="submit" value="Go" class="btn btn-success btn-large offset2" style="margin-top: 5px;" />
 			</form>
 		</div>
 
-		<div class="span6">
+		<div class="span6 div-output">
 			<div class="text-center"><h4>Output</h4></div>
 				<div class="result">
 					{% if result_test %}
 						<table class="table table-centered table-bordered table-condensed">
 							<thead>
-								<tr>
+								<tr style="background:rgb(248, 248, 248);">
 									<th></th>
 									<th>Total </th>
 									<th>Correct</th>
@@ -187,13 +216,13 @@ window.onload = function() {
 							</thead>
 							<tbody>
 								<tr>
-									<td>Positive</td>
+									<td style="color: green;">Positive</td>
 									<td>{{ result_test.total.positive }}</td>
 									<td>{{ result_test.correct.positive }}</td>
 									<td>{{ result_test.accuracy.positive }}</td>
 								</tr>
 								<tr>
-									<td>Negative</td>
+									<td style="color:rgb(209, 65, 65);">Negative</td>
 									<td>{{ result_test.total.negative }}</td>
 									<td>{{ result_test.correct.negative }}</td>
 									<td>{{ result_test.accuracy.negative }}</td>

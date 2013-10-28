@@ -13,15 +13,9 @@ class Corpus:
 
 		return
 
-	"""
-	category is 'positive' or 'negative'
-	"""
-	def getRandomMovieReview(self, category):
-		ret = ''
-		if category != 'positive' and category != 'negative':
-			return ret
-		return self.movieReviews(category, 1)[0]
-
+	####################
+	# Word Dict
+	####################
 	def wordDictHelper(self, path):
 		ret = {}
 		with open(path, 'r') as f:
@@ -55,6 +49,18 @@ class Corpus:
 		)
 		return self.wordDictHelper(path)
 
+	####################
+	# Movie Reviews
+	####################
+	"""
+	category is 'positive' or 'negative'
+	"""
+	def getRandomMovieReview(self, category):
+		ret = ''
+		if category != 'positive' and category != 'negative':
+			return ret
+		return self.movieReviews(category, 1)[0]
+
 	"""
 	category is 'positive' or 'negative'
 	Returns a list of strings
@@ -71,4 +77,38 @@ class Corpus:
 		sampleFileIds = sample(fileids, count)
 		for sampleFileId in sampleFileIds:
 			ret.append(movie_reviews.raw(sampleFileId))
+		return ret
+
+	####################
+	# Celebrity News
+	####################
+	"""
+	category is 'positive' or 'negative'
+	"""
+	def celebrityArticle(self, category):
+		articles = self.celebrityArticles(category)
+		l = len(articles)
+		index = randrange(l)
+		return articles[index]
+
+	"""
+	category is 'positive' or 'negative'
+	"""
+	def celebrityArticles(self, category):
+		ret = []
+		dirPath = os.path.join(
+			os.path.dirname(os.path.abspath(__file__)),
+			'james_data',
+			'bieber',
+		)
+		if category == 'positive':
+			dirPath = os.path.join(dirPath, 'pos')
+		elif category == 'negative':
+			dirPath = os.path.join(dirPath, 'neg')
+		filenames = os.listdir(dirPath)
+		for filename in filenames:
+			path = os.path.join(dirPath, filename)
+			with open(path, 'r') as f:
+				fileString = f.read()
+				ret.append(fileString)
 		return ret
