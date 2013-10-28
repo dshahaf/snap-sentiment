@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from lib.words import Words
 from nltk.tokenize import word_tokenize, wordpunct_tokenize, sent_tokenize
 import nltk
 from nltk import pos_tag
@@ -9,7 +8,7 @@ from corpus import Corpus
 
 class SentimentAnalysis:
 
-	def __init__(self, text):
+	def __init__(self, text = ''):
 		# prepare to use nltk_data
 		path_to_nltk_data = os.path.join(
 			os.path.dirname(os.path.abspath(__file__)),
@@ -19,8 +18,7 @@ class SentimentAnalysis:
 
 		# pre-processing
 		tp = TextProcessor(text)
-		text = tp.getProcessedText()
-		self.text = text
+		self.text = tp.getProcessedText()
 
 		# setup dictionaries
 		corpus = Corpus()
@@ -30,7 +28,8 @@ class SentimentAnalysis:
 		self.dictionaries = words
 
 	def setText(self, text):
-		self.text = text
+		tp = TextProcessor(text)
+		self.text = tp.getProcessedText()
 
 	###################
 	# Simple Analysis
