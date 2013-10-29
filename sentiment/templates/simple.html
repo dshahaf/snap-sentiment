@@ -119,9 +119,7 @@
 				</div>
 				<input type="hidden" name="action" value="user-input" />
 				<div class="offset3 progress-container">
-				{% if action|stringformat:"s" == "user-input" %}
-					&#9754;
-				{% endif %}
+				{% if action|stringformat:"s" == "user-input" %}&#9754;{% endif %}
 				</div>
 				<input type="submit" value="Go" class="btn btn-success btn-large offset2" style="margin-top: 5px;" />
 			</form>

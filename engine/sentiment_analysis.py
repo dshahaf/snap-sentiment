@@ -273,7 +273,6 @@ class SentimentAnalysis:
 			currNouns = {}
 
 			for taggedToken in parseTaggedSentence:
-				print(taggedToken)
 				v = taggedToken['value']
 				t = taggedToken['type']
 				if not self.isNounToken(taggedToken):

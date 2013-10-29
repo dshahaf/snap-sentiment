@@ -92,10 +92,13 @@
 	<div class="row">
 		<div class="span6">
 			<div class="text-center"><h4>Input</h4></div>
-			<form action="/noun/" method="POST">
+			<form action="/noun/" method="POST" class="form-user-input">
 				{% csrf_token %}
-				<textarea class="textarea-full textarea" rows="15" name="textarea">{% if text %}{{ text }}{% else %}The concert was really fun. It was the best show of the year{% endif %}</textarea>
+				<textarea class="textarea-full textarea" rows="15" name="textarea">{% if text %}{{ text }}{% else %}{% endif %}</textarea>
 				<input type="hidden" name="action" value="user-input" />
+				<div class="offset3 progress-container">
+				{% if action|stringformat:"s" == "user-input" %}&#9754;{% endif %}
+				</div>
 				<input type="submit" value="Go" class="btn btn-success btn-large offset2" style="margin-top: 5px;"/>
 			</form>
 		</div>
