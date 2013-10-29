@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 from nltk.tokenize import word_tokenize, wordpunct_tokenize, sent_tokenize
-import nltk
+import nltk, os
 from nltk import pos_tag
-import os
 from text_processor import TextProcessor
 from corpus import Corpus
 
@@ -176,63 +175,148 @@ class SentimentAnalysis:
 
 	"""
 	Returns,
+	[
+		# sentence
+		[
+			# tagged token
+			{
+				'value': string,
+				'type': string,
+			},
+			...
+		],
+		...
+	]
+	"""
+	def getParseTaggedSentences(self):
+		text = self.text
+		ret = []
+		sentences = sent_tokenize(text)
+		for sentence in sentences:
+			currList = []
+			tokens = word_tokenize(sentence)
+			taggedTokens = pos_tag(tokens)
+			for taggedToken in taggedTokens:
+				currList.append({
+					'value': taggedToken[0],
+					'type': taggedToken[1],
+				})
+			ret.append(currList)
+		return ret
+
+	"""
+	Returns,
 	{
 		'sentences': [
 			{
-				'sentiment' : '' # positive, negative, or neither
+				'sentiment': string,
 				'words': [
 					{
-						'value' : ''
-						'sentiment' : '' # positive, negative, or neither
-						'isNoun': 'true' or 'false'
-					},
-					...
-				]
+						'value': string,
+						'type': string,
+					}
+				],
+				...
 			},
 			...
-		]
+		],
+
+		'words': {
+			'positive': [
+				{
+					'value': string,
+					'count-positive': int,
+					'count-negative': int,
+				},
+				...
+			],
+			'negative': [
+				{
+					'value': string,
+					'count-positive': int,
+					'count-negative': int,
+				},
+				...
+
+			],
+			'neither': [
+				{
+					'value': string,
+					'count-positive': int,
+					'count-negative': int,
+				},
+				...
+			]
+		},
 	}
 	"""
-
-	# TODO
 	def nounAnalysis(self):
-		ret = {}
-		ret['sentences'] = []
-		sentences = sent_tokenize(self.text)
-		for sentence in sentences:
-			entry = {
-				'sentiment' : '',
+		ret = {
+			'sentences': [
+			],
+			'words': {
+			}
+		}
+
+		# word => { 'positive' : int, 'negative': int }
+		wordDictWithCounts = {}
+
+		parseTaggedSentences = self.getParseTaggedSentences()
+
+		for parseTaggedSentence in parseTaggedSentences:
+			currObj = {
+				'sentiment': '',
 				'words': []
 			}
-			numPos = 0
-			numNeg = 0
-			words = word_tokenize(sentence)
-			tagged_words = pos_tag(words)
-			for tagged_word in tagged_words:
-				value = tagged_word[0]
-				sentiment = ''
-				if value in self.dictionaries['positive']:
-					sentiment = 'positive'
-					numPos += 1
-				elif value in self.dictionaries['negative']:
-					sentiment = 'negative'
-					numNeg += 1
-				else:
-					sentiment = 'neither'
-				wordType = tagged_word[1]
-				isNoun = 'false'
-				if (wordType == 'NN') or (wordType == 'NNS'):
-					isNoun = 'true'
-				entry['words'].append({
-					'value' : value,
-					'sentiment' : sentiment,
-					'isNoun' : isNoun
+			posCount = 0
+			negCount = 0
+			currTokens = {} # tokens in the current sentence
+
+			for taggedToken in parseTaggedSentence:
+				v = taggedToken[0]
+				t = taggedToken[1]
+
+				currObj['words'].append({
+					'value': v,
+					'type': t,	
 				})
-			if numPos > numNeg:
-				entry['sentiment'] = 'positive'
-			elif numPos < numNeg:
-				entry['sentiment'] = 'negative'
+
+				if v not in currTokens:
+					currTokens[v] = True
+
+				if v not in wordDictWithCounts:
+					wordDictWithCounts[v] = {
+						'positive': 0,
+						'negative': 0,
+					}
+
+				if v in self.dictionaries['positive']:
+					posCount += 1
+					for k in currTokens.keys():
+						wordDictWithCounts[k]['positive'] += 1
+
+				elif v in self.dictionaries['negative']:
+					negCount += 1
+					for k in currTokens.keys():
+						wordDictWithCounts[k]['negative'] += 1
+
+			if posCount > negCount:
+				currObj['sentiment'] = 'positive'
+			elif posCount < negCount:
+				currObj['sentiment'] = 'negative'
 			else:
-				entry['sentiment'] = 'neither'
-			ret['sentences'].append(entry)
+				currObj['sentiment'] = 'neither'
+			ret['sentences'].append(currObj)
+
+		# process wordDictWithCounts
+		wordListWithCounts = []
+		for word in wordDictWithCounts.keys():
+			obj = wordDictWithCounts[word]
+			entry = {
+				'value': word,
+				'count-positive': obj['positive'],
+				'count-negative': obj['negative'],
+			}
+			wordListWithCounts.append(entry)
+			# TODO
 		return ret

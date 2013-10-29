@@ -17,10 +17,7 @@
 			<div class="text-center"><h4>Input</h4></div>
 			<form action="/noun/" method="POST">
 				{% csrf_token %}
-				<textarea class="textarea-full textarea" rows="20" name="textarea">{{ text }}</textarea>
-				<div class="muted" style="margin-bottom: 0px; font-size: 13px;">
-					(Text processing: convert to lowercase, remove non-ASCII characteres)
-				</div>
+				<textarea class="textarea-full textarea" rows="20" name="textarea">{% if text %}{{ text }}{% else %}Belgium chocolate is my favorite treat.{% endif %}</textarea>
 				<input type="submit" value="Go" class="btn btn-success btn-large offset2" style="margin-top: 5px;"/>
 			</form>
 		</div>

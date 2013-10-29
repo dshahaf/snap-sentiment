@@ -6,9 +6,49 @@ from engine.sentiment_analysis import SentimentAnalysis
 
 """
 {
-	'text' : ""
+	'text' : string,
 	'result' : {
-		'words': []
+		'sentences': [
+			{
+				'sentiment': string,
+				'words': [
+					{
+						'value': string,
+						'type': string,
+					}
+				],
+				...
+			},
+			...
+		],
+
+		'words': {
+			'positive': [
+				{
+					'value': string,
+					'count-positive': int,
+					'count-negative': int,
+				},
+				...
+			],
+			'negative': [
+				{
+					'value': string,
+					'count-positive': int,
+					'count-negative': int,
+				},
+				...
+
+			],
+			'neither': [
+				{
+					'value': string,
+					'count-positive': int,
+					'count-negative': int,
+				},
+				...
+			]
+		},
 	}
 }
 """
