@@ -1,8 +1,13 @@
 {% extends "base.html" %}
 
+{% block head %}
+{% load staticfiles %}
+<script type="text/javascript" src="{% static 'javascript/showSpinner.js' %}"></script>
+{% endblock %}
+
 {% block title %}Sentence Analysis{% endblock %}
 
-{% block navbar_sentence %}<li class="active"><a href="/">Sentence</a></li>{% endblock %}
+{% block navbar_sentence %}<li class="active"><a href="/sentence">Sentence</a></li>{% endblock %}
 
 {% block main-title %}Sentence Analysis{% endblock %}
 
@@ -11,7 +16,34 @@
 {% endblock %}
 
 {% block main-content %}
+<div class="app-sentence">
+	<div class="row">
+		<div class="span12 div-input">
+			<h3>Input</h3>
+
+			<form action="/sentence/" method="POST" class="form-user-input">
+				{% csrf_token %}
+				<textarea class="textarea-full textarea" rows="6" name="textarea">{% if text %}{{ text }}{% else %}It was the best movie of my life. I would highly recommend it to anyone.{% endif %}</textarea>
+				<input type="hidden" name="action" value="user-input" />
+				<div class="progress-container offset6" style="padding-left: 17px; margin-top:10px;">
+				{% if action|stringformat:"s" == "user-input" %}&#9754;{% endif %}
+				</div>
+				<input type="submit" value="Go" class="btn btn-success btn-large" style="display:block; margin:0 auto;" />
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span12 div-output">
+			{% if result %}
+				<h3>Output</h3>
+				<div>
+					{{ result }}
+				</div>
+			{% endif %}
 
 
+		</div>
+	</div>
+</div>
 
 {% endblock %}

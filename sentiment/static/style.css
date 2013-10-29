@@ -95,3 +95,13 @@ form.form-user-input .progress-container .spinner {
 .tr-lightgrey {
   background: #f8f8f8;
 }
+.app-sentence form.form-user-input .progress-container {
+  position: absolute;
+  margin-top: 14px;
+  opacity: 0.5;
+  font-size: 22px;
+}
+.app-sentence form.form-user-input .progress-container .spinner {
+  margin-left: 40px;
+  margin-top: 20px;
+}

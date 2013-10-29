@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 	{% load staticfiles %}
 	<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
 	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}" />
@@ -8,6 +9,7 @@
 	<script type="text/javascript" src="{% static 'javascript/spin.min.js' %}"></script> 
 	{% block head %} {% endblock %}
     <title>{% block title %}Sentiment Analysis{% endblock %}</title>
+
 </head>
 
 <div class="navbar navbar-inverse navbar-fixed-top">
