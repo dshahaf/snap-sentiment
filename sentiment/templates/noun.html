@@ -83,6 +83,59 @@
 
 					</tr>
 
+
+					<tr>
+						<!-- UFO -->
+						<td>UFO</td>
+						<td>
+							<form action="/noun/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="sample-positive-ufo" />
+								<div class="progress-container" style="margin-left:130px;">
+								{% if action|stringformat:"s" == "sample-positive-ufo" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-success btn-small" />
+								
+							</form>
+						</td>
+
+						<td>
+							<form action="/noun/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="sample-negative-ufo" />
+								<div class="progress-container" style="margin-left:135px;">
+								{% if action|stringformat:"s" == "sample-negative-ufo" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-danger btn-small" />
+							</form>
+						</td>
+
+					</tr>
+
+					<tr>
+						<!-- Syria -->
+						<td>Syrian Conflict</td>
+						<td>
+							<form action="/noun/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="sample-positive-syria" />
+								<div class="progress-container" style="margin-left:130px;">
+								{% if action|stringformat:"s" == "sample-positive-syria" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-success btn-small" />
+								
+							</form>
+						</td>
+
+						<td>
+							<form action="/noun/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="sample-negative-syria" />
+								<div class="progress-container" style="margin-left:135px;">
+								{% if action|stringformat:"s" == "sample-negative-syria" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-danger btn-small" />
+							</form>
+						</td>
+
+					</tr>
+
 				</tbody>
 
 			</table>

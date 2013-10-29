@@ -75,6 +75,10 @@ def index(request):
 				text = corpus.getRandomMovieReview(category)
 			elif dataset == 'celebrity':
 				text = corpus.celebrityArticle(category)
+			elif dataset == 'syria':
+				text = corpus.syriaArticle(category)
+			elif dataset == 'ufo':
+				text = corpus.ufoArticle(category)
 
 			context['text'] = text
 			sa = SentimentAnalysis(text)

@@ -51,7 +51,8 @@ class Corpus:
 
 	####################
 	# Movie Reviews
-	####################
+	####################		
+
 	"""
 	category is 'positive' or 'negative'
 	"""
@@ -80,13 +81,13 @@ class Corpus:
 		return ret
 
 	####################
-	# Celebrity News
-	####################
+	# James Data
+	###################
 	"""
 	category is 'positive' or 'negative'
 	"""
-	def celebrityArticle(self, category):
-		articles = self.celebrityArticles(category)
+	def getArticleHelper(self, category, topic):
+		articles = self.getArticlesHelper(category, topic)
 		l = len(articles)
 		index = randrange(l)
 		return articles[index]
@@ -94,12 +95,12 @@ class Corpus:
 	"""
 	category is 'positive' or 'negative'
 	"""
-	def celebrityArticles(self, category):
+	def getArticlesHelper(self, category, topic):
 		ret = []
 		dirPath = os.path.join(
 			os.path.dirname(os.path.abspath(__file__)),
 			'james_data',
-			'bieber',
+			topic
 		)
 		if category == 'positive':
 			dirPath = os.path.join(dirPath, 'pos')
@@ -112,3 +113,24 @@ class Corpus:
 				fileString = f.read()
 				ret.append(fileString)
 		return ret
+
+	def celebrityArticle(self, category):
+		return self.getArticleHelper(category, 'bieber')
+
+	def celebrityArticles(self, category):
+		return self.getArticlesHelper(category, 'bieber')
+
+
+	def ufoArticle(self, category):
+		return self.getArticleHelper(category, 'ufo')
+
+	def ufoArticles(self, category):
+		return self.getArticlesHelper(category, 'ufo')
+
+
+	def syriaArticle(self, category):
+		return self.getArticleHelper(category, 'syria')
+
+	def syriaArticles(self, category):
+		return self.getArticlesHelper(category, 'syria')
+
