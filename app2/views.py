@@ -7,7 +7,7 @@ from engine.sentiment_analysis import SentimentAnalysis
 """
 {
 	'text' : string,
-	'result' : {
+	'result' :  {
 		'sentences': [
 			{
 				'sentiment': string,
@@ -15,6 +15,8 @@ from engine.sentiment_analysis import SentimentAnalysis
 					{
 						'value': string,
 						'type': string,
+						'sentiment': string,
+						'isNoun': string, # 'true' or 'false'
 					}
 				],
 				...
@@ -22,33 +24,28 @@ from engine.sentiment_analysis import SentimentAnalysis
 			...
 		],
 
-		'words': {
-			'positive': [
-				{
-					'value': string,
-					'count-positive': int,
-					'count-negative': int,
-				},
-				...
-			],
-			'negative': [
-				{
-					'value': string,
-					'count-positive': int,
-					'count-negative': int,
-				},
-				...
-
-			],
-			'neither': [
-				{
-					'value': string,
-					'count-positive': int,
-					'count-negative': int,
-				},
-				...
-			]
-		},
+		'words': [
+			{
+				'value': string,
+				'sentiment': string,
+				'score': int,
+				'positive-neighbors': [
+					{
+						'value': string,
+						'count': int,
+					},
+					...
+				]
+				'negative-neighbors': [
+					{
+						'value': string,
+						'count': int,
+					},
+					...
+				]
+			},
+			...
+		]
 	}
 }
 """

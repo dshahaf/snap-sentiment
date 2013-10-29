@@ -17,7 +17,7 @@
 			<div class="text-center"><h4>Input</h4></div>
 			<form action="/noun/" method="POST">
 				{% csrf_token %}
-				<textarea class="textarea-full textarea" rows="20" name="textarea">{% if text %}{{ text }}{% else %}Belgium chocolate is my favorite treat.{% endif %}</textarea>
+				<textarea class="textarea-full textarea" rows="20" name="textarea">{% if text %}{{ text }}{% else %}The concert was really fun. It was the best show of the year{% endif %}</textarea>
 				<input type="submit" value="Go" class="btn btn-success btn-large offset2" style="margin-top: 5px;"/>
 			</form>
 		</div>
@@ -28,33 +28,30 @@
 				{% if result %}
 				<div class="result">
 
-					<!-- SECTION 1: Processed, color-coded text -->
+					<!-- SECTION 1: Processed Text -->
 					{% if result.sentences|length > 0 %}
 					<div class="section words" >
-						<div class="section-header">
-							<span class="section-title">Processed Text</span>
-						</div>
+						<div class="section-header"><span class="section-title">Processed Text</span></div>
 						{% for sentence in result.sentences %}
-							<div class="div-sentence">
+							<div class='div-sentence
 							{% if sentence.sentiment|stringformat:"s" == "positive" %}
-							<span class="background-verylightgreen">
-							{% else %}
+								background-verylightgreen
+							{% endif %}
 							{% if sentence.sentiment|stringformat:"s" == "negative" %}
-							<span class="background-verylightred">
-							{% else %}
-								<span>
+								background-verylightred
 							{% endif %}
-							{% endif %}
+							'>
 							{% for word in sentence.words %}
-								<span style='
+								<span style='opacity:0.8;
+								{% if word.isNoun|stringformat:"s" == "true" %}
+									font-weight: bold;
+								{% endif %}
+								'>({{ word.type }})</span> <span style='
 									{% if word.sentiment|stringformat:"s" == "positive" %}
 										color:green; font-weight:bold;
 									{% endif %}
 									{% if word.sentiment|stringformat:"s" == "negative" %}
 										color:red; font-weight:bold;
-									{% endif %}								
-									{% if word.isNoun|stringformat:"s" == "true" %}
-										text-decoration: underline;
 									{% endif %}	
 								'>{{ word.value }}</span>
 							{% endfor %}
@@ -63,6 +60,9 @@
 						{% endfor %}
 					</div>
 					{% endif %}
+
+					<!-- SECTION 2: Scores -->
+					
 
 				</div> <!-- result -->
 				{% endif %}
