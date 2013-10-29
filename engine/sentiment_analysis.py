@@ -231,14 +231,14 @@ class SentimentAnalysis:
 				'value': string,
 				'sentiment': string,
 				'score': int,
-				'positive-neighbors': [
+				'positive_neighbors': [
 					{
 						'value': string,
 						'count': int,
 					},
 					...
 				]
-				'negative-neighbors': [
+				'negative_neighbors': [
 					{
 						'value': string,
 						'count': int,
@@ -330,8 +330,8 @@ class SentimentAnalysis:
 			entry = {
 				'value': noun,
 				'sentiment': '',
-				'positive-neighbors': [],
-				'negative-neighbors': [],
+				'positive_neighbors': [],
+				'negative_neighbors': [],
 				'score': 0,
 			}
 			obj = nounsWithCounts[noun]
@@ -342,14 +342,14 @@ class SentimentAnalysis:
 			for positiveNeighbor in positiveNeighborsDict.keys():
 				currCount = positiveNeighborsDict[positiveNeighbor]
 				posCount += currCount
-				entry['positive-neighbors'].append({
+				entry['positive_neighbors'].append({
 					'value': positiveNeighbor,
 					'count': currCount
 				})
 			for negativeNeighbor in negativeNeighborsDict.keys():
 				currCount = negativeNeighborsDict[negativeNeighbor]
 				negCount += currCount
-				entry['negative-neighbors'].append({
+				entry['negative_neighbors'].append({
 					'value': negativeNeighbor,
 					'count': currCount	
 				})

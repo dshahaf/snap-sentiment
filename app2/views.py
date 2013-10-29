@@ -29,14 +29,14 @@ from engine.sentiment_analysis import SentimentAnalysis
 				'value': string,
 				'sentiment': string,
 				'score': int,
-				'positive-neighbors': [
+				'positive_neighbors': [
 					{
 						'value': string,
 						'count': int,
 					},
 					...
 				]
-				'negative-neighbors': [
+				'negative_neighbors': [
 					{
 						'value': string,
 						'count': int,

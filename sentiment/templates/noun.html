@@ -30,8 +30,8 @@
 
 					<!-- SECTION 1: Processed Text -->
 					{% if result.sentences|length > 0 %}
-					<div class="section words" >
-						<div class="section-header"><span class="section-title">Processed Text</span></div>
+					<div class="div-sentences" style="margin-bottom:30px;">
+						<h4 style="margin-top:0px;">Processed Text</h4>
 						{% for sentence in result.sentences %}
 							<div class='div-sentence
 							{% if sentence.sentiment|stringformat:"s" == "positive" %}
@@ -62,7 +62,46 @@
 					{% endif %}
 
 					<!-- SECTION 2: Scores -->
-					
+					{% if result.words|length > 0 %}
+					<div class="div-scores">
+						<h4>Scores</h4>
+						<table class="table table-condensed table-bordered table-centered">
+							<thead>
+								<tr class="tr-lightgrey">
+									<th>Noun</th>
+									<th>Positive Neighbors</th>
+									<th>Negative Neighbors</th>
+									<th>Score</th>
+								</tr>
+							</thead>
+							<tbody>
+							{% for word in result.words %}
+								<tr style='
+									{% if word.sentiment|stringformat:"s" == "positive" %}
+										color:green;
+									{% endif %}
+									{% if word.sentiment|stringformat:"s" == "negative" %}
+										color:red;
+									{% endif %}
+								'>
+									<td>{{ word.value }}</td>
+									<td>
+									{% for pn in word.positive_neighbors %}
+										<div style="color:rgb(140, 202, 140);">{{ pn.value }} ({{ pn.count }})</div>
+									{% endfor %}
+									</td>
+									<td>
+									{% for nn in word.negative_neighbors %}
+										<div style="color:rgb(231, 155, 155)">{{ nn.value }} ({{ nn.count }})</div>
+									{% endfor %}
+									</td>
+									<td>{{ word.score }}</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					{% endif %}
 
 				</div> <!-- result -->
 				{% endif %}
