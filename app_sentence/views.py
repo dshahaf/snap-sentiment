@@ -1,7 +1,9 @@
 # Create your views here.
 from django.shortcuts import render
 from django.template import RequestContext, loader
+from django import forms
+from engine.sentiment_analysis import SentimentAnalysis
 
 def index(request):
 	context = {}
-	return render(request, 'ref.html', context)
+	return render(request, 'sentence.html', context)

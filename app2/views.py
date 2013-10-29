@@ -3,7 +3,6 @@ from django.shortcuts import render
 from django.template import RequestContext, loader
 from django import forms
 from engine.sentiment_analysis import SentimentAnalysis
-import nltk
 
 """
 {
