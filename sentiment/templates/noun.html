@@ -1,10 +1,15 @@
 {% extends "base.html" %}
 
+{% block head %}
+{% load staticfiles %}
+<script type="text/javascript" src="{% static 'javascript/showSpinner.js' %}"></script>
+{% endblock %}
+
 {% block title %}Noun Analysis{% endblock %}
 
 {% block navbar_noun %}<li class="active"><a href="/noun">Noun</a></li>{% endblock %}
 
-{% block main-title %}Noun Analysis <small>(In progress)</small>{% endblock %}
+{% block main-title %}Noun Analysis{% endblock %}
 
 {% block main-description %}
 <p>We determine the sentiment of each sentence based on the number of positive/negative words used. Then we identify the nouns in these sentences to fathom the author's sentiment for these objects.</p>
@@ -13,11 +18,84 @@
 {% block main-content %}
 
 	<div class="row">
+		<div class="offset2 span8">
+			<table class="table-action table-centered table table-condensed table-bordered">
+				<caption><strong>Available Data Sets</strong></caption>
+				<thead>
+					<tr class="tr-lightgrey">
+						<th>Data Set</th>
+						<th>Positive Sample</th>
+						<th>Negative Sample</th>
+					</tr>
+				</thead>
+
+				<tbody>
+
+					<tr>
+						<!-- Movie Reviews -->
+						<td>Movie Reviews</td>
+						<td>
+							<form action="/noun/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="sample-positive-movie" />
+								<div class="progress-container" style="margin-left:130px;">
+								{% if action|stringformat:"s" == "sample-positive-movie" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-success btn-small" />
+								
+							</form>
+						</td>
+
+						<td>
+							<form action="/noun/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="sample-negative-movie" />
+								<div class="progress-container" style="margin-left:135px;">
+								{% if action|stringformat:"s" == "sample-negative-movie" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-danger btn-small" />
+							</form>
+						</td>
+
+					</tr>
+
+					<tr>
+						<!-- Bieber -->
+						<td>Celebrity News</td>
+						<td>
+							<form action="/noun/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="sample-positive-celebrity" />
+								<div class="progress-container" style="margin-left:130px;">
+								{% if action|stringformat:"s" == "sample-positive-celebrity" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-success btn-small" />
+								
+							</form>
+						</td>
+
+						<td>
+							<form action="/noun/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="sample-negative-celebrity" />
+								<div class="progress-container" style="margin-left:135px;">
+								{% if action|stringformat:"s" == "sample-negative-celebrity" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-danger btn-small" />
+							</form>
+						</td>
+
+					</tr>
+
+				</tbody>
+
+			</table>
+		</div>
+	</div>
+
+	<div class="row">
 		<div class="span6">
 			<div class="text-center"><h4>Input</h4></div>
 			<form action="/noun/" method="POST">
 				{% csrf_token %}
-				<textarea class="textarea-full textarea" rows="20" name="textarea">{% if text %}{{ text }}{% else %}The concert was really fun. It was the best show of the year{% endif %}</textarea>
+				<textarea class="textarea-full textarea" rows="15" name="textarea">{% if text %}{{ text }}{% else %}The concert was really fun. It was the best show of the year{% endif %}</textarea>
+				<input type="hidden" name="action" value="user-input" />
 				<input type="submit" value="Go" class="btn btn-success btn-large offset2" style="margin-top: 5px;"/>
 			</form>
 		</div>

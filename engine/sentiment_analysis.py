@@ -173,8 +173,10 @@ class SentimentAnalysis:
 	# Noun Analysis
 	##################
 
-	def isNounToken(self, token):
-		return (token[:2] == "NN")
+	def isNounToken(self, taggedToken):
+		word = taggedToken['value']
+		t = taggedToken['type']
+		return (word.isalpha()) and (t[:2] == "NN")
 
 	"""
 	Returns,
@@ -274,7 +276,7 @@ class SentimentAnalysis:
 				print(taggedToken)
 				v = taggedToken['value']
 				t = taggedToken['type']
-				if not self.isNounToken(t):
+				if not self.isNounToken(taggedToken):
 					continue
 				currNouns[v] = True
 				if v not in nounsWithCounts:
@@ -293,7 +295,7 @@ class SentimentAnalysis:
 				elif v in self.dictionaries['negative']:
 					wordSentiment = 'negative'
 				isNounString = 'false'
-				if self.isNounToken(t):
+				if self.isNounToken(taggedToken):
 					isNounString = 'true'
 				currObj['words'].append({
 					'value': v,
