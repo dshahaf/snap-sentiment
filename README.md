@@ -9,6 +9,7 @@ Links
 - <a href="https://www.heroku.com" target="_blank">Heroku Main Page</a>
 - <a href="http://getbootstrap.com/2.3.2/" target="_blank">Twitter Bootstrap 2</a>
 - <a href="https://github.com/namejames91/snap-sentiment/wiki/TODO" target="_blank">TODO</a>
+- <a href="http://nltk.org/" target="_blank">NLTK documentation</a>
 
 ###Sentiment Analysis
 - <a href="http://andybromberg.com/sentiment-analysis-python/?goback=%2Egde_115439_member_223217943#%21" target="_blank">Andy Bromberg</a>
