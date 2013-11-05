@@ -257,7 +257,7 @@
 						</ul>
 					</div>
 
-					<!-- SECTION 1: Scores -->
+					<!-- SECTION: Scores -->
 					{% if result.words|length > 0 %}
 					
 					<div class="div-scores" id="section-scores">
@@ -368,14 +368,14 @@
 					</div>
 					{% endif %} <!-- scores section -->
 
-					<!-- SECTION 2: Processed Text -->
+					<!-- SECTION: Processed Text -->
 					{% if result.sentences|length > 0 %}
 					<div id="section-processed-text" class="div-sentences" style="margin-bottom:30px;">
 						<h3>
 							Processed Text
-							<span class="my-small-text-button collapse-button" data-target="#div-sentences">(hide)</a>
+							<span class="my-small-text-button collapse-button" data-target="#div-sentences">(show)</a>
 						</h3>
-						<div id="div-sentences">
+						<div id="div-sentences" style="display:none;">
 						{% for sentence in result.sentences %}
 							<div id="div-sentence" class='div-sentence
 							{% if sentence.sentiment|stringformat:"s" == "positive" %}
