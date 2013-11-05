@@ -10,6 +10,21 @@
 
 {% block body %}
 <script>
+
+	function registerCombinedSampleButtons() {
+		var $targetDiv = $('#video-div');
+		var $targetIframe = $('#video-iframe');
+
+		var $combinedSampleButtons = $('.combined-sample-submit-button');
+		$combinedSampleButtons.each(function() {
+			$(this).click(function() {
+				if ($targetDiv.length > 0) {
+					$targetDiv.slideToggle();
+				}
+			});
+		});
+	}
+
 	function handleCollapseButtonClick(event) {
 		$collapseButton = $(event.target);
 		var targetID = $collapseButton.attr('data-target');
@@ -42,6 +57,7 @@
 			$('body').animate({ scrollTop: top }, 500);
 		}
 		window.registerCollapseButtons();
+		window.registerCombinedSampleButtons();
 	}
 	window.onload = window.onloadFunction;
 </script>
@@ -102,12 +118,11 @@
 								<div class="progress-container progress-container3">
 								{% if action|stringformat:"s" == "sample-combined-movie" %}&#9754;{% endif %}
 								</div>
-								<span style="position:absolute; margin-left:-60px; margin-top:1px; opacity:0.5;">
+								<input type="submit" value="Go" class="btn btn-info btn-small combined-sample-submit-button" />
+								<span style="position:absolute; margin-left:-98px; margin-top:1px; opacity:0.5;">
 									(<span style="color:rgb(24, 133, 24);">10</span>,
 									<span style="color:rgb(255, 61, 61);">10</span>)
 								</span>
-								<input type="submit" value="Go" class="btn btn-info btn-small" />
-								
 							</form>
 						</td>
 
@@ -142,7 +157,7 @@
 								<div class="progress-container progress-container3">
 								{% if action|stringformat:"s" == "sample-combined-celebrity" %}&#9754;{% endif %}
 								</div>
-								<input type="submit" value="Go" class="btn btn-info btn-small" />
+								<input type="submit" value="Go" class="btn btn-info btn-small combined-sample-submit-button" />
 								<span style="position:absolute; margin-left:-98px; margin-top:1px; opacity:0.5;">
 									(<span style="color:rgb(24, 133, 24);">15</span>,
 									<span style="color:rgb(255, 61, 61);">16</span>)
@@ -183,7 +198,7 @@
 								<div class="progress-container progress-container3">
 								{% if action|stringformat:"s" == "sample-combined-ufo" %}&#9754;{% endif %}
 								</div>
-								<input type="submit" value="Go" class="btn btn-info btn-small" />
+								<input type="submit" value="Go" class="btn btn-info btn-small combined-sample-submit-button" />
 								<span style="position:absolute; margin-left:-98px; margin-top:1px; opacity:0.5;">
 									(<span style="color:rgb(24, 133, 24);">13</span>,
 									<span style="color:rgb(255, 61, 61);">15</span>)
@@ -223,7 +238,7 @@
 								<div class="progress-container progress-container3">
 								{% if action|stringformat:"s" == "sample-combined-syria" %}&#9754;{% endif %}
 								</div>
-								<input type="submit" value="Go" class="btn btn-info btn-small" />
+								<input type="submit" value="Go" class="btn btn-info btn-small combined-sample-submit-button" />
 								<span style="position:absolute; margin-left:-98px; margin-top:1px; opacity:0.5;">
 									(<span style="color:rgb(24, 133, 24);">14</span>,
 									<span style="color:rgb(255, 61, 61);">15</span>)
@@ -237,6 +252,11 @@
 
 			</table>
 		</div>
+	</div>
+
+	<div id="video-div" style="text-align:center; display:none;">
+		<h4>Here's something to watch while you're waiting. Click to play! :)</h4>
+		<iframe width="560" height="315" src="//www.youtube.com/embed/uNr6uxjvfb4" frameborder="0" allowfullscreen id="video-iframe"></iframe>
 	</div>
 
 	<div class="row">
