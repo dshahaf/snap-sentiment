@@ -10,6 +10,30 @@
 
 {% block body %}
 <script>
+	function handleCollapseButtonClick(event) {
+		$collapseButton = $(event.target);
+		var targetID = $collapseButton.attr('data-target');
+		var $target = $(targetID);
+		if ($target.length > 0) {
+			if ($target.is(':visible')) {
+				// hide
+				$target.fadeOut();
+				$collapseButton.text('(show)');
+			} else {
+				// show
+				$target.fadeIn();
+				$collapseButton.text('(hide)');
+			}
+		}
+	}
+
+	function registerCollapseButtons() {
+		var $collapseButtons = $('.collapse-button');
+		$collapseButtons.each(function() {
+			$(this).click(window.handleCollapseButtonClick);
+		});
+	}
+
 	function onloadFunction() {
 		window.loadSpinnerHandlers();
 		var outputHeader = $('.h-output');
@@ -17,6 +41,7 @@
 			var top = outputHeader.position().top - 40; // navbar
 			$('body').animate({ scrollTop: top }, 500);
 		}
+		window.registerCollapseButtons();
 	}
 	window.onload = window.onloadFunction;
 </script>
@@ -236,7 +261,9 @@
 					{% if result.words|length > 0 %}
 					
 					<div class="div-scores" id="section-scores">
-						<h3>Scores</h3>
+						<h3>Scores
+							<span class="my-small-text-button collapse-button" data-target="#score-table">(hide)</a>
+						</h3>
 
 						<!-- controversy scoring modal -->
 						<div class="modal hide fade" id="modal-controversy-scoring">
@@ -267,7 +294,7 @@
 						</div>
 
 						<!-- scores table -->
-						<table class="table table-condensed table-bordered table-centered table-striped">
+						<table class="table table-condensed table-bordered table-centered table-striped" id="score-table">
 							<thead>
 								<tr class="">
 									<th>Noun(s)</th>
@@ -344,9 +371,13 @@
 					<!-- SECTION 2: Processed Text -->
 					{% if result.sentences|length > 0 %}
 					<div id="section-processed-text" class="div-sentences" style="margin-bottom:30px;">
-						<h3>Processed Text</h3>
+						<h3>
+							Processed Text
+							<span class="my-small-text-button collapse-button" data-target="#div-sentences">(hide)</a>
+						</h3>
+						<div id="div-sentences">
 						{% for sentence in result.sentences %}
-							<div class='div-sentence
+							<div id="div-sentence" class='div-sentence
 							{% if sentence.sentiment|stringformat:"s" == "positive" %}
 								background-verylightgreen
 							{% endif %}
@@ -382,6 +413,7 @@
 							</span><br/>
 							</div>
 						{% endfor %}
+						</div> <!-- #div-sentences -->
 					</div>
 					{% endif %} <!-- processed text section -->
 
