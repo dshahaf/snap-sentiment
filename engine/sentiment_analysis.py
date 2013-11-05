@@ -30,9 +30,9 @@ class SentimentAnalysis:
 		tp = TextProcessor(text)
 		self.text = tp.getProcessedText()
 
-	###################
+	##########################################
 	# Simple Analysis
-	###################
+	##########################################
 	"""
 	Returns array of tokens
 	"""
@@ -169,9 +169,9 @@ class SentimentAnalysis:
 
 		return ret
 
-	##################
+	##########################################
 	# Noun Analysis
-	##################
+	##########################################
 
 	def isNounToken(self, taggedToken):
 		word = taggedToken['value']
@@ -179,6 +179,7 @@ class SentimentAnalysis:
 		return (word.isalpha()) and (t[:2] == "NN")
 
 	def isAdjectiveToken(self, taggedToken):
+		t = taggedToken['type']
 		return t[:2] == "JJ"
 
 	"""
@@ -212,6 +213,7 @@ class SentimentAnalysis:
 			ret.append(currList)
 		return ret
 
+	# returns 'positive', 'negative', or 'neither'
 	def sentimentFromWord(self, word):
 		ret = 'neither'
 		if word in self.dictionaries['positive']:
@@ -220,6 +222,7 @@ class SentimentAnalysis:
 			ret = 'negative'
 		return ret
 
+	# returns 'positive', 'negative', or 'neither'
 	def sentimentFromCounts(self, posCount, negCount):
 		ret = 'neither'
 		if posCount > negCount:
@@ -228,8 +231,107 @@ class SentimentAnalysis:
 			ret = 'negative'
 		return ret
 
+	"""
+	Helper for nounAnalysis
+	Returns,
+	[
+		{
+			'sentiment': string,
+			'words': [
+				{
+					'value': string,
+					'type': string,
+					'sentiment': string,
+					'isNoun': string, ('true' or 'false'),
+					'isAdjective': string, ('true' or 'false')
+				}
+			],
+			...
+		},
+		...
+	]
+	"""
+	def getProcessedSentences(self, nounsWithCounts):
+		ret = []
+		parseTaggedSentences = self.getParseTaggedSentences()
+
+		for parseTaggedSentence in parseTaggedSentences:
+			currObj = { 'sentiment': '', 'words': [] }
+			posCount = 0
+			negCount = 0
+			currNouns = {} # noun => True
+
+			# first, register the nouns in the current sentence
+			for taggedToken in parseTaggedSentence:
+				v = taggedToken['value']
+				t = taggedToken['type']
+				if not self.isNounToken(taggedToken): continue
+
+				currNouns[v] = True
+				if v not in nounsWithCounts:
+					nounsWithCounts[v] = { 'positive': {}, 'negative': {} }
+
+			for taggedToken in parseTaggedSentence:
+				v = taggedToken['value']
+				t = taggedToken['type']
+
+				currWord = {
+					'value': v,
+					'type': t,
+					'sentiment': self.sentimentFromWord(v) if self.isAdjectiveToken(taggedToken) else 'neither',
+					'isNoun': 'true' if self.isNounToken(taggedToken) else 'false',
+					'isAdjective': 'true' if self.isAdjectiveToken(taggedToken) else 'false'
+				}
+
+				currObj['words'].append(currWord)
+
+				if currWord['sentiment'] == 'positive':
+					posCount += 1
+					for k in currNouns.keys():
+						if v not in nounsWithCounts[k]['positive']:
+							nounsWithCounts[k]['positive'][v] = 0
+						nounsWithCounts[k]['positive'][v] += 1
+
+				elif currWord['sentiment'] == 'negative':
+					negCount += 1
+					for k in currNouns.keys():
+						if v not in nounsWithCounts[k]['negative']:
+							nounsWithCounts[k]['negative'][v] = 0
+						nounsWithCounts[k]['negative'][v] += 1
+
+			currObj['sentiment'] = self.sentimentFromCounts(posCount, negCount)
+			ret.append(currObj)
+
+		return ret
+
+	"""
+	Helper for nounAnalysis
+	Returns,
+	[
+		{
+			'value': string,
+			'sentiment': string,
+			'score': int,
+			'positive_neighbors': [
+				{
+					'value': string,
+					'count': int,
+				},
+				...
+			]
+			'negative_neighbors': [
+				{
+					'value': string,
+					'count': int,
+				},
+				...
+			]
+		},
+		...
+	]
+	"""
 	def nounsWithCountsListFromDict(self, nounsWithCounts):
-		nounsWithCountsList = []
+		ret = []
 
 		for noun in nounsWithCounts.keys():
 			entry = {
@@ -258,57 +360,8 @@ class SentimentAnalysis:
 
 			entry['sentiment'] = self.sentimentFromCounts(posCount, negCount)
 			entry['score'] = posCount - negCount
-			nounsWithCountsList.append(entry)
+			ret.append(entry)
 
-		return nounsWithCountsList
-
-	def getProcessedSentences(self, nounsWithCounts):
-		ret = []
-		parseTaggedSentences = self.getParseTaggedSentences()
-
-		for parseTaggedSentence in parseTaggedSentences:
-			currObj = { 'sentiment': '', 'words': [] }
-			posCount = 0
-			negCount = 0
-			currNouns = {} # noun => True
-
-			# initialize currNouns and nounsWithCounts
-			for taggedToken in parseTaggedSentence:
-				v = taggedToken['value']
-				t = taggedToken['type']
-				if not self.isNounToken(taggedToken): continue
-
-				currNouns[v] = True
-				if v not in nounsWithCounts:
-					nounsWithCounts[v] = { 'positive': {}, 'negative': {} }
-
-			for taggedToken in parseTaggedSentence:
-				v = taggedToken['value']
-				t = taggedToken['type']
-
-				wordSentiment = self.sentimentFromWord(v)
-				isNounString = 'true' if self.isNounToken(taggedToken) else 'false'
-
-				currObj['words'].append({
-					'value': v, 'type': t, 'sentiment': wordSentiment, 'isNoun': isNounString,
-				})
-
-				if v in self.dictionaries['positive']:
-					posCount += 1
-					for k in currNouns.keys():
-						if v not in nounsWithCounts[k]['positive']:
-							nounsWithCounts[k]['positive'][v] = 0
-						nounsWithCounts[k]['positive'][v] += 1
-
-				elif v in self.dictionaries['negative']:
-					negCount += 1
-					for k in currNouns.keys():
-						if v not in nounsWithCounts[k]['negative']:
-							nounsWithCounts[k]['negative'][v] = 0
-						nounsWithCounts[k]['negative'][v] += 1
-
-			currObj['sentiment'] = self.sentimentFromCounts(posCount, negCount)
-			ret.append(currObj)
 		return ret
 
 	"""
@@ -322,7 +375,8 @@ class SentimentAnalysis:
 						'value': string,
 						'type': string,
 						'sentiment': string,
-						'isNoun': string, ('true' or 'false')
+						'isNoun': string, ('true' or 'false'),
+						'isAdjective': string, ('true' or 'false')
 					}
 				],
 				...
