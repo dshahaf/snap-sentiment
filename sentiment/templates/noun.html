@@ -193,13 +193,28 @@
 
 					<!-- SECTION 1: Scores -->
 					{% if result.words|length > 0 %}
+					<!-- controversy score modal -->
+
 					<div class="div-scores" id="section-scores">
 						<h3>Scores</h3>
+
+						<div class="modal hide fade">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h3>Controversy Score Calculation</h3>
+							</div>
+							<div class="modal-body">
+								<p>One fine body…</p>
+							</div>
+						</div>
+
 						<table class="table table-condensed table-bordered table-centered">
 							<thead>
 								<tr class="tr-lightgrey">
 									<th>Noun</th>
-									<th>Controversy Score</th>
+									<th>Controversy Score
+										<i class="icon-question-sign" style="opacity:0.5; margin-left:2px;"/>
+									</th>
 									<th>Sentiment Score</th>
 									<th>Positive Neighbors</th>
 									<th>Negative Neighbors</th>
