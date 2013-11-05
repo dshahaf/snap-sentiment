@@ -109,3 +109,10 @@ form.form-user-input .progress-container .spinner {
   color: grey;
   opacity: 0.5;
 }
+.icon-controversy-scoring {
+  opacity: 0.5;
+  margin-left: 2px;
+}
+.icon-controversy-scoring:hover {
+  opacity: 1;
+}
