@@ -197,14 +197,31 @@
 					<div class="div-scores" id="section-scores">
 						<h3>Scores</h3>
 
-						<!-- controversy score modal -->
+						<!-- controversy scoring modal -->
 						<div class="modal hide fade" id="modal-controversy-scoring">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 								<h3>Controversy Scoring</h3>
 							</div>
 							<div class="modal-body">
-								<p>One fine body…</p>
+								<p class="text-center">
+									{% load static %}
+									<img src='{% static "images/math-controversy-scoring.png" %}' alt="math-controversy-scoring.png" />
+								</p>
+							</div>
+						</div>
+
+						<!-- sentiment scoring modal -->
+						<div class="modal hide fade" id="modal-sentiment-scoring">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h3>Sentiment Scoring</h3>
+							</div>
+							<div class="modal-body">
+								<p class="text-center">
+									{% load static %}
+									<img src='{% static "images/math-sentiment-scoring.png" %}' alt="math-sentiment-scoring.png" />
+								</p>
 							</div>
 						</div>
 
@@ -213,9 +230,12 @@
 								<tr class="tr-lightgrey">
 									<th>Noun</th>
 									<th>Controversy Score
-										<a href="#modal-controversy-scoring" role="button" data-toggle="modal" data-target="#modal-controversy-scoring" class="icon-question-sign icon-controversy-scoring" />
+										<a href="#modal-controversy-scoring" role="button" data-toggle="modal" data-target="#modal-controversy-scoring" class="icon-question-sign clickable-icon" />
 									</th>
-									<th>Sentiment Score</th>
+									<th>Sentiment Score
+										<a href="#modal-sentiment-scoring" role="button" data-toggle="modal" data-target="#modal-sentiment-scoring" class="icon-question-sign clickable-icon" />
+
+									</th>
 									<th>Positive Neighbors</th>
 									<th>Negative Neighbors</th>
 								</tr>
