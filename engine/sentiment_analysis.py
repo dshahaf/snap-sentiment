@@ -5,6 +5,7 @@ from nltk import pos_tag
 from text_processor import TextProcessor
 from corpus import Corpus
 from math import log
+from lib.porter2 import stem
 
 class SentimentAnalysis:
 
@@ -317,11 +318,97 @@ class SentimentAnalysis:
 		return ret
 
 	"""
-	Helper for nounAnalysis
-	Returns,
+	Helper for nounsWithCountsListFromDict
+
+	@param
+	nounsWithCounts: {
+		noun : {
+			'positive' : {
+				neighbor : int,
+				...
+			}
+			'negative' : {
+				neighbor : int,
+				...
+			}
+		},
+		...
+	}
+
+	@return
 	[
 		{
-			'value': string,
+			'values': [] # list of strings with the same stem
+			'positive': {
+				neighbor: int,
+				...
+			},
+			'negative': {
+				neighbor: int,
+				...
+			}
+		},
+		...
+	]
+	"""
+	def groupNounsWithCounts(self, nounsWithCounts):
+		ret = []
+		stemToNouns = {} # stem => { noun => True }
+
+		# populate stemToNouns
+		for noun in nounsWithCounts.keys():
+			currStem = stem(noun)
+			if currStem not in stemToNouns:
+				stemToNouns[currStem] = {}
+			if noun not in stemToNouns[currStem]:
+				stemToNouns[currStem][noun] = True
+
+		# populate ret
+		for currStem in stemToNouns.keys():
+			nounToTrue = stemToNouns[currStem]
+			currObj = {
+				'values': [],
+				'positive': {},
+				'negative': {},
+			}
+			for noun in sorted(nounToTrue.keys()):
+				currObj['values'].append(noun)
+				positiveCountDict = nounsWithCounts[noun]['positive']
+				negativeCountDict = nounsWithCounts[noun]['negative']
+				for neighbor in positiveCountDict.keys():
+					if neighbor not in currObj['positive']:
+						currObj['positive'][neighbor] = 0
+					currObj['positive'][neighbor] += positiveCountDict[neighbor]
+				for neighbor in negativeCountDict.keys():
+					if neighbor not in currObj['negative']:
+						currObj['negative'][neighbor] = 0
+					currObj['negative'][neighbor] += negativeCountDict[neighbor]
+			ret.append(currObj)
+
+		return ret
+
+	"""
+	Helper for nounAnalysis
+
+	@param
+	nounsWithCounts: {
+		noun : {
+			'positive' : {
+				neighbor : int,
+				...
+			}
+			'negative' : {
+				neighbor : int,
+				...
+			}
+		},
+		...
+	}
+
+	@return
+	[
+		{
+			'values': [], # list of strings
 			'sentiment': string,
 			'sentiment_score': int,
 			'controversy_score': float,
@@ -346,9 +433,28 @@ class SentimentAnalysis:
 	def nounsWithCountsListFromDict(self, nounsWithCounts):
 		ret = []
 
-		for noun in nounsWithCounts.keys():
+		'''
+		nounsWithCountsGrouped:
+		[
+			{
+				'values': [] # list of strings with the same stem
+				'positive': {
+					neighbor: int,
+					...
+				},
+				'negative': {
+					neighbor: int,
+					...
+				}
+			},
+			...
+		]
+		'''
+		nounsWithCountsGrouped = self.groupNounsWithCounts(nounsWithCounts)
+
+		for obj in nounsWithCountsGrouped:
 			entry = {
-				'value': noun,
+				'values': obj['values'],
 				'sentiment': '',
 				'positive_neighbors': [],
 				'negative_neighbors': [],
@@ -356,7 +462,6 @@ class SentimentAnalysis:
 				'controversy_score': 0,
 			}
 
-			obj = nounsWithCounts[noun]
 			positiveNeighborsDict = obj['positive']
 			negativeNeighborsDict = obj['negative']
 			posCount = 0
@@ -405,7 +510,7 @@ class SentimentAnalysis:
 
 		'words': [
 			{
-				'value': string,
+				'values': [], # list of strings
 				'sentiment': string,
 				'sentiment_score': int,
 				'controversy_score': float,

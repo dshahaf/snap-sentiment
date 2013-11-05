@@ -34,10 +34,10 @@
 
 	<div class="row">
 		<div class="offset2 span8">
-			<table class="table-action table-centered table table-condensed table-bordered">
+			<table class="table-action table-centered table table-condensed table-bordered table-striped">
 				<caption><strong>Available Data Sets</strong></caption>
 				<thead>
-					<tr class="tr-lightgrey">
+					<tr class="">
 						<th>Data Set</th>
 						<th>Positive Sample</th>
 						<th>Negative Sample</th>
@@ -225,10 +225,11 @@
 							</div>
 						</div>
 
-						<table class="table table-condensed table-bordered table-centered">
+						<!-- scores table -->
+						<table class="table table-condensed table-bordered table-centered table-striped">
 							<thead>
-								<tr class="tr-lightgrey">
-									<th>Noun</th>
+								<tr class="">
+									<th>Noun(s)</th>
 									<th>Controversy Score
 										<a href="#modal-controversy-scoring" role="button" data-toggle="modal" data-target="#modal-controversy-scoring" class="icon-question-sign clickable-icon" />
 									</th>
@@ -248,15 +249,21 @@
 									{% endif %}
 								">
 									<!-- noun -->
-									{% if word.sentiment|stringformat:"s" == "positive" %}
-										<td style="font-weight:bold; color:green;">{{ word.value }}</td>
-									{% else %}
-									{% if word.sentiment|stringformat:"s" == "negative" %}
-										<td style="font-weight:bold; color:red;">{{ word.value }}</td>
-									{% else %}
-										<td style="font-weight:bold;">{{ word.value }}</td>
-									{% endif %}
-									{% endif %}
+									<td style='
+										{% if word.sentiment|stringformat:"s" == "positive" %}
+											font-weight:bold; color:green;
+										{% else %}
+										{% if word.sentiment|stringformat:"s" == "negative" %}
+											font-weight:bold; color:red;
+										{% else %}
+											font-weight:bold;
+										{% endif %}
+										{% endif %}
+									'>
+										{% for value in word.values %}
+											<div>{{ value }}</div>
+										{% endfor %}
+									</td>
 
 									<!-- controversy score -->
 									<td style="">{{ word.controversy_score|floatformat:2 }}</td>
