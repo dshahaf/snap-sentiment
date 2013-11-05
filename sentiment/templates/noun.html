@@ -66,7 +66,7 @@
 						<th>Data Set</th>
 						<th>Positive Sample</th>
 						<th>Negative Sample</th>
-						<th>Combined Samples</th>
+						<th>Combined Samples <small>(~1min)</small></th>
 					</tr>
 				</thead>
 
@@ -102,7 +102,12 @@
 								<div class="progress-container progress-container3">
 								{% if action|stringformat:"s" == "sample-combined-movie" %}&#9754;{% endif %}
 								</div>
+								<span style="position:absolute; margin-left:-60px; margin-top:1px; opacity:0.5;">
+									(<span style="color:rgb(24, 133, 24);">10</span>,
+									<span style="color:rgb(255, 61, 61);">10</span>)
+								</span>
 								<input type="submit" value="Go" class="btn btn-info btn-small" />
+								
 							</form>
 						</td>
 
@@ -118,7 +123,6 @@
 								{% if action|stringformat:"s" == "sample-positive-celebrity" %}&#9754;{% endif %}
 								</div>
 								<input type="submit" value="Go" class="btn btn-success btn-small" />
-								
 							</form>
 						</td>
 
@@ -139,6 +143,10 @@
 								{% if action|stringformat:"s" == "sample-combined-celebrity" %}&#9754;{% endif %}
 								</div>
 								<input type="submit" value="Go" class="btn btn-info btn-small" />
+								<span style="position:absolute; margin-left:-98px; margin-top:1px; opacity:0.5;">
+									(<span style="color:rgb(24, 133, 24);">15</span>,
+									<span style="color:rgb(255, 61, 61);">16</span>)
+								</span>
 							</form>
 						</td>
 
@@ -176,6 +184,10 @@
 								{% if action|stringformat:"s" == "sample-combined-ufo" %}&#9754;{% endif %}
 								</div>
 								<input type="submit" value="Go" class="btn btn-info btn-small" />
+								<span style="position:absolute; margin-left:-98px; margin-top:1px; opacity:0.5;">
+									(<span style="color:rgb(24, 133, 24);">13</span>,
+									<span style="color:rgb(255, 61, 61);">15</span>)
+								</span>
 							</form>
 						</td>
 
@@ -212,6 +224,10 @@
 								{% if action|stringformat:"s" == "sample-combined-syria" %}&#9754;{% endif %}
 								</div>
 								<input type="submit" value="Go" class="btn btn-info btn-small" />
+								<span style="position:absolute; margin-left:-98px; margin-top:1px; opacity:0.5;">
+									(<span style="color:rgb(24, 133, 24);">14</span>,
+									<span style="color:rgb(255, 61, 61);">15</span>)
+								</span>
 							</form>
 						</td>
 
