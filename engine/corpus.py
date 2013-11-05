@@ -67,8 +67,8 @@ class Corpus:
 		if category == 'positive' or category == 'negative':
 			ret = self.movieReviews(category, 1)[0]
 		elif category == 'combined':
-			positiveList = self.movieReviews('positive', 20)
-			negativeList = self.movieReviews('negative', 20)
+			positiveList = self.movieReviews('positive', 10)
+			negativeList = self.movieReviews('negative', 10)
 			ret = self.combineStrings(positiveList) + "\n\n\n\n\n" + self.combineStrings(negativeList)
 		return ret
 
