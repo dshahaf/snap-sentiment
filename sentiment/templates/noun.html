@@ -15,7 +15,7 @@
 		var outputHeader = $('.h-output');
 		if (outputHeader.length > 0) {
 			var top = outputHeader.position().top;
-			scroll(0, top);
+			scroll(0, top - 40); // navbar height
 		}
 	}
 	window.onload = window.onloadFunction;
@@ -248,12 +248,12 @@
 									<td>{{ word.value }}</td>
 									<td>
 									{% for pn in word.positive_neighbors %}
-										<div style="color:rgb(140, 202, 140);">{{ pn.value }} ({{ pn.count }})</div>
+										<div class="muted"><span class="color-light-green">{{ pn.value }}</span> <span>({{ pn.count }})</span></div>
 									{% endfor %}
 									</td>
 									<td>
 									{% for nn in word.negative_neighbors %}
-										<div style="color:rgb(231, 155, 155)">{{ nn.value }} ({{ nn.count }})</div>
+										<div class="muted"><span class="color-light-red">{{ nn.value }}</span> <span>({{ nn.count }})</span></div>
 									{% endfor %}
 									</td>
 									<td>{{ word.score }}</td>

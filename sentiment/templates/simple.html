@@ -12,6 +12,11 @@
 <script>
 	function onloadFunction() {
 		window.loadSpinnerHandlers();
+		var outputHeader = $('.h-output');
+		if (outputHeader.length > 0) {
+			var top = outputHeader.position().top;
+			scroll(0, top - 40); // navbar height
+		}
 	}
 	window.onload = window.onloadFunction;
 </script>
@@ -136,7 +141,7 @@
 		</div>
 
 		<div class="span6 div-output">
-			<div class="text-center"><h4>Output</h4></div>
+			<div class="text-center"><h4 class="h-output">Output</h4></div>
 				<div class="result">
 					{% if result_test %}
 						<table class="table table-centered table-bordered table-condensed">
