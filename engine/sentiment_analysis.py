@@ -9,6 +9,8 @@ from lib.porter2 import stem
 
 class SentimentAnalysis:
 
+	controversyScoreCache = {}
+
 	def __init__(self, text = ''):
 		# prepare to use nltk_data
 		path_to_nltk_data = os.path.join(
@@ -233,7 +235,16 @@ class SentimentAnalysis:
 			ret = 'negative'
 		return ret
 
+	def getOrderedPair(self, a, b):
+		if a < b:
+			return (a, b)
+		else:
+			return (b, a)
+
 	def getControversyScoreFromCounts(self, posCount, negCount, scaleFactor = 2):
+		cacheKey = self.getOrderedPair(posCount, negCount)
+		if cacheKey in self.controversyScoreCache:
+			return self.controversyScoreCache[cacheKey]
 		p = posCount
 		n = negCount
 		t1 = posCount + negCount + 1
@@ -242,6 +253,8 @@ class SentimentAnalysis:
 		diffCountFactor = (1 - (d * 1.0 / t1)) # [0, 1]
 		diffCountFactorScaled = 1 + (scaleFactor - 1.0) * diffCountFactor # [1, k] 
 		ret = totalCountFactor * diffCountFactorScaled
+
+		self.controversyScoreCache[cacheKey] = ret
 		return ret
 
 	"""
