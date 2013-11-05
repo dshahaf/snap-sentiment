@@ -66,16 +66,6 @@ a.brand {
 .table-centered th {
   text-align: center !important;
 }
-.table-action .progress-container {
-  position: absolute;
-  font-size: 18px;
-  margin-top: 2px;
-  opacity: 0.5;
-}
-.table-action .progress-container .spinner {
-  margin-top: 20px;
-  margin-left: 10px;
-}
 form.form-user-input .progress-container {
   position: absolute;
   margin-top: 14px;
@@ -115,4 +105,23 @@ form.form-user-input .progress-container .spinner {
 }
 .clickable-icon:hover {
   opacity: 1;
+}
+.table-action .progress-container {
+  position: absolute;
+  font-size: 18px;
+  margin-top: 2px;
+  opacity: 0.5;
+}
+.table-action .progress-container .spinner {
+  margin-top: 20px;
+  margin-left: 10px;
+}
+.table-action .progress-container1 {
+  margin-left: 100px;
+}
+.table-action .progress-container2 {
+  margin-left: 105px;
+}
+.table-action .progress-container3 {
+  margin-left: 115px;
 }

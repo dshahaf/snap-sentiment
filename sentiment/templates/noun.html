@@ -34,13 +34,14 @@
 
 	<div class="row">
 		<div class="offset2 span8">
-			<table class="table-action table-centered table table-condensed table-bordered table-striped">
+			<table class="table-centered table table-condensed table-bordered table-striped table-action">
 				<caption><strong>Available Data Sets</strong></caption>
 				<thead>
 					<tr class="">
 						<th>Data Set</th>
 						<th>Positive Sample</th>
 						<th>Negative Sample</th>
+						<th>Combined Samples</th>
 					</tr>
 				</thead>
 
@@ -52,7 +53,7 @@
 						<td>
 							<form action="/noun/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
 								<input type="hidden" name="action" value="sample-positive-movie" />
-								<div class="progress-container" style="margin-left:130px;">
+								<div class="progress-container progress-container1">
 								{% if action|stringformat:"s" == "sample-positive-movie" %}&#9754;{% endif %}
 								</div>
 								<input type="submit" value="Go" class="btn btn-success btn-small" />
@@ -63,22 +64,32 @@
 						<td>
 							<form action="/noun/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
 								<input type="hidden" name="action" value="sample-negative-movie" />
-								<div class="progress-container" style="margin-left:135px;">
+								<div class="progress-container progress-container2">
 								{% if action|stringformat:"s" == "sample-negative-movie" %}&#9754;{% endif %}
 								</div>
 								<input type="submit" value="Go" class="btn btn-danger btn-small" />
 							</form>
 						</td>
 
+						<td>
+							<form action="/noun/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="sample-combined-movie" />
+								<div class="progress-container progress-container3">
+								{% if action|stringformat:"s" == "sample-combined-movie" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-info btn-small" />
+							</form>
+						</td>
+
 					</tr>
 
 					<tr>
-						<!-- Bieber -->
+						<!-- Celebrity -->
 						<td>Celebrity News</td>
 						<td>
 							<form action="/noun/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
 								<input type="hidden" name="action" value="sample-positive-celebrity" />
-								<div class="progress-container" style="margin-left:130px;">
+								<div class="progress-container progress-container1">
 								{% if action|stringformat:"s" == "sample-positive-celebrity" %}&#9754;{% endif %}
 								</div>
 								<input type="submit" value="Go" class="btn btn-success btn-small" />
@@ -89,10 +100,20 @@
 						<td>
 							<form action="/noun/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
 								<input type="hidden" name="action" value="sample-negative-celebrity" />
-								<div class="progress-container" style="margin-left:135px;">
+								<div class="progress-container progress-container2">
 								{% if action|stringformat:"s" == "sample-negative-celebrity" %}&#9754;{% endif %}
 								</div>
 								<input type="submit" value="Go" class="btn btn-danger btn-small" />
+							</form>
+						</td>
+
+						<td>
+							<form action="/noun/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="sample-combined-celebrity" />
+								<div class="progress-container progress-container3">
+								{% if action|stringformat:"s" == "sample-combined-celebrity" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-info btn-small" />
 							</form>
 						</td>
 
@@ -105,7 +126,7 @@
 						<td>
 							<form action="/noun/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
 								<input type="hidden" name="action" value="sample-positive-ufo" />
-								<div class="progress-container" style="margin-left:130px;">
+								<div class="progress-container progress-container1">
 								{% if action|stringformat:"s" == "sample-positive-ufo" %}&#9754;{% endif %}
 								</div>
 								<input type="submit" value="Go" class="btn btn-success btn-small" />
@@ -116,10 +137,20 @@
 						<td>
 							<form action="/noun/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
 								<input type="hidden" name="action" value="sample-negative-ufo" />
-								<div class="progress-container" style="margin-left:135px;">
+								<div class="progress-container progress-container2">
 								{% if action|stringformat:"s" == "sample-negative-ufo" %}&#9754;{% endif %}
 								</div>
 								<input type="submit" value="Go" class="btn btn-danger btn-small" />
+							</form>
+						</td>
+
+						<td>
+							<form action="/noun/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="sample-combined-ufo" />
+								<div class="progress-container progress-container3">
+								{% if action|stringformat:"s" == "sample-combined-ufo" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-info btn-small" />
 							</form>
 						</td>
 
@@ -131,7 +162,7 @@
 						<td>
 							<form action="/noun/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
 								<input type="hidden" name="action" value="sample-positive-syria" />
-								<div class="progress-container" style="margin-left:130px;">
+								<div class="progress-container progress-container1">
 								{% if action|stringformat:"s" == "sample-positive-syria" %}&#9754;{% endif %}
 								</div>
 								<input type="submit" value="Go" class="btn btn-success btn-small" />
@@ -142,10 +173,20 @@
 						<td>
 							<form action="/noun/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
 								<input type="hidden" name="action" value="sample-negative-syria" />
-								<div class="progress-container" style="margin-left:135px;">
+								<div class="progress-container progress-container2">
 								{% if action|stringformat:"s" == "sample-negative-syria" %}&#9754;{% endif %}
 								</div>
 								<input type="submit" value="Go" class="btn btn-danger btn-small" />
+							</form>
+						</td>
+
+						<td>
+							<form action="/noun/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="sample-combined-syria" />
+								<div class="progress-container progress-container3">
+								{% if action|stringformat:"s" == "sample-combined-syria" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-info btn-small" />
 							</form>
 						</td>
 
