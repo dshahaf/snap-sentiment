@@ -177,18 +177,29 @@
 							{% endif %}
 							'>
 							{% for word in sentence.words %}
-								<span style='opacity:0.8;
 								{% if word.isNoun|stringformat:"s" == "true" %}
-									font-weight: bold;
-								{% endif %}
-								'>({{ word.type }})</span><span style='
+									<!--  noun -->
+									<span class="font-verylightgrey">({{ word.type }})</span><span style="font-weight:bold; opacity:0.9;">{{ word.value }}</span>
+								{% else %}
+								{% if word.isAdjective|stringformat:"s" == "true" %}
+									<!--  adjective -->
 									{% if word.sentiment|stringformat:"s" == "positive" %}
-										color:green; font-weight:bold;
-									{% endif %}
+										<!--  positive -->
+										<span class="font-verylightgrey">({{ word.type }})</span><span style="font-weight:bold; opacity:0.9; color:green;">{{ word.value }}</span>
+									{% else %}
 									{% if word.sentiment|stringformat:"s" == "negative" %}
-										color:red; font-weight:bold;
-									{% endif %}	
-								'>{{ word.value }}</span>
+										<!--  negative -->
+										<span class="font-verylightgrey">({{ word.type }})</span><span style="font-weight:bold; opacity:0.9; color:red;">{{ word.value }}</span>
+									{% else %}
+										<!-- neither -->
+										<span class="font-verylightgrey">({{ word.type }})</span><span style="opacity:0.8;">{{ word.value }}</span>
+									{% endif %}
+									{% endif %}
+								{% else %}
+									<!--  Other -->
+									<span class="font-verylightgrey">({{ word.type }})</span><span style="opacity:0.8;">{{ word.value }}</span>
+								{% endif %}
+								{% endif %}
 							{% endfor %}
 							</span><br/>
 							</div>

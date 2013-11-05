@@ -105,3 +105,7 @@ form.form-user-input .progress-container .spinner {
   margin-left: 40px;
   margin-top: 20px;
 }
+.font-verylightgrey {
+  color: grey;
+  opacity: 0.5;
+}
