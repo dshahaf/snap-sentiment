@@ -494,11 +494,10 @@ class SentimentAnalysis:
 					'value': negativeNeighbor, 'count': currCount	
 				})
 
-			entry['positive_neighbors'].append({'value': 'TOTAL', 'count': posCount	})
-			entry['negative_neighbors'].append({'value': 'TOTAL', 'count': negCount	})
-
 			entry['positive_neighbors'] = sorted(entry['positive_neighbors'], key = lambda k : -k['count'])
 			entry['negative_neighbors'] = sorted(entry['negative_neighbors'], key = lambda k : -k['count'])
+			entry['positive_neighbors'].insert(0, {'value': 'TOTAL', 'count': posCount	})
+			entry['negative_neighbors'].insert(0, {'value': 'TOTAL', 'count': negCount	})
 
 			entry['sentiment'] = self.sentimentFromCounts(posCount, negCount)
 			entry['sentiment_score'] = posCount - negCount
