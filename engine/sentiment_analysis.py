@@ -4,6 +4,7 @@ import nltk, os
 from nltk import pos_tag
 from text_processor import TextProcessor
 from corpus import Corpus
+from math import log
 
 class SentimentAnalysis:
 
@@ -229,6 +230,17 @@ class SentimentAnalysis:
 			ret = 'positive'
 		elif posCount < negCount:
 			ret = 'negative'
+		return ret
+
+	def getControversyScoreFromCounts(self, posCount, negCount, scaleFactor = 2):
+		p = posCount
+		n = negCount
+		t1 = posCount + negCount + 1
+		d = abs(posCount - negCount)
+		totalCountFactor = log(t1) # [0, inf]
+		diffCountFactor = (1 - (d / t1)) # [0, 1]
+		diffCountFactorScaled = 1 + (scaleFactor - 1) * diffCountFactor # [1, k] 
+		ret = totalCountFactor * diffCountFactorScaled
 		return ret
 
 	"""
