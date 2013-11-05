@@ -1,40 +1,5 @@
-//////////////////////
-// Scoring function
-//////////////////////
-p: number of positive neighbors
-n: number of negative neighbors
-k: scale factor
-
-total number of neighbors factor ([0, ]):
-log(1 + p + n)
-
-difference factor ([0, 1]):
-1 - (|p - n| / (1 + p + n))
-
-difference factor scaled by k ([1, k]):
-((1 - (|p - n| / (1 + p + n))) * (k - 1) + 1)
-
-final score:
-log(1 + p + n) * ((1 - (|p - n| / (1 + p + n))) * (k - 1) + 1)
-
 ////////////
 // Now 1
 ////////////
-Re-order the result list (scoring function)
-Ability to sort by noun or score
 result list: only consider high tf-idf words
 Get more data
-
-////////////
-// Now 2
-////////////
-More data! (no need to break into two groups)
-Find a score for controversy (so 5,6 is better than 0,1 and 0,11 ) 1/(1+|a-b|) * log(a+b)
-Find a list of controversial nouns
-Take tf-idf into account (are the concepts important?)
-Do you get named entities?
-Named entities (don't lower case before) LingPype - Named entities
-Noun phrases
-tf-idf
-stem porter 2
-use word sentiment on adjectives only
