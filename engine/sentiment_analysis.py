@@ -178,6 +178,9 @@ class SentimentAnalysis:
 		t = taggedToken['type']
 		return (word.isalpha()) and (t[:2] == "NN")
 
+	def isAdjectiveToken(self, taggedToken):
+		return t[:2] == "JJ"
+
 	"""
 	Returns,
 	[
@@ -207,6 +210,22 @@ class SentimentAnalysis:
 					'type': taggedToken[1],
 				})
 			ret.append(currList)
+		return ret
+
+	def sentimentFromWord(self, word):
+		ret = 'neither'
+		if word in self.dictionaries['positive']:
+			ret = 'positive'
+		elif word in self.dictionaries['negative']:
+			ret = 'negative'
+		return ret
+
+	def sentimentFromCounts(self, posCount, negCount):
+		ret = 'neither'
+		if posCount > negCount:
+			ret = 'positive'
+		elif posCount < negCount:
+			ret = 'negative'
 		return ret
 
 	"""
@@ -253,54 +272,36 @@ class SentimentAnalysis:
 	}
 	"""
 	def nounAnalysis(self):
-		ret = {
-			'sentences': [],
-			'words': [],
-		}
-
-		# word => { 'positive' : { word => int }, 'negative': { word => int } }
-		nounsWithCounts = {}
-
+		ret = { 'sentences': [], 'words': [], }
+		nounsWithCounts = {} # word => { 'positive' : { word => int }, 'negative': { word => int } }
 		parseTaggedSentences = self.getParseTaggedSentences()
 
+		# process each sentence
 		for parseTaggedSentence in parseTaggedSentences:
-			currObj = {
-				'sentiment': '',
-				'words': []
-			}
+			currObj = { 'sentiment': '', 'words': [] }
 			posCount = 0
 			negCount = 0
-			currNouns = {}
+			currNouns = {} # noun => True
 
+			# initialize currNouns and nounsWithCounts
 			for taggedToken in parseTaggedSentence:
 				v = taggedToken['value']
 				t = taggedToken['type']
-				if not self.isNounToken(taggedToken):
-					continue
+				if not self.isNounToken(taggedToken): continue
+
 				currNouns[v] = True
 				if v not in nounsWithCounts:
-					nounsWithCounts[v] = {
-						'positive': {},
-						'negative': {},
-					}
+					nounsWithCounts[v] = { 'positive': {}, 'negative': {} }
 
 			for taggedToken in parseTaggedSentence:
 				v = taggedToken['value']
 				t = taggedToken['type']
 
-				wordSentiment = 'neither'
-				if v in self.dictionaries['positive']:
-					wordSentiment = 'positive'
-				elif v in self.dictionaries['negative']:
-					wordSentiment = 'negative'
-				isNounString = 'false'
-				if self.isNounToken(taggedToken):
-					isNounString = 'true'
+				wordSentiment = self.sentimentFromWord(v)
+				isNounString = 'true' if self.isNounToken(taggedToken) else 'false'
+
 				currObj['words'].append({
-					'value': v,
-					'type': t,
-					'sentiment': wordSentiment,
-					'isNoun': isNounString,
+					'value': v, 'type': t, 'sentiment': wordSentiment, 'isNoun': isNounString,
 				})
 
 				if v in self.dictionaries['positive']:
@@ -317,50 +318,40 @@ class SentimentAnalysis:
 							nounsWithCounts[k]['negative'][v] = 0
 						nounsWithCounts[k]['negative'][v] += 1
 
-			if posCount > negCount:
-				currObj['sentiment'] = 'positive'
-			elif posCount < negCount:
-				currObj['sentiment'] = 'negative'
-			else:
-				currObj['sentiment'] = 'neither'
+			currObj['sentiment'] = self.sentimentFromCounts(posCount, negCount)
 			ret['sentences'].append(currObj)
 
 		# process nounsWithCounts
 		nounsWithCountsList = []
+
 		for noun in nounsWithCounts.keys():
 			entry = {
-				'value': noun,
-				'sentiment': '',
-				'positive_neighbors': [],
-				'negative_neighbors': [],
-				'score': 0,
+				'value': noun, 'sentiment': '', 'positive_neighbors': [], 'negative_neighbors': [], 'score': 0,
 			}
+
 			obj = nounsWithCounts[noun]
 			positiveNeighborsDict = obj['positive']
 			negativeNeighborsDict = obj['negative']
 			posCount = 0
 			negCount = 0
+
 			for positiveNeighbor in positiveNeighborsDict.keys():
 				currCount = positiveNeighborsDict[positiveNeighbor]
 				posCount += currCount
 				entry['positive_neighbors'].append({
-					'value': positiveNeighbor,
-					'count': currCount
+					'value': positiveNeighbor, 'count': currCount
 				})
+
 			for negativeNeighbor in negativeNeighborsDict.keys():
 				currCount = negativeNeighborsDict[negativeNeighbor]
 				negCount += currCount
 				entry['negative_neighbors'].append({
-					'value': negativeNeighbor,
-					'count': currCount	
+					'value': negativeNeighbor, 'count': currCount	
 				})
-			if posCount > negCount:
-				entry['sentiment'] = 'positive'
-			elif posCount < negCount:
-				entry['sentiment'] = 'negative'
-			else:
-				entry['sentiment'] = 'neither'
+
+			entry['sentiment'] = self.sentimentFromCounts(posCount, negCount)
 			entry['score'] = posCount - negCount
 			nounsWithCountsList.append(entry)
+
 		ret['words'] = sorted(nounsWithCountsList, key = lambda k : -k['score'])
 		return ret
