@@ -100,14 +100,31 @@ class Corpus:
 	def getArticleHelper(self, category, topic):
 		ret = ''
 		if category == 'combined':
-			positiveList = self.getArticlesHelper('positive', topic)
-			negativeList = self.getArticlesHelper('negative', topic)
-			ret = self.combineStrings(positiveList) + "\n\n\n\n\n" + self.combineStrings(negativeList)
+			dirPath = os.path.join(
+				os.path.dirname(os.path.abspath(__file__)),
+				'james_data',
+				topic
+			)
+			combinedFilePath = os.path.join(dirPath, 'all')
+
+			if os.path.exists(combinedFilePath):
+				# use existing file
+				ret = ''
+				with open(combinedFilePath, 'r') as f:
+					ret = f.read()
+			else:
+				positiveList = self.getArticlesHelper('positive', topic)
+				negativeList = self.getArticlesHelper('negative', topic)
+				ret = self.combineStrings(positiveList) + "\n\n\n\n\n" + self.combineStrings(negativeList)
+				with open(combinedFilePath, 'w') as f:
+					# save as 'all' in the topic directory
+					f.write(ret)
 		else:
 			articles = self.getArticlesHelper(category, topic)
 			l = len(articles)
 			index = randrange(l)
 			ret = articles[index]
+
 		return ret
 
 	"""
@@ -121,6 +138,7 @@ class Corpus:
 			'james_data',
 			topic
 		)
+
 		if category == 'positive':
 			dirPath = os.path.join(dirPath, 'pos')
 		elif category == 'negative':
