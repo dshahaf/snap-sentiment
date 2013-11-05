@@ -4,6 +4,7 @@ dj-static==0.0.5
 django-bootstrap-toolkit==2.15.0
 django-toolbelt==0.0.1
 gunicorn==18.0
+eventlet==0.9.7
 psycopg2==2.5.1
 static==0.4
 wsgiref==0.1.2

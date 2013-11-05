@@ -1,1 +1,1 @@
-web: gunicorn sentiment.wsgi --timeout 120
+web: gunicorn sentiment.wsgi --worker-class eventlet
