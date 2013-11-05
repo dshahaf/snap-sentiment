@@ -1,1 +1,1 @@
-web: gunicorn sentiment.wsgi --timeout=60
+web: gunicorn sentiment.wsgi --timeout 120
