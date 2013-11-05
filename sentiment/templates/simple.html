@@ -14,8 +14,8 @@
 		window.loadSpinnerHandlers();
 		var outputHeader = $('.h-output');
 		if (outputHeader.length > 0) {
-			var top = outputHeader.position().top;
-			scroll(0, top - 40); // navbar height
+			var top = outputHeader.position().top - 40; // navbar
+			$('body').animate({ scrollTop: top }, 500);
 		}
 	}
 	window.onload = window.onloadFunction;
