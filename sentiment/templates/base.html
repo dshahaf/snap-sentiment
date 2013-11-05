@@ -11,39 +11,40 @@
     <title>{% block title %}Sentiment Analysis{% endblock %}</title>
 
 </head>
-
-<div class="navbar navbar-inverse navbar-fixed-top">
-	<div class="navbar-inner">
-		<div class="container">
-			<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="brand" href="/">Sentiment Analysis</a>
-			<div class="nav-collapse collapse">
-				<ul class="nav">
-				{% block navbar_home %}<li><a href="/">Home</a></li>{% endblock %}
-				{% block navbar_simple %}<li><a href="/simple">Simple</a></li>{% endblock %}
-				{% block navbar_sentence %}<li><a href="/sentence">Sentence</a></li>{% endblock %}
-				{% block navbar_noun %}<li><a href="/noun">Noun</a></li>{% endblock %}
-<!-- 				{% block navbar_reference %}<li><a href="/reference">Reference</a></li>{% endblock %}
- -->				</ul>
-			</div><!--/.nav-collapse -->
+<body>
+	{% block body %} {% endblock %}
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="brand" href="/">Sentiment Analysis</a>
+				<div class="nav-collapse collapse">
+					<ul class="nav">
+					{% block navbar_home %}<li><a href="/">Home</a></li>{% endblock %}
+					{% block navbar_simple %}<li><a href="/simple">Simple</a></li>{% endblock %}
+					{% block navbar_sentence %}<li><a href="/sentence">Sentence</a></li>{% endblock %}
+					{% block navbar_noun %}<li><a href="/noun">Noun</a></li>{% endblock %}
+	<!-- 				{% block navbar_reference %}<li><a href="/reference">Reference</a></li>{% endblock %}
+	 -->				</ul>
+				</div><!--/.nav-collapse -->
+			</div>
 		</div>
 	</div>
-</div>
 
-<div class="container main-container">
-	<h1 class="main-title">
-		{% block main-title %} {% endblock %}
-	</h1>
-	<div class="main-description">
-		{% block main-description %} {% endblock %}
-	</div>
-	<div class="main-content">
-		{% block main-content %} {% endblock %}
-	</div>
-</div> <!-- /container -->
-
+	<div class="container main-container">
+		<h1 class="main-title">
+			{% block main-title %} {% endblock %}
+		</h1>
+		<div class="main-description">
+			{% block main-description %} {% endblock %}
+		</div>
+		<div class="main-content">
+			{% block main-content %} {% endblock %}
+		</div>
+	</div> <!-- /container -->
+</body>
 </html>

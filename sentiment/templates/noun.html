@@ -1,11 +1,26 @@
 {% extends "base.html" %}
 
 {% block head %}
+
 {% load staticfiles %}
-<script type="text/javascript" src="{% static 'javascript/showSpinner.js' %}"></script>
+<script type="text/javascript" src="{% static 'javascript/showSpinner1.js' %}"></script>
 {% endblock %}
 
 {% block title %}Noun Analysis{% endblock %}
+
+{% block body %}
+<script>
+	function onloadFunction() {
+		window.loadSpinnerHandlers();
+		var outputHeader = $('.h-output');
+		if (outputHeader.length > 0) {
+			var top = outputHeader.position().top;
+			scroll(0, top);
+		}
+	}
+	window.onload = window.onloadFunction;
+</script>
+{% endblock %}
 
 {% block navbar_noun %}<li class="active"><a href="/noun">Noun</a></li>{% endblock %}
 
@@ -160,7 +175,7 @@
 	<div class="row">
 		<div class="span12">
 				{% if result %}
-				<div class="text-center" style=""><h3>Output</h3></div>
+				<div class="text-center" style=""><h3 class="h-output">Output</h3></div>
 				<div class="result">
 
 					<!-- SECTION 1: Processed Text -->

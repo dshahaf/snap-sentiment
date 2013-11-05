@@ -63,11 +63,11 @@ function showSpinner(event) {
 	var spinner = new Spinner(opts).spin(container[0]);
 }
 
-window.onload = function() {
+function loadSpinnerHandlers() {
 	$('.table-action').find('input[type="submit"]').click(
 		{ 'size' : 'small' }, showSpinner
 	);
 	$('.form-user-input').find('input[type="submit"]').click(
 		{ 'size' : 'big' }, showSpinner
-	);
-};
+	);	
+}

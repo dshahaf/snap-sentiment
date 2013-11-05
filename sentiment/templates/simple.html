@@ -1,11 +1,21 @@
 {% extends "base.html" %}
 
 {% block head %}
+
 {% load staticfiles %}
-<script type="text/javascript" src="{% static 'javascript/showSpinner.js' %}"></script>
+<script type="text/javascript" src="{% static 'javascript/showSpinner1.js' %}"></script>
 {% endblock %}
 
 {% block title %}Simple Analysis{% endblock %}
+
+{% block body %}
+<script>
+	function onloadFunction() {
+		window.loadSpinnerHandlers();
+	}
+	window.onload = window.onloadFunction;
+</script>
+{% endblock %}
 
 {% block navbar_simple %}<li class="active"><a href="/simple">Simple</a></li>{% endblock %}
 
