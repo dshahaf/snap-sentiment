@@ -1,1 +1,1 @@
-web: gunicorn sentiment.wsgi -k gevent --max-requests 250 -t 60
+web: gunicorn sentiment.wsgi
