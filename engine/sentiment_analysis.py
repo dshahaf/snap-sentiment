@@ -177,7 +177,7 @@ class SentimentAnalysis:
 	def isNounToken(self, taggedToken):
 		word = taggedToken['value']
 		t = taggedToken['type']
-		return (word.isalpha()) and (t[:2] == "NN")
+		return (word.isalpha()) and len(word) > 1 and (t[:2] == "NN")
 
 	def isAdjectiveToken(self, taggedToken):
 		t = taggedToken['type']
