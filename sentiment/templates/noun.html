@@ -176,11 +176,91 @@
 		<div class="span12">
 				{% if result %}
 				<div class="text-center" style=""><h3 class="h-output">Output</h3></div>
+
 				<div class="result">
 
-					<!-- SECTION 1: Processed Text -->
+					<div class="div-index" id="section-index">
+						<h3>Index</h3>
+						<ul>
+							{% if result.words|length > 0 %}
+								<li><a href="#section-scores">Scores</a></li>
+							{% endif %}
+							{% if result.sentences|length > 0 %}
+								<li><a href="#section-processed-text">Processed Text</a></li>
+							{% endif %}
+						</ul>
+					</div>
+
+					<!-- SECTION 1: Scores -->
+					{% if result.words|length > 0 %}
+					<div class="div-scores" id="section-scores">
+						<h3>Scores</h3>
+						<table class="table table-condensed table-bordered table-centered">
+							<thead>
+								<tr class="tr-lightgrey">
+									<th>Noun</th>
+									<th>Controversy Score</th>
+									<th>Sentiment Score</th>
+									<th>Positive Neighbors</th>
+									<th>Negative Neighbors</th>
+								</tr>
+							</thead>
+							<tbody>
+							{% for word in result.words %}
+								<tr style="
+									{% if word.controversy_score == 0 %}
+										color: rgb(172, 172, 172);
+									{% endif %}
+								">
+									<!-- noun -->
+									{% if word.sentiment|stringformat:"s" == "positive" %}
+										<td style="font-weight:bold; color:green;">{{ word.value }}</td>
+									{% else %}
+									{% if word.sentiment|stringformat:"s" == "negative" %}
+										<td style="font-weight:bold; color:red;">{{ word.value }}</td>
+									{% else %}
+										<td style="font-weight:bold;">{{ word.value }}</td>
+									{% endif %}
+									{% endif %}
+
+									<!-- controversy score -->
+									<td style="">{{ word.controversy_score|floatformat:2 }}</td>
+
+									<!-- sentiment score -->
+									{% if word.sentiment_score > 0 %}
+										<td style="color:green;">{{ word.sentiment_score }}</td>
+									{% else %}
+									{% if word.sentiment_score < 0 %}
+										<td style="color:red;">{{ word.sentiment_score }}</td>
+									{% else %}
+										<td style="">{{ word.sentiment_score }}</td>
+									{% endif %}
+									{% endif %}
+
+									<!-- positive neighbors -->
+									<td>
+									{% for pn in word.positive_neighbors %}
+										<div class="muted"><span class="color-light-green">{{ pn.value }}</span> <span>({{ pn.count }})</span></div>
+									{% endfor %}
+									</td>
+
+									<!-- negative neighbors -->
+									<td>
+									{% for nn in word.negative_neighbors %}
+										<div class="muted"><span class="color-light-red">{{ nn.value }}</span> <span>({{ nn.count }})</span></div>
+									{% endfor %}
+									</td>
+
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					{% endif %} <!-- scores section -->
+
+					<!-- SECTION 2: Processed Text -->
 					{% if result.sentences|length > 0 %}
-					<div class="div-sentences" style="margin-bottom:30px;">
+					<div id="section-processed-text" class="div-sentences" style="margin-bottom:30px;">
 						<h3>Processed Text</h3>
 						{% for sentence in result.sentences %}
 							<div class='div-sentence
@@ -220,58 +300,7 @@
 							</div>
 						{% endfor %}
 					</div>
-					{% endif %}
-
-					<!-- SECTION 2: Scores -->
-					{% if result.words|length > 0 %}
-					<div class="div-scores">
-						<h3>Scores</h3>
-						<table class="table table-condensed table-bordered table-centered">
-							<thead>
-								<tr class="tr-lightgrey">
-									<th>Noun</th>
-									<th>Positive Neighbors</th>
-									<th>Negative Neighbors</th>
-									<th>Sentiment Score</th>
-								</tr>
-							</thead>
-							<tbody>
-							{% for word in result.words %}
-								<tr>
-									{% if word.sentiment|stringformat:"s" == "positive" %}
-										<td style="font-weight:bold;color:green">{{ word.value }}</td>
-									{% else %}
-									{% if word.sentiment|stringformat:"s" == "negative" %}
-										<td style="font-weight:bold;color:red">{{ word.value }}</td>
-									{% else %}
-										<td style="font-weight:bold;color:grey">{{ word.value }}</td>
-									{% endif %}
-									{% endif %}
-									<td>
-									{% for pn in word.positive_neighbors %}
-										<div class="muted"><span class="color-light-green">{{ pn.value }}</span> <span>({{ pn.count }})</span></div>
-									{% endfor %}
-									</td>
-									<td>
-									{% for nn in word.negative_neighbors %}
-										<div class="muted"><span class="color-light-red">{{ nn.value }}</span> <span>({{ nn.count }})</span></div>
-									{% endfor %}
-									</td>
-									{% if word.score > 0 %}
-										<td style="color:green;">{{ word.score }}</td>
-									{% else %}
-									{% if word.score < 0 %}
-										<td style="color:red;">{{ word.score }}</td>
-									{% else %}
-										<td style="opacity:0.7;">{{ word.score }}</td>
-									{% endif %}
-									{% endif %}
-								</tr>
-							{% endfor %}
-							</tbody>
-						</table>
-					</div>
-					{% endif %}
+					{% endif %} <!-- processed text section -->
 
 				</div> <!-- result -->
 				{% endif %}

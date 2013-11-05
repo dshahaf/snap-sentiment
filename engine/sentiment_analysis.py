@@ -238,8 +238,8 @@ class SentimentAnalysis:
 		t1 = posCount + negCount + 1
 		d = abs(posCount - negCount)
 		totalCountFactor = log(t1) # [0, inf]
-		diffCountFactor = (1 - (d / t1)) # [0, 1]
-		diffCountFactorScaled = 1 + (scaleFactor - 1) * diffCountFactor # [1, k] 
+		diffCountFactor = (1 - (d * 1.0 / t1)) # [0, 1]
+		diffCountFactorScaled = 1 + (scaleFactor - 1.0) * diffCountFactor # [1, k] 
 		ret = totalCountFactor * diffCountFactorScaled
 		return ret
 
@@ -323,7 +323,8 @@ class SentimentAnalysis:
 		{
 			'value': string,
 			'sentiment': string,
-			'score': int,
+			'sentiment_score': int,
+			'controversy_score': float,
 			'positive_neighbors': [
 				{
 					'value': string,
@@ -347,7 +348,12 @@ class SentimentAnalysis:
 
 		for noun in nounsWithCounts.keys():
 			entry = {
-				'value': noun, 'sentiment': '', 'positive_neighbors': [], 'negative_neighbors': [], 'score': 0,
+				'value': noun,
+				'sentiment': '',
+				'positive_neighbors': [],
+				'negative_neighbors': [],
+				'sentiment_score': 0,
+				'controversy_score': 0,
 			}
 
 			obj = nounsWithCounts[noun]
@@ -371,7 +377,8 @@ class SentimentAnalysis:
 				})
 
 			entry['sentiment'] = self.sentimentFromCounts(posCount, negCount)
-			entry['score'] = posCount - negCount
+			entry['sentiment_score'] = posCount - negCount
+			entry['controversy_score'] = self.getControversyScoreFromCounts(posCount, negCount)
 			ret.append(entry)
 
 		return ret
@@ -400,7 +407,8 @@ class SentimentAnalysis:
 			{
 				'value': string,
 				'sentiment': string,
-				'score': int,
+				'sentiment_score': int,
+				'controversy_score': float,
 				'positive_neighbors': [
 					{
 						'value': string,
@@ -425,5 +433,5 @@ class SentimentAnalysis:
 		nounsWithCounts = {} # word => { 'positive' : { word => int }, 'negative': { word => int } }
 		ret['sentences'] = self.getProcessedSentences(nounsWithCounts)
 		nounsWithCountsList = self.nounsWithCountsListFromDict(nounsWithCounts)
-		ret['words'] = sorted(nounsWithCountsList, key = lambda k : -k['score'])
+		ret['words'] = sorted(nounsWithCountsList, key = lambda k : -k['controversy_score'])
 		return ret
