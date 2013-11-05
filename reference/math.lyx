@@ -114,7 +114,7 @@
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula $\qquad return\; sumNormalized\times diffNormalizedAndScaled;$
+\begin_inset Formula $\qquad return\; diffNormalizedAndScaled\cdot\ln(sumNormalized);$
 \end_inset
 
 
