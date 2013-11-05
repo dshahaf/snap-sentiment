@@ -14,6 +14,12 @@ class Corpus:
 		return
 
 	####################
+	# Helpers
+	####################
+	def combineStrings(self, listOfStrings):
+		return "\n\n\n\n\n".join(listOfStrings)
+
+	####################
 	# Word Dict
 	####################
 	def wordDictHelper(self, path):
@@ -58,9 +64,13 @@ class Corpus:
 	"""
 	def getRandomMovieReview(self, category):
 		ret = ''
-		if category != 'positive' and category != 'negative':
-			return ret
-		return self.movieReviews(category, 1)[0]
+		if category == 'positive' or category == 'negative':
+			ret = self.movieReviews(category, 1)[0]
+		elif category == 'combined':
+			positiveList = self.movieReviews('positive', 20)
+			negativeList = self.movieReviews('negative', 20)
+			ret = self.combineStrings(positiveList) + "\n\n\n\n\n" + self.combineStrings(negativeList)
+		return ret
 
 	"""
 	category is 'positive' or 'negative'
@@ -80,20 +90,29 @@ class Corpus:
 			ret.append(movie_reviews.raw(sampleFileId))
 		return ret
 
-	####################
-	# James Data
-	###################
+	######################
+	# James Data Helpers
+	######################
 	"""
 	category is 'positive' or 'negative'
+	Returns a string
 	"""
 	def getArticleHelper(self, category, topic):
-		articles = self.getArticlesHelper(category, topic)
-		l = len(articles)
-		index = randrange(l)
-		return articles[index]
+		ret = ''
+		if category == 'combined':
+			positiveList = self.getArticlesHelper('positive', topic)
+			negativeList = self.getArticlesHelper('negative', topic)
+			ret = self.combineStrings(positiveList) + "\n\n\n\n\n" + self.combineStrings(negativeList)
+		else:
+			articles = self.getArticlesHelper(category, topic)
+			l = len(articles)
+			index = randrange(l)
+			ret = articles[index]
+		return ret
 
 	"""
 	category is 'positive' or 'negative'
+	Returns a list of strings
 	"""
 	def getArticlesHelper(self, category, topic):
 		ret = []
@@ -114,6 +133,9 @@ class Corpus:
 				ret.append(fileString)
 		return ret
 
+	######################
+	# James Data Getters
+	######################
 	def celebrityArticle(self, category):
 		return self.getArticleHelper(category, 'bieber')
 

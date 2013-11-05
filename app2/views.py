@@ -6,45 +6,15 @@ from engine.sentiment_analysis import SentimentAnalysis
 from engine.corpus import Corpus
 
 """
+See sentiment_analysis.py for the content of context.
 {
 	'text' : string,
+	'action': string,
 	'result' :  {
 		'sentences': [
-			{
-				'sentiment': string,
-				'words': [
-					{
-						'value': string,
-						'type': string,
-						'sentiment': string,
-						'isNoun': string, # 'true' or 'false'
-					}
-				],
-				...
-			},
 			...
 		],
-
 		'words': [
-			{
-				'value': string,
-				'sentiment': string,
-				'score': int,
-				'positive_neighbors': [
-					{
-						'value': string,
-						'count': int,
-					},
-					...
-				]
-				'negative_neighbors': [
-					{
-						'value': string,
-						'count': int,
-					},
-					...
-				]
-			},
 			...
 		]
 	}
