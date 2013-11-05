@@ -128,11 +128,12 @@ form.form-user-input .progress-container .spinner {
 .my-small-text-button {
   font-weight: normal !important;
   font-size: 12px !important;
-  opacity: 0.7 !important;
+  opacity: 0.7;
   cursor: pointer;
   color: #08c;
 }
 .my-small-text-button:hover {
   text-decoration: underline;
   color: #00527A;
+  opacity: 0.8;
 }
