@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+{% load staticfiles %}
+<script type="text/javascript" src="{% static 'javascript/showSpinner1.js' %}"></script>
+{% endblock %}
+
+{% block title %}Noun Analysis{% endblock %}
+
+{% block body %}
+<script>
+
+	function registerVideoTriggerButtons() {
+		var $targetDiv = $('#video-div');
+		var $targetIframe = $('#video-iframe');
+		var $buttons = $('.lda-button');
+		$buttons.each(function() {
+			$(this).click(function() {
+				if ($targetDiv.length > 0) {
+					//$targetDiv.show();
+					$targetDiv.slideToggle();
+				}
+			});
+		});
+	}
+
+
+	function onloadFunction() {
+		window.loadSpinnerHandlers();
+		var outputHeader = $('.h-output');
+		if (outputHeader.length > 0) {
+			var top = outputHeader.position().top - 40; // navbar
+			$('body').animate({ scrollTop: top }, 500);
+		}
+		window.registerVideoTriggerButtons();
+	}
+
+	window.onload = window.onloadFunction;
+</script>
+{% endblock %}
+
+{% block navbar_lda %}<li class="active"><a href="/lda">LDA</a></li>{% endblock %}
+
+{% block main-title %}Latent Dirichlet Allocation (LDA){% endblock %}
+
+{% block main-description %}
+<p>Latent Dirichlet Allocation (LDA).</p>
+{% endblock %}
+
+{% block main-content %}
+
+	<div class="row">
+		<div class="offset2 span8">
+			<table class="table-centered table table-condensed table-bordered table-striped table-action">
+				<caption><strong>Available Data Sets</strong></caption>
+				<thead>
+					<tr class="">
+						<th>Data Set</th>
+						<th>LDA Model</th>
+					</tr>
+				</thead>
+
+				<tbody>
+
+					<tr>
+						<!-- Movie Reviews -->
+						<td>Movie Reviews</td>
+						<td>
+							<form action="/lda/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="lda-movie" />
+								<div class="progress-container progress-container4">
+								{% if action|stringformat:"s" == "lda-movie" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-success btn-small lda-button" />
+							</form>
+						</td>
+					</tr>
+
+					<tr>
+						<!-- Celebrity -->
+						<td>Celebrity News</td>
+						<td>
+							<form action="/lda/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="lda-celebrity" />
+								<div class="progress-container progress-container4">
+								{% if action|stringformat:"s" == "lda-celebrity" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-success btn-small lda-button" />
+							</form>
+						</td>
+					</tr>
+
+					<tr>
+						<!-- UFO -->
+						<td>UFO</td>
+						<td>
+							<form action="/lda/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="lda-ufo" />
+								<div class="progress-container progress-container4">
+								{% if action|stringformat:"s" == "lda-ufo" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-success btn-small lda-button" />
+							</form>
+						</td>
+					</tr>
+
+					<tr>
+						<!-- Syria -->
+						<td>Syrian Conflict</td>
+						<td>
+							<form action="/lda/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="lda-syria" />
+								<div class="progress-container progress-container4">
+								{% if action|stringformat:"s" == "lda-syria" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-success btn-small lda-button" />
+							</form>
+						</td>
+					</tr>
+
+				</tbody>
+
+			</table>
+		</div>
+	</div>
+
+	<div id="video-div" style="text-align:center; display:none;">
+		<h4>Here's something to watch while you're waiting. Click to play! :)</h4>
+		<iframe width="560" height="315" src="//www.youtube.com/embed/uNr6uxjvfb4" frameborder="0" allowfullscreen id="video-iframe"></iframe>
+	</div>
+
+	<div class="row" style="display:none;">
+		<div class="span12">
+			<div class="text-center" style=""><h3>Input</h3></div>
+			<form action="/noun/" method="POST" class="form-user-input">
+				{% csrf_token %}
+				<textarea class="textarea-full textarea" rows="10" name="textarea">{% if text %}{{ text }}{% else %}{% endif %}</textarea>
+				<input type="hidden" name="action" value="user-input" />
+				<div class="progress-container" style="margin-left:520px; margin-top:20px;">
+				{% if action|stringformat:"s" == "user-input" %}&#9754;{% endif %}
+				</div>
+				<input type="submit" value="Go" class="btn btn-success btn-large" style="display:block; margin:10px auto;"/>
+			</form>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="span12">
+				{% if result %}
+				<div class="text-center" style=""><h3 class="h-output">Output</h3></div>
+
+				<div class="result">
+
+					{% if result.topics %}
+					<div class="div-topics">
+						<h3>Topics</h3>
+						{% for topic in result.topics %}
+						<div class="div-topic">
+							{{ topic }}
+						</div>
+						{% endfor %}
+					</div>
+					{% endif %}
+
+				</div> <!-- result -->
+				{% endif %}
+		</div>
+	</div>
+
+{% endblock %}

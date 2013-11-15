@@ -1,11 +1,12 @@
 #!/usr/bin/env python
+from lib.porter2 import stem
 from nltk.tokenize import word_tokenize, wordpunct_tokenize, sent_tokenize
 import nltk, os
 from nltk import pos_tag
-from text_processor import TextProcessor
 from corpus import Corpus
+from text_processor import TextProcessor
 from math import log, sqrt
-from lib.porter2 import stem
+import logging, gensim, bz2
 
 class SentimentAnalysis:
 
@@ -675,4 +676,36 @@ class SentimentAnalysis:
 		ret['sentences'] = self.getProcessedSentences(nounsWithCounts)
 		nounsWithCountsList = self.nounsWithCountsListFromDict(nounsWithCounts)
 		ret['words'] = sorted(nounsWithCountsList, key = lambda k : -k['controversy_score'])
+		return ret
+
+
+	##########################################
+	# LDA Analysis
+	##########################################
+
+	def ldaTopics(self, topic, numTopics = 10):
+		if topic == 'celebrity':
+			topic = 'bieber'
+		elif topic == 'movie':
+			topic = 'movie_reviews'
+
+		dirPath = os.path.join(
+			os.path.dirname(os.path.abspath(__file__)),
+			'james_data',
+			topic
+		)
+		dictionaryPath = os.path.join(
+			dirPath,
+			'gensim_dictionary.txt'
+		)
+		corpusPath = os.path.join(
+			dirPath,
+			'gensim_corpus.mm'
+		)
+		id2word = gensim.corpora.Dictionary.load(dictionaryPath)
+		mm = gensim.corpora.MmCorpus(corpusPath)
+		lda = gensim.models.ldamodel.LdaModel(corpus=mm, id2word=id2word, num_topics=numTopics, update_every=1, chunksize=10000, passes=1)
+		ret = lda.print_topics(numTopics)
+		print('topics:')
+		print(ret)
 		return ret
