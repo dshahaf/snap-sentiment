@@ -15,6 +15,8 @@ Links
 - <a href="http://andybromberg.com/sentiment-analysis-python/?goback=%2Egde_115439_member_223217943#%21" target="_blank">Andy Bromberg</a>
 - <a href="http://www.laurentluce.com/posts/twitter-sentiment-analysis-using-python-and-nltk/" target="_blank">Laurent Luce</a>
 - <a href="http://www.sjwhitworth.com/sentiment-analysis-in-python-using-nltk/" target="_blank">Stephen Whitworth</a>
+- <a href="http://radimrehurek.com/gensim/" target="_blank">Gensim Documentation</a>
+
 
 ###Django Documentation
 - <a href="https://devcenter.heroku.com/articles/getting-started-with-django" target="_blank">Heroku - Getting Started with Django</a>
