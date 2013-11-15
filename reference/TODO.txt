@@ -2,6 +2,7 @@
 // Now 1
 ////////////
 1. hover over neighbor => show sentences
+
 2. think about k (scale factor)
 3. find some impl of lda. try running some data in it
 4. insert more data

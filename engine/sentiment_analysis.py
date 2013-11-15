@@ -431,14 +431,16 @@ class SentimentAnalysis:
 					'count': int,
 				},
 				...
-			]
+			],
+			'positive_count': int,
 			'negative_neighbors': [
 				{
 					'value': string,
 					'count': int,
 				},
 				...
-			]
+			],
+			'negative_count': int,
 		},
 		...
 	]
@@ -496,9 +498,9 @@ class SentimentAnalysis:
 
 			entry['positive_neighbors'] = sorted(entry['positive_neighbors'], key = lambda k : -k['count'])
 			entry['negative_neighbors'] = sorted(entry['negative_neighbors'], key = lambda k : -k['count'])
-			entry['positive_neighbors'].insert(0, {'value': 'TOTAL', 'count': posCount	})
-			entry['negative_neighbors'].insert(0, {'value': 'TOTAL', 'count': negCount	})
-
+			entry['positive_count'] = posCount
+			entry['negative_count'] = negCount
+			
 			entry['sentiment'] = self.sentimentFromCounts(posCount, negCount)
 			entry['sentiment_score'] = posCount - negCount
 			entry['controversy_score'] = self.getControversyScoreFromCounts(posCount, negCount)
@@ -540,14 +542,16 @@ class SentimentAnalysis:
 						'count': int,
 					},
 					...
-				]
+				],
+				'positive_count': int,
 				'negative_neighbors': [
 					{
 						'value': string,
 						'count': int,
 					},
 					...
-				]
+				],
+				'negative_count': int,
 			},
 			...
 		]

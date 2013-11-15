@@ -49,6 +49,19 @@
 		});
 	}
 
+	function handleTotalNeighborButtonClick(event) {
+		$button = $(event.target);
+		$divNeighbors = $button.closest('tr').find('.div-neighbors');
+		$divNeighbors.slideToggle();
+	}
+
+	function registerTotalNeighborButtons() {
+		var $buttons = $('.div-total-neighbor-count');
+		$buttons.each(function() {
+			$(this).click(handleTotalNeighborButtonClick);
+		});
+	}
+
 	function onloadFunction() {
 		window.loadSpinnerHandlers();
 		var outputHeader = $('.h-output');
@@ -58,7 +71,9 @@
 		}
 		window.registerCollapseButtons();
 		window.registerCombinedSampleButtons();
+		window.registerTotalNeighborButtons();
 	}
+
 	window.onload = window.onloadFunction;
 </script>
 {% endblock %}
@@ -385,16 +400,28 @@
 
 									<!-- positive neighbors -->
 									<td>
-									{% for pn in word.positive_neighbors %}
-										<div class="muted"><span class="color-light-green">{{ pn.value }}</span> <span>({{ pn.count }})</span></div>
-									{% endfor %}
+										<a class="div-total-neighbor-count" style="color:green;">
+											<span class="">TOTAL</span>
+											<span>({{ word.positive_count }})</span>
+										</a>
+										<div class="div-neighbors">
+											{% for pn in word.positive_neighbors %}
+											<div class="muted"><span class="color-light-green">{{ pn.value }}</span> <span>({{ pn.count }})</span></div>
+											{% endfor %}
+										</div>
 									</td>
 
 									<!-- negative neighbors -->
 									<td>
-									{% for nn in word.negative_neighbors %}
-										<div class="muted"><span class="color-light-red">{{ nn.value }}</span> <span>({{ nn.count }})</span></div>
-									{% endfor %}
+										<a class="div-total-neighbor-count" style="color:red;">
+											<span class="">TOTAL</span>
+											<span>({{ word.negative_count }})</span>
+										</a>
+										<div class="div-neighbors">
+											{% for nn in word.negative_neighbors %}
+											<div class="muted"><span class="color-light-red">{{ nn.value }}</span> <span>({{ nn.count }})</span></div>
+											{% endfor %}
+										</div>
 									</td>
 
 								</tr>
