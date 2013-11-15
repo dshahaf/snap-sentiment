@@ -1,5 +1,8 @@
 ////////////
 // Now 1
 ////////////
-result list: only consider high tf-idf words
-Get more data
+1. hover over neighbor => show sentences
+2. think about k (scale factor)
+3. find some impl of lda. try running some data in it
+4. insert more data
+5. 
