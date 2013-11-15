@@ -1,5 +1,45 @@
 ////////////
 // Now 1
 ////////////
-3. find some impl of lda. try running some data in it
-4. insert more data
+1. insert more data
+2. find some impl of lda. try running some data in it
+
+
+/////////////////
+// Query Server
+/////////////////
+
+Hey James -
+
+Query server is now running at ilws19.stanford.edu:8081.
+
+The purpose is to give you articles and bag of words with tfidf scores associated with each article. To run a query "dafna" in the time month range starting on June 1, 2013, the syntax is to simply request:
+
+ilws19.stanford.edu:8081/<query>/<date_request>
+ex.
+ilws19.stanford.edu:8081/dafna/M06012013
+
+Query is one or more words separated by "_"
+Date_request is a string formatted as follows: 
+[Range Char: one of {M,T,P,W}][Start date (if Range char is not P) written as MMDDYYYY]
+M - means month
+T - means three months
+P - means past week
+W - means week
+
+examples:
+ilws19.stanford.edu:8081/dafna/M06012013
+ilws19.stanford.edu:8081/james_is_awesome/W06132013
+ilws19.stanford.edu:8081/do_work/P
+
+Output is json with "result": "output_dir"
+output_dir contains ten files, representing time slices and their documents. Each file is formatted as described in the documentation: article metadata + stemid and their tf-idf. 
+
+I might launch a separate service that does translation of the stemids to representative stems, but that's a little lower on my todo list. I can be pressured to bump it higher if you need!
+
+Also, would you prefer to have more json output in addition to the result directory? If so, write some requests.
+
+Also, keep an eye out: I requested that Andrej moves the query server to the public facing server, so you don't have to be on the Stanford sub net to access it.
+
+Hope all is well,
+Dima

@@ -1,0 +1,1 @@
+source: http://shuyo.wordpress.com/2013/07/24/python-implementation-of-labeled-lda-ramage-emnlp2009/
