@@ -560,7 +560,7 @@ class SentimentAnalysis:
 				})
 
 			for negativeNeighbor in negativeNeighborsDict.keys():
-				currCount = negativeNeighborsDict[negativeNeighbor]
+				currCount = negativeNeighborsDict[negativeNeighbor]['count']
 				currSentences = negativeNeighborsDict[negativeNeighbor]['sentences']
 				negCount += currCount
 				entry['negative_neighbors'].append({

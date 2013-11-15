@@ -148,3 +148,11 @@ form.form-user-input .progress-container .spinner {
 .div-total-neighbor-count:hover {
   opacity: 1.0;
 }
+.a-neighbor-count {
+  cursor: pointer;
+  text-decoration: underline;
+  opacity: 0.6;
+}
+.a-neighbor-count:hover {
+  opacity: 0.8;
+}

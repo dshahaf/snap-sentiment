@@ -14,7 +14,6 @@
 	function registerCombinedSampleButtons() {
 		var $targetDiv = $('#video-div');
 		var $targetIframe = $('#video-iframe');
-
 		var $combinedSampleButtons = $('.combined-sample-submit-button');
 		$combinedSampleButtons.each(function() {
 			$(this).click(function() {
@@ -26,7 +25,7 @@
 	}
 
 	function handleCollapseButtonClick(event) {
-		$collapseButton = $(event.target);
+		var $collapseButton = $(event.target);
 		var targetID = $collapseButton.attr('data-target');
 		var $target = $(targetID);
 		if ($target.length > 0) {
@@ -50,8 +49,8 @@
 	}
 
 	function handleTotalNeighborButtonClick(event) {
-		$button = $(event.target);
-		$divNeighbors = $button.closest('tr').find('.div-neighbors');
+		var $button = $(event.target);
+		var $divNeighbors = $button.closest('tr').find('.div-neighbors');
 		$divNeighbors.slideToggle();
 	}
 
@@ -59,6 +58,18 @@
 		var $buttons = $('.div-total-neighbor-count');
 		$buttons.each(function() {
 			$(this).click(handleTotalNeighborButtonClick);
+		});
+	}
+
+	function registerNeighborSentencesButtons() {
+		var $buttons = $('.a-neighbor-count');
+		$buttons.each(function() {
+			var $button = $(this);
+			var content = $button.parent().find('.div-neighbor-sentences').html();
+			$(this).popover({
+				content: content,
+				html: true,
+			});
 		});
 	}
 
@@ -72,6 +83,7 @@
 		window.registerCollapseButtons();
 		window.registerCombinedSampleButtons();
 		window.registerTotalNeighborButtons();
+		window.registerNeighborSentencesButtons();
 	}
 
 	window.onload = window.onloadFunction;
@@ -406,7 +418,17 @@
 										</a>
 										<div class="div-neighbors">
 											{% for pn in word.positive_neighbors %}
-											<div class="muted"><span class="color-light-green">{{ pn.value }}</span> <span>({{ pn.count }})</span></div>
+											<div class="div-neighbor">
+												<a class="a-neighbor-count" style="color:green;" data-toggle="popover">
+													<span class="">{{ pn.value }}</span>
+													<span>({{ pn.count }})</span>
+												</a>
+												<div class="div-neighbor-sentences" style="display:none;">
+													{% for s in pn.sentences %}
+													<div>{{ s }}</div>
+													{% endfor %}
+												</div>
+											</div>
 											{% endfor %}
 										</div>
 									</td>
@@ -419,7 +441,17 @@
 										</a>
 										<div class="div-neighbors">
 											{% for nn in word.negative_neighbors %}
-											<div class="muted"><span class="color-light-red">{{ nn.value }}</span> <span>({{ nn.count }})</span></div>
+											<div class="div-neighbor">
+												<a class="a-neighbor-count" style="color:red;" data-toggle="popover">
+													<span class="">{{ nn.value }}</span>
+													<span>({{ nn.count }})</span>
+												</a>
+												<div class="div-neighbor-sentences" style="display:none;">
+													{% for s in nn.sentences %}
+													<div>{{ s }}</div>
+													{% endfor %}
+												</div>
+											</div>
 											{% endfor %}
 										</div>
 									</td>
