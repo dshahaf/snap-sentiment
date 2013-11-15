@@ -82,6 +82,9 @@ form.form-user-input .progress-container .spinner {
 .div-input .link-clear:hover {
   opacity: 0.8;
 }
+.color-light-grey {
+  background: #f7f7f7;
+}
 .tr-lightgrey {
   background: #f8f8f8;
 }

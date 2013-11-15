@@ -683,7 +683,20 @@ class SentimentAnalysis:
 	# LDA Analysis
 	##########################################
 
-	def ldaTopics(self, topic, numTopics = 10):
+	def processRawLDATopicString(self, rawTopic):
+		ret = []
+		elems = rawTopic.split('+')
+		for elem in elems:
+			components = elem.split('*')
+			weight = components[0]
+			word = components[1]
+			ret.append({
+				'weight': weight,
+				'word': word,
+			})
+		return ret
+
+	def ldaTopics(self, topic, numTopics = 50):
 		if topic == 'celebrity':
 			topic = 'bieber'
 		elif topic == 'movie':
@@ -702,10 +715,15 @@ class SentimentAnalysis:
 			dirPath,
 			'gensim_corpus.mm'
 		)
+
 		id2word = gensim.corpora.Dictionary.load(dictionaryPath)
 		mm = gensim.corpora.MmCorpus(corpusPath)
 		lda = gensim.models.ldamodel.LdaModel(corpus=mm, id2word=id2word, num_topics=numTopics, update_every=1, chunksize=10000, passes=1)
-		ret = lda.print_topics(numTopics)
-		print('topics:')
-		print(ret)
+
+		rawTopics = lda.print_topics(numTopics)
+		ret = []
+
+		for rawTopic in rawTopics:
+			ret.append(self.processRawLDATopicString(rawTopic))
+
 		return ret

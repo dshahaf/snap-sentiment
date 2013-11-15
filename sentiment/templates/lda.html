@@ -157,7 +157,23 @@
 						<h3>Topics</h3>
 						{% for topic in result.topics %}
 						<div class="div-topic">
-							{{ topic }}
+							<h4>Topic {{ forloop.counter }}</h4>
+							<table class="table table-condensed table-bordered table-centered">
+							<tbody>
+								<tr>
+									<td class="color-light-grey"><strong>Words</strong></td>
+									{% for elem in topic %}
+										<td>{{ elem.word }}</td>
+									{% endfor %}
+								</tr>
+								<tr>
+									<td class="color-light-grey"><strong>Weights</strong></td>
+									{% for elem in topic %}
+										<td>{{ elem.weight }}</td>
+									{% endfor %}
+								</tr>
+							</tbody>
+							</table>
 						</div>
 						{% endfor %}
 					</div>

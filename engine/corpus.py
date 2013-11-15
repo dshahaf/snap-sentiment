@@ -125,7 +125,15 @@ class Corpus:
 			else:
 				ret += ' '
 		tokens = self.tokensFromText(ret)
-		return ' '.join(tokens)
+		filtered = []
+		for token in tokens:
+			# remove single letter tokens
+			l = len(token)
+			if l == 1:
+				continue
+			filtered.append(token)
+
+		return ' '.join(filtered)
 
 	def saveGensimForJamesData(self, topic):
 		posDocs = self.getArticlesHelper('positive', topic)
