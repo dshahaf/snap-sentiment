@@ -105,31 +105,110 @@ class Corpus:
 
 	def saveGensim(self, name):
 		if name == 'movie':
-			self.saveMovieReviewsGensim()
+			self.saveGensimForMovieReviews()
+		elif name == 'celebrity':
+			self.saveGensimForJamesData('bieber')
+		elif name == 'syria':
+			self.saveGensimForJamesData('syria')
+		elif name == 'ufo':
+			self.saveGensimForJamesData('ufo')
+		return
+
+	def processDocForGensim(self, doc):
+		withoutNewlines = doc.replace('\n', ' ')
+		lowered = withoutNewlines.lower()
+		ret = ''
+		# replace non-ascii letters with ' '
+		for c in lowered:
+			if (ord(c) < 128):
+				ret += c
+			else:
+				ret += ' '
+		tokens = self.tokensFromText(ret)
+		return ' '.join(tokens)
+
+	def saveGensimForJamesData(self, topic):
+		posDocs = self.getArticlesHelper('positive', topic)
+		negDocs = self.getArticlesHelper('negative', topic)
+		
+		listOfTokens = [] # dictionary
+		docs = [] # corpus
+
+		for posDoc in posDocs:
+			processed = self.processDocForGensim(posDoc)
+			tokens = self.tokensFromText(processed)
+			listOfTokens.append(tokens)
+			docs.append(processed)
+		for negDoc in negDocs:
+			processed = self.processDocForGensim(negDoc)
+			tokens = self.tokensFromText(processed)
+			listOfTokens.append(tokens)
+			docs.append(processed)
+
+		dictionaryFilename = 'gensim_dictionary.txt'
+		corpusFilename = 'gensim_corpus.mm'
+
+		# make destination files if they don't exist
+		dictionaryPath = os.path.join(
+			os.path.dirname(os.path.abspath(__file__)),
+			'james_data',
+			topic,
+			dictionaryFilename
+		)
+
+		corpusPath = os.path.join(
+			os.path.dirname(os.path.abspath(__file__)),
+			'james_data',
+			topic,
+			corpusFilename
+		)
+
+		if not os.path.exists(dictionaryPath):
+			with open(dictionaryPath, 'w') as f:
+				f.write(' ')
+
+		if not os.path.exists(corpusPath):
+			with open(corpusPath, 'w') as f:
+				f.write(' ')
+
+		corpusTempPath = corpusPath + '.tmp'
+
+		# save dictionary and corpus
+		d = Dictionary(listOfTokens)
+		d.save(dictionaryPath)
+
+		with open(corpusTempPath, 'w') as f:
+			f.write('\n'.join(docs))
+
+		corpus = TextCorpus(corpusTempPath)
+		MmCorpus.save_corpus(corpusPath, corpus)
+
+		return
 
 	"""
 	"""
-	# change count back to 100
-	def saveMovieReviewsGensim(self, count = 3):
+	def saveGensimForMovieReviews(self, count = 100):
 		posReviews = self.movieReviews('positive', count)
 		negReviews = self.movieReviews('negative', count)
 	
-		listOfTokens = [] # dictionary	
+		listOfTokens = [] # dictionary
 		docs = [] # corpus
 
 		for pr in posReviews:
-			tokens = self.tokensFromText(pr)
-			listOfTokens.append(tokens)
 			prWithoutNewlines = pr.replace('\n', ' ')
+			tokens = self.tokensFromText(prWithoutNewlines)
+			listOfTokens.append(tokens)
 			docs.append(prWithoutNewlines)
 		for nr in negReviews:
-			tokens = self.tokensFromText(nr)
-			listOfTokens.append(tokens)
 			nrWithoutNewlines = nr.replace('\n', ' ')
+			tokens = self.tokensFromText(nrWithoutNewlines)
+			listOfTokens.append(tokens)
 			docs.append(nrWithoutNewlines)
 
-		dictionaryFilename = 'movie_reviews_gensim_dictionary.txt'
-		corpusFilename = 'movie_reviews_gensim_corpus.mm'
+		#dictionaryFilename = 'gensim_dictionary_movie_reviews.txt'
+		#corpusFilename = 'gensim_corpus_movie_reviews.mm'
+		dictionaryFilename = 'gensim_dictionary.txt'
+		corpusFilename = 'gensim_corpus.mm'
 
 		# make destination files if they don't exist
 		dictionaryPath = os.path.join(
@@ -139,31 +218,32 @@ class Corpus:
 			dictionaryFilename
 		)
 
-		if not os.path.exists(dictionaryPath):
-			with open(dictionaryPath, 'w') as f:
-				f.write(' ')
-
 		corpusPath = os.path.join(
 			os.path.dirname(os.path.abspath(__file__)),
 			'james_data',
 			'movie_reviews',
 			corpusFilename
 		)
-		corpusTempPath = corpusPath + '.tmp'
+
+		if not os.path.exists(dictionaryPath):
+			with open(dictionaryPath, 'w') as f:
+				f.write(' ')
 
 		if not os.path.exists(corpusPath):
 			with open(corpusPath, 'w') as f:
 				f.write(' ')
 
-		# save
+		corpusTempPath = corpusPath + '.tmp'
+
+		# save dictionary and corpus
 		d = Dictionary(listOfTokens)
 		d.save(dictionaryPath)
 
 		with open(corpusTempPath, 'w') as f:
 			f.write('\n'.join(docs))
 
-		corpus = MyTextCorpus(corpusTempPath)
-		corpus.save(corpusPath)
+		corpus = TextCorpus(corpusTempPath)
+		MmCorpus.save_corpus(corpusPath, corpus)
 
 		return
 
@@ -172,6 +252,7 @@ class Corpus:
 	######################
 	"""
 	category is 'positive' or 'negative'
+	topic is one of ['bieber', 'syria', 'ufo']
 	Returns a string
 	"""
 	def getArticleHelper(self, category, topic):
@@ -250,21 +331,3 @@ class Corpus:
 
 	def syriaArticles(self, category):
 		return self.getArticlesHelper(category, 'syria')
-
-class MyTextCorpus(TextCorpus):
-	def get_text():
-		dictionary = self.dictionary
-		print('dictionary')
-		print(dictionary)
-		return
-		docs = []
-		with open(path, 'r') as f:
-			docs.append(f.read())
-		for doc in docs:
-			tokens = []
-			sentences = sent_tokenize(doc)
-			for s in sentences:
-				words = word_tokenize(s)
-				for w in words:
-					tokens.append(w)
-			yield(tokens)

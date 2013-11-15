@@ -38,6 +38,16 @@ Activating virtualenv
 	
 	source venv/bin/activate
 
+Generating Gensim dictionaries and corpuses
+
+	python
+	from engine.corpus import Corpus
+	c = Corpus()
+	c.saveGensim('movie')
+	c.saveGensim('celebrity')
+	c.saveGensim('syria')
+	c.saveGensim('ufo')
+
 Running Django server
 
 	python manage.py runserver
