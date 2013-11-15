@@ -1,10 +1,11 @@
 import nltk, os
 from nltk.corpus import movie_reviews
+from nltk.tokenize import word_tokenize, sent_tokenize
+from nltk.corpus import stopwords
 from random import randrange, sample
 from gensim.corpora.dictionary import Dictionary
 from gensim.corpora.mmcorpus import MmCorpus
 from gensim.corpora.textcorpus import TextCorpus
-from nltk.tokenize import word_tokenize, sent_tokenize
 
 class Corpus:
 
@@ -14,7 +15,7 @@ class Corpus:
 			'nltk_data'
 		)
 		nltk.data.path.append(path_to_nltk_data)
-
+		self.stopwords = self.stopWordDict()
 		return
 
 	####################
@@ -52,12 +53,21 @@ class Corpus:
 		return self.wordDictHelper(path)
 
 	def stopWordDict(self):
+		# nltk english stop words
+		ret = {}
+		sws = stopwords.words('english')
+		for sw in sws:
+			ret[sw] = True
+		return ret
+		'''
+		# stanford nlp small stop words
 		path = os.path.join(
 			os.path.dirname(os.path.abspath(__file__)),
 			'lib',
 			'stop-words-small.txt'
 		)
 		return self.wordDictHelper(path)
+		'''
 
 	####################
 	# Movie Reviews
@@ -112,8 +122,8 @@ class Corpus:
 			self.saveGensim('ufo')
 			return
 
-		posReviews = []
-		negReviews = []
+		posDocs = []
+		negDocs = []
 
 		if topic == 'movie':
 			topic = 'movie_reviews'
@@ -122,8 +132,8 @@ class Corpus:
 
 		if topic == 'movie_reviews':
 			count = 100
-			posReviews = self.movieReviews('positive', count)
-			negReviews = self.movieReviews('negative', count)
+			posDocs = self.movieReviews('positive', count)
+			negDocs = self.movieReviews('negative', count)
 		else:
 			posDocs = self.getArticlesHelper('positive', topic)
 			negDocs = self.getArticlesHelper('negative', topic)
@@ -216,6 +226,9 @@ class Corpus:
 					isAlphanumeric = False
 					break
 			if not isAlphanumeric:
+				continue
+			# remove stop words
+			if token in self.stopwords:
 				continue
 			filtered.append(token)
 
