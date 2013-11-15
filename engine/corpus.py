@@ -103,42 +103,31 @@ class Corpus:
 				ret.append(w)
 		return ret
 
-	def saveGensim(self, name):
-		if name == 'movie':
-			self.saveGensimForMovieReviews()
-		elif name == 'celebrity':
-			self.saveGensimForJamesData('bieber')
-		elif name == 'syria':
-			self.saveGensimForJamesData('syria')
-		elif name == 'ufo':
-			self.saveGensimForJamesData('ufo')
-		return
+	def saveGensim(self, topic):
+		if topic is None:
+			# generate all
+			self.saveGensim('movie')
+			self.saveGensim('celebrity')
+			self.saveGensim('syria')
+			self.saveGensim('ufo')
+			return
 
-	def processDocForGensim(self, doc):
-		withoutNewlines = doc.replace('\n', ' ')
-		lowered = withoutNewlines.lower()
-		ret = ''
-		# replace non-ascii letters with ' '
-		for c in lowered:
-			if (ord(c) < 128):
-				ret += c
-			else:
-				ret += ' '
-		tokens = self.tokensFromText(ret)
-		filtered = []
-		for token in tokens:
-			# remove single letter tokens
-			l = len(token)
-			if l == 1:
-				continue
-			filtered.append(token)
+		posReviews = []
+		negReviews = []
 
-		return ' '.join(filtered)
+		if topic == 'movie':
+			topic = 'movie_reviews'
+		elif topic == 'celebrity':
+			topic = 'bieber'
 
-	def saveGensimForJamesData(self, topic):
-		posDocs = self.getArticlesHelper('positive', topic)
-		negDocs = self.getArticlesHelper('negative', topic)
-		
+		if topic == 'movie_reviews':
+			count = 100
+			posReviews = self.movieReviews('positive', count)
+			negReviews = self.movieReviews('negative', count)
+		else:
+			posDocs = self.getArticlesHelper('positive', topic)
+			negDocs = self.getArticlesHelper('negative', topic)
+
 		listOfTokens = [] # dictionary
 		docs = [] # corpus
 
@@ -171,15 +160,22 @@ class Corpus:
 			corpusFilename
 		)
 
-		if not os.path.exists(dictionaryPath):
-			with open(dictionaryPath, 'w') as f:
-				f.write(' ')
-
-		if not os.path.exists(corpusPath):
-			with open(corpusPath, 'w') as f:
-				f.write(' ')
-
 		corpusTempPath = corpusPath + '.tmp'
+
+		if os.path.exists(dictionaryPath):
+			os.remove(dictionaryPath)
+
+		if os.path.exists(corpusPath):
+			os.remove(corpusPath)
+
+		if os.path.exists(corpusTempPath):
+			os.remove(corpusTempPath)
+
+		with open(dictionaryPath, 'w') as f:
+			f.write(' ')
+
+		with open(corpusPath, 'w') as f:
+			f.write(' ')
 
 		# save dictionary and corpus
 		d = Dictionary(listOfTokens)
@@ -193,67 +189,37 @@ class Corpus:
 
 		return
 
-	"""
-	"""
-	def saveGensimForMovieReviews(self, count = 100):
-		posReviews = self.movieReviews('positive', count)
-		negReviews = self.movieReviews('negative', count)
-	
-		listOfTokens = [] # dictionary
-		docs = [] # corpus
+	def isAlphanumeric(self, c):
+		return ('0' <= c and c <= '9') or ('a' <= c and c <= 'z') or ('A' <= c and c <= 'Z')
 
-		for pr in posReviews:
-			prWithoutNewlines = pr.replace('\n', ' ')
-			tokens = self.tokensFromText(prWithoutNewlines)
-			listOfTokens.append(tokens)
-			docs.append(prWithoutNewlines)
-		for nr in negReviews:
-			nrWithoutNewlines = nr.replace('\n', ' ')
-			tokens = self.tokensFromText(nrWithoutNewlines)
-			listOfTokens.append(tokens)
-			docs.append(nrWithoutNewlines)
+	def processDocForGensim(self, doc):
+		withoutNewlines = doc.replace('\n', ' ')
+		lowered = withoutNewlines.lower()
+		ret = ''
+		# replace non-ascii letters with ' '
+		for c in lowered:
+			if (ord(c) < 128):
+				ret += c
+			else:
+				ret += ' '
+		tokens = self.tokensFromText(ret)
+		filtered = []
+		for token in tokens:
+			# remove single letter tokens
+			l = len(token)
+			if l == 1:
+				continue
+			# remove non alphanumeric tokens
+			isAlphanumeric = True
+			for c in token:
+				if not self.isAlphanumeric(c):
+					isAlphanumeric = False
+					break
+			if not isAlphanumeric:
+				continue
+			filtered.append(token)
 
-		#dictionaryFilename = 'gensim_dictionary_movie_reviews.txt'
-		#corpusFilename = 'gensim_corpus_movie_reviews.mm'
-		dictionaryFilename = 'gensim_dictionary.txt'
-		corpusFilename = 'gensim_corpus.mm'
-
-		# make destination files if they don't exist
-		dictionaryPath = os.path.join(
-			os.path.dirname(os.path.abspath(__file__)),
-			'james_data',
-			'movie_reviews',
-			dictionaryFilename
-		)
-
-		corpusPath = os.path.join(
-			os.path.dirname(os.path.abspath(__file__)),
-			'james_data',
-			'movie_reviews',
-			corpusFilename
-		)
-
-		if not os.path.exists(dictionaryPath):
-			with open(dictionaryPath, 'w') as f:
-				f.write(' ')
-
-		if not os.path.exists(corpusPath):
-			with open(corpusPath, 'w') as f:
-				f.write(' ')
-
-		corpusTempPath = corpusPath + '.tmp'
-
-		# save dictionary and corpus
-		d = Dictionary(listOfTokens)
-		d.save(dictionaryPath)
-
-		with open(corpusTempPath, 'w') as f:
-			f.write('\n'.join(docs))
-
-		corpus = TextCorpus(corpusTempPath)
-		MmCorpus.save_corpus(corpusPath, corpus)
-
-		return
+		return ' '.join(filtered)
 
 	######################
 	# James Data Helpers
