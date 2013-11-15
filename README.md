@@ -48,6 +48,16 @@ Generating Gensim dictionaries and corpuses
 	c.saveGensim('syria')
 	c.saveGensim('ufo')
 
+Getting the LDA from a dictionary and corpus (example topic: ufo)
+
+	python
+	import logging, gensim, bz2
+	logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+	id2word = gensim.corpora.Dictionary.load_from_text('engine/james_data/ufo/gensim_dictionary.txt')
+	mm = gensim.corpora.MmCorpus('engine/james_data/ufo/gensim_corpus.mm')
+	lda = gensim.models.ldamodel.LdaModel(corpus=mm, id2word=id2word, num_topics=10, update_every=1, chunksize=10000, passes=1)
+	lda.print_topics(20)
+
 Running Django server
 
 	python manage.py runserver
