@@ -109,7 +109,8 @@ class Corpus:
 
 	"""
 	"""
-	def saveMovieReviewsGensim(self, count = 100):
+	# change count back to 100
+	def saveMovieReviewsGensim(self, count = 3):
 		posReviews = self.movieReviews('positive', count)
 		negReviews = self.movieReviews('negative', count)
 	
@@ -148,6 +149,7 @@ class Corpus:
 			'movie_reviews',
 			corpusFilename
 		)
+		corpusTempPath = corpusPath + '.tmp'
 
 		if not os.path.exists(corpusPath):
 			with open(corpusPath, 'w') as f:
@@ -157,7 +159,10 @@ class Corpus:
 		d = Dictionary(listOfTokens)
 		d.save(dictionaryPath)
 
-		corpus = MyTextCorpus('\n'.join(docs))
+		with open(corpusTempPath, 'w') as f:
+			f.write('\n'.join(docs))
+
+		corpus = MyTextCorpus(corpusTempPath)
 		corpus.save(corpusPath)
 
 		return
@@ -247,7 +252,7 @@ class Corpus:
 		return self.getArticlesHelper(category, 'syria')
 
 class MyTextCorpus(TextCorpus):
-	def get_text(self):
+	def get_text():
 		dictionary = self.dictionary
 		print('dictionary')
 		print(dictionary)
