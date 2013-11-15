@@ -12,4 +12,5 @@ wsgiref==0.1.2
 numpy==1.6.2
 http://pyyaml.org/download/pyyaml/PyYAML-3.10.tar.gz
 http://pypi.python.org/packages/source/n/nltk/nltk-2.0.1rc1.tar.gz
+http://www.netlib.org/blas/blas.tgz
 https://pypi.python.org/packages/source/g/gensim/gensim-0.8.8.tar.gz
