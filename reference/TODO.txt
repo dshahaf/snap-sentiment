@@ -2,8 +2,6 @@
 // Now 1
 ////////////
 1. insert more data
-2. find some impl of lda. try running some data in it
-
 
 /////////////////
 // Query Server
@@ -43,3 +41,35 @@ Also, keep an eye out: I requested that Andrej moves the query server to the pub
 
 Hope all is well,
 Dima
+
+////////////////
+// Rambo
+////////////////
+
+http://snap-sentiment.stanford.edu/ is configured. It redirects to
+http://rambo.stanford.edu:8010 where your server is/was running.
+
+So far I have not made it into a service just so it is easier to
+restart and you can run it an tweak it as you want. The reason it is
+not running now is because I changed the ownership of the files to
+your account. That will enable you to run the server yourself.
+
+If you ssh into rambo.stanford.edu (note that this only works from
+Stanford networks, if you are outside of Stanford ssh into
+whale.stanford.edu first) you will find the code here:
+
+/lfs/local/0/snap-sentiment
+
+It's basically a clone of your git repository. I added some
+sys.path.append() statements with relevant directories to run.py and
+manage.py. I also tweaked a few things in sentiment/settings.py. I
+have not pushed this back to your repository so you might want to
+check those changes out first.
+
+Running the code is similar to running on your notebook:
+
+python2.7 run.py
+
+I suggest starting a screen session and then running the command inside of it.
+
+Let me know if you need anything else or run into problems.
