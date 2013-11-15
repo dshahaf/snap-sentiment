@@ -1,6 +1,10 @@
 import nltk, os
 from nltk.corpus import movie_reviews
 from random import randrange, sample
+from gensim.corpora.dictionary import Dictionary
+from gensim.corpora.mmcorpus import MmCorpus
+from gensim.corpora.textcorpus import TextCorpus
+from nltk.tokenize import word_tokenize, sent_tokenize
 
 class Corpus:
 
@@ -90,6 +94,74 @@ class Corpus:
 			ret.append(movie_reviews.raw(sampleFileId))
 		return ret
 
+	def tokensFromText(self, text):
+		ret = []
+		sentences = sent_tokenize(text)
+		for s in sentences:
+			words = word_tokenize(s)
+			for w in words:
+				ret.append(w)
+		return ret
+
+	def saveGensim(self, name):
+		if name == 'movie':
+			self.saveMovieReviewsGensim()
+
+	"""
+	"""
+	def saveMovieReviewsGensim(self, count = 100):
+		posReviews = self.movieReviews('positive', count)
+		negReviews = self.movieReviews('negative', count)
+	
+		listOfTokens = [] # dictionary	
+		docs = [] # corpus
+
+		for pr in posReviews:
+			tokens = self.tokensFromText(pr)
+			listOfTokens.append(tokens)
+			prWithoutNewlines = pr.replace('\n', ' ')
+			docs.append(prWithoutNewlines)
+		for nr in negReviews:
+			tokens = self.tokensFromText(nr)
+			listOfTokens.append(tokens)
+			nrWithoutNewlines = nr.replace('\n', ' ')
+			docs.append(nrWithoutNewlines)
+
+		dictionaryFilename = 'movie_reviews_gensim_dictionary.txt'
+		corpusFilename = 'movie_reviews_gensim_corpus.mm'
+
+		# make destination files if they don't exist
+		dictionaryPath = os.path.join(
+			os.path.dirname(os.path.abspath(__file__)),
+			'james_data',
+			'movie_reviews',
+			dictionaryFilename
+		)
+
+		if not os.path.exists(dictionaryPath):
+			with open(dictionaryPath, 'w') as f:
+				f.write(' ')
+
+		corpusPath = os.path.join(
+			os.path.dirname(os.path.abspath(__file__)),
+			'james_data',
+			'movie_reviews',
+			corpusFilename
+		)
+
+		if not os.path.exists(corpusPath):
+			with open(corpusPath, 'w') as f:
+				f.write(' ')
+
+		# save
+		d = Dictionary(listOfTokens)
+		d.save(dictionaryPath)
+
+		corpus = MyTextCorpus('\n'.join(docs))
+		corpus.save(corpusPath)
+
+		return
+
 	######################
 	# James Data Helpers
 	######################
@@ -174,3 +246,20 @@ class Corpus:
 	def syriaArticles(self, category):
 		return self.getArticlesHelper(category, 'syria')
 
+class MyTextCorpus(TextCorpus):
+	def get_text(self):
+		dictionary = self.dictionary
+		print('dictionary')
+		print(dictionary)
+		return
+		docs = []
+		with open(path, 'r') as f:
+			docs.append(f.read())
+		for doc in docs:
+			tokens = []
+			sentences = sent_tokenize(doc)
+			for s in sentences:
+				words = word_tokenize(s)
+				for w in words:
+					tokens.append(w)
+			yield(tokens)
