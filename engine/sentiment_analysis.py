@@ -37,6 +37,7 @@ class SentimentAnalysis:
 	##########################################
 	# Simple Analysis
 	##########################################
+
 	"""
 	Returns array of tokens
 	"""
@@ -186,6 +187,11 @@ class SentimentAnalysis:
 		t = taggedToken['type']
 		return t[:2] == "JJ"
 
+	def getSentences(self):
+		text = self.text;
+		ret = sent_tokenize(text)
+		return ret
+
 	"""
 	Returns,
 	[
@@ -276,16 +282,39 @@ class SentimentAnalysis:
 		},
 		...
 	]
+
+	And fills in nounsWithCounts as follows:
+	{
+ 		<noun> : {
+ 			'positive' : {
+ 				<neighbor> : {
+ 					'count' : int,
+ 					'sentences' : []
+ 				}
+ 			},
+ 			'negative': {
+ 				<neighbor> : {
+ 					'count' : int,
+ 					'sentences' : []
+ 				}
+			}
+		}	
+	}
 	"""
 	def getProcessedSentences(self, nounsWithCounts):
 		ret = []
 		parseTaggedSentences = self.getParseTaggedSentences()
+		sentences = self.getSentences()
+		numSentences = len(sentences)
 
-		for parseTaggedSentence in parseTaggedSentences:
+		for i in range(0, numSentences):
+			parseTaggedSentence = parseTaggedSentences[i]
+			sentence = sentences[i]
+
 			currObj = { 'sentiment': '', 'words': [] }
 			posCount = 0
 			negCount = 0
-			currNouns = {} # noun => True
+			currNouns = {} # { <noun> : True }
 
 			# first, register the nouns in the current sentence
 			for taggedToken in parseTaggedSentence:
@@ -298,6 +327,8 @@ class SentimentAnalysis:
 					nounsWithCounts[v] = { 'positive': {}, 'negative': {} }
 
 			for taggedToken in parseTaggedSentence:
+				# process the words in the current sentence
+
 				v = taggedToken['value']
 				t = taggedToken['type']
 
@@ -315,15 +346,23 @@ class SentimentAnalysis:
 					posCount += 1
 					for k in currNouns.keys():
 						if v not in nounsWithCounts[k]['positive']:
-							nounsWithCounts[k]['positive'][v] = 0
-						nounsWithCounts[k]['positive'][v] += 1
+							nounsWithCounts[k]['positive'][v] = {
+								'count' : 0,
+								'sentences': [],
+							}
+						nounsWithCounts[k]['positive'][v]['count'] += 1
+						nounsWithCounts[k]['positive'][v]['sentences'].append(sentence)
 
 				elif currWord['sentiment'] == 'negative':
 					negCount += 1
 					for k in currNouns.keys():
 						if v not in nounsWithCounts[k]['negative']:
-							nounsWithCounts[k]['negative'][v] = 0
-						nounsWithCounts[k]['negative'][v] += 1
+							nounsWithCounts[k]['negative'][v] = {
+								'count' : 0,
+								'sentences' : [],
+							}
+						nounsWithCounts[k]['negative'][v]['count'] += 1
+						nounsWithCounts[k]['negative'][v]['sentences'].append(sentence)
 
 			currObj['sentiment'] = self.sentimentFromCounts(posCount, negCount)
 			ret.append(currObj)
@@ -335,13 +374,19 @@ class SentimentAnalysis:
 
 	@param
 	nounsWithCounts: {
-		noun : {
+		<noun> : {
 			'positive' : {
-				neighbor : int,
+				<neighbor> : {
+					'count': int,
+					'sentences': [],
+				},
 				...
 			}
 			'negative' : {
-				neighbor : int,
+				<neighbor> : {
+					'count': int,
+					'sentences': [],
+				},
 				...
 			}
 		},
@@ -353,12 +398,16 @@ class SentimentAnalysis:
 		{
 			'values': [] # list of strings with the same stem
 			'positive': {
-				neighbor: int,
-				...
+				<neighbor>: {
+					'count' : int,
+					'sentences' : []
+				},
 			},
 			'negative': {
-				neighbor: int,
-				...
+				<neighbor>: {
+					'count' : int,
+					'sentences' : []
+				},
 			}
 		},
 		...
@@ -366,7 +415,7 @@ class SentimentAnalysis:
 	"""
 	def groupNounsWithCounts(self, nounsWithCounts):
 		ret = []
-		stemToNouns = {} # stem => { noun => True }
+		stemToNouns = {} # { <stem> : { <noun> : True } }
 
 		# populate stemToNouns
 		for noun in nounsWithCounts.keys():
@@ -384,38 +433,50 @@ class SentimentAnalysis:
 				'positive': {},
 				'negative': {},
 			}
+
 			for noun in sorted(nounToTrue.keys()):
 				currObj['values'].append(noun)
 				positiveCountDict = nounsWithCounts[noun]['positive']
 				negativeCountDict = nounsWithCounts[noun]['negative']
 				for neighbor in positiveCountDict.keys():
 					if neighbor not in currObj['positive']:
-						currObj['positive'][neighbor] = 0
-					currObj['positive'][neighbor] += positiveCountDict[neighbor]
+						currObj['positive'][neighbor] = {
+							'count' : 0,
+							'sentences' : []
+						}
+					currObj['positive'][neighbor]['count'] += positiveCountDict[neighbor]['count']
+					currObj['positive'][neighbor]['sentences'].extend(positiveCountDict[neighbor]['sentences'])
 				for neighbor in negativeCountDict.keys():
 					if neighbor not in currObj['negative']:
-						currObj['negative'][neighbor] = 0
-					currObj['negative'][neighbor] += negativeCountDict[neighbor]
+						currObj['negative'][neighbor] = {
+							'count' : 0,
+							'sentences' : []
+						}
+					currObj['negative'][neighbor]['count'] += negativeCountDict[neighbor]['count']
+					currObj['negative'][neighbor]['sentences'].extend(negativeCountDict[neighbor]['sentences'])
 			ret.append(currObj)
-
 		return ret
 
 	"""
 	Helper for nounAnalysis
 
 	@param
-	nounsWithCounts: {
-		noun : {
-			'positive' : {
-				neighbor : int,
-				...
+	nounsWithCounts:
+	{
+ 		<noun> : {
+ 			'positive' : {
+ 				<neighbor> : {
+ 					'count' : int,
+ 					'sentences' : []
+ 				}
+ 			},
+ 			'negative': {
+ 				<neighbor> : {
+ 					'count' : int,
+ 					'sentences' : []
+ 				}
 			}
-			'negative' : {
-				neighbor : int,
-				...
-			}
-		},
-		...
+		}	
 	}
 
 	@return
@@ -429,6 +490,7 @@ class SentimentAnalysis:
 				{
 					'value': string,
 					'count': int,
+					'sentences': [],
 				},
 				...
 			],
@@ -437,6 +499,7 @@ class SentimentAnalysis:
 				{
 					'value': string,
 					'count': int,
+					'sentences': [],
 				},
 				...
 			],
@@ -454,12 +517,16 @@ class SentimentAnalysis:
 			{
 				'values': [] # list of strings with the same stem
 				'positive': {
-					neighbor: int,
-					...
+					<neighbor>: {
+						'count' : int,
+						'sentences' : []
+					},
 				},
 				'negative': {
-					neighbor: int,
-					...
+					<neighbor>: {
+						'count' : int,
+						'sentences' : []
+					},
 				}
 			},
 			...
@@ -483,24 +550,30 @@ class SentimentAnalysis:
 			negCount = 0
 
 			for positiveNeighbor in positiveNeighborsDict.keys():
-				currCount = positiveNeighborsDict[positiveNeighbor]
+				currCount = positiveNeighborsDict[positiveNeighbor]['count']
+				currSentences = positiveNeighborsDict[positiveNeighbor]['sentences']
 				posCount += currCount
 				entry['positive_neighbors'].append({
-					'value': positiveNeighbor, 'count': currCount
+					'value': positiveNeighbor,
+					'count': currCount,
+					'sentences': currSentences
 				})
 
 			for negativeNeighbor in negativeNeighborsDict.keys():
 				currCount = negativeNeighborsDict[negativeNeighbor]
+				currSentences = negativeNeighborsDict[negativeNeighbor]['sentences']
 				negCount += currCount
 				entry['negative_neighbors'].append({
-					'value': negativeNeighbor, 'count': currCount	
+					'value': negativeNeighbor,
+					'count': currCount	,
+					'sentences': currSentences
 				})
 
 			entry['positive_neighbors'] = sorted(entry['positive_neighbors'], key = lambda k : -k['count'])
 			entry['negative_neighbors'] = sorted(entry['negative_neighbors'], key = lambda k : -k['count'])
 			entry['positive_count'] = posCount
 			entry['negative_count'] = negCount
-			
+
 			entry['sentiment'] = self.sentimentFromCounts(posCount, negCount)
 			entry['sentiment_score'] = posCount - negCount
 			entry['controversy_score'] = self.getControversyScoreFromCounts(posCount, negCount)
@@ -540,6 +613,7 @@ class SentimentAnalysis:
 					{
 						'value': string,
 						'count': int,
+						'sentences': [],
 					},
 					...
 				],
@@ -548,6 +622,7 @@ class SentimentAnalysis:
 					{
 						'value': string,
 						'count': int,
+						'sentences': [],
 					},
 					...
 				],
@@ -559,7 +634,25 @@ class SentimentAnalysis:
 	"""
 	def nounAnalysis(self):
 		ret = { 'sentences': [], 'words': [], }
-		nounsWithCounts = {} # word => { 'positive' : { word => int }, 'negative': { word => int } }
+		'''
+		{
+	 		<noun> : {
+	 			'positive' : {
+	 				<neighbor> : {
+	 					'count' : int,
+	 					'sentences' : []
+	 				}
+	 			},
+	 			'negative': {
+	 				<neighbor> : {
+	 					'count' : int,
+	 					'sentences' : []
+	 				}
+ 				}
+			}	
+		}
+		'''
+		nounsWithCounts = {}
 		ret['sentences'] = self.getProcessedSentences(nounsWithCounts)
 		nounsWithCountsList = self.nounsWithCountsListFromDict(nounsWithCounts)
 		ret['words'] = sorted(nounsWithCountsList, key = lambda k : -k['controversy_score'])
