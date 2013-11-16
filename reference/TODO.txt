@@ -1,7 +1,9 @@
 ////////////
-// Now 1
+// Now
 ////////////
-1. insert more data
+1. get more data
+2. fewer topics (10 -> 20 -> ...)
+3. rambo access
 
 /////////////////
 // Query Server
