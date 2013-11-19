@@ -696,12 +696,7 @@ class SentimentAnalysis:
 			})
 		return ret
 
-	def ldaTopics(self, topic, numTopics = 10):
-		if topic == 'movie':
-			# TODO
-			return []
-		if topic == 'celebrity':
-			topic = 'bieber'
+	def ldaTopics(self, topic, numTopics = 5):
 		c = Corpus()
 		rawTopics = c.SNAP_ldaTopicsForTopic(topic)
 		ret = []

@@ -25,7 +25,6 @@
 		});
 	}
 
-
 	function onloadFunction() {
 		window.loadSpinnerHandlers();
 		var outputHeader = $('.h-output');
@@ -57,7 +56,8 @@
 				<thead>
 					<tr class="">
 						<th>Data Set</th>
-						<th>LDA Model</th>
+						<th>LDA Model (5 topics)</th>
+						<th>LDA Model (10 topics)</th>
 					</tr>
 				</thead>
 
@@ -65,12 +65,21 @@
 
 					<tr>
 						<!-- Movie -->
-						<td>Movie </td>
+						<td>Movie</td>
 						<td>
 							<form action="/lda/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
-								<input type="hidden" name="action" value="lda-movie" />
-								<div class="progress-container progress-container4">
-								{% if action|stringformat:"s" == "lda-movie" %}&#9754;{% endif %}
+								<input type="hidden" name="action" value="lda-movie-5" />
+								<div class="progress-container progress-container5">
+								{% if action|stringformat:"s" == "lda-movie-5" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-success btn-small lda-button" />
+							</form>
+						</td>
+						<td>
+							<form action="/lda/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="lda-movie-10" />
+								<div class="progress-container progress-container5">
+								{% if action|stringformat:"s" == "lda-movie-10" %}&#9754;{% endif %}
 								</div>
 								<input type="submit" value="Go" class="btn btn-success btn-small lda-button" />
 							</form>
@@ -79,12 +88,21 @@
 
 					<tr>
 						<!-- Celebrity -->
-						<td>Celebrity News</td>
+						<td>Celebrities</td>
 						<td>
 							<form action="/lda/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
-								<input type="hidden" name="action" value="lda-celebrity" />
-								<div class="progress-container progress-container4">
-								{% if action|stringformat:"s" == "lda-celebrity" %}&#9754;{% endif %}
+								<input type="hidden" name="action" value="lda-celebrity-5" />
+								<div class="progress-container progress-container5">
+								{% if action|stringformat:"s" == "lda-celebrity-5" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-success btn-small lda-button" />
+							</form>
+						</td>
+						<td>
+							<form action="/lda/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="lda-celebrity-10" />
+								<div class="progress-container progress-container5">
+								{% if action|stringformat:"s" == "lda-celebrity-10" %}&#9754;{% endif %}
 								</div>
 								<input type="submit" value="Go" class="btn btn-success btn-small lda-button" />
 							</form>
@@ -96,9 +114,18 @@
 						<td>UFO</td>
 						<td>
 							<form action="/lda/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
-								<input type="hidden" name="action" value="lda-ufo" />
-								<div class="progress-container progress-container4">
-								{% if action|stringformat:"s" == "lda-ufo" %}&#9754;{% endif %}
+								<input type="hidden" name="action" value="lda-ufo-5" />
+								<div class="progress-container progress-container5">
+								{% if action|stringformat:"s" == "lda-ufo-5" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-success btn-small lda-button" />
+							</form>
+						</td>
+						<td>
+							<form action="/lda/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="lda-ufo-10" />
+								<div class="progress-container progress-container5">
+								{% if action|stringformat:"s" == "lda-ufo-10" %}&#9754;{% endif %}
 								</div>
 								<input type="submit" value="Go" class="btn btn-success btn-small lda-button" />
 							</form>
@@ -107,12 +134,21 @@
 
 					<tr>
 						<!-- Syria -->
-						<td>Syrian Conflict</td>
+						<td>Syria</td>
 						<td>
 							<form action="/lda/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
-								<input type="hidden" name="action" value="lda-syria" />
-								<div class="progress-container progress-container4">
-								{% if action|stringformat:"s" == "lda-syria" %}&#9754;{% endif %}
+								<input type="hidden" name="action" value="lda-syria-5" />
+								<div class="progress-container progress-container5">
+								{% if action|stringformat:"s" == "lda-syria-5" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-success btn-small lda-button" />
+							</form>
+						</td>
+						<td>
+							<form action="/lda/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="lda-syria-10" />
+								<div class="progress-container progress-container5">
+								{% if action|stringformat:"s" == "lda-syria-10" %}&#9754;{% endif %}
 								</div>
 								<input type="submit" value="Go" class="btn btn-success btn-small lda-button" />
 							</form>
@@ -124,9 +160,18 @@
 						<td>Russia</td>
 						<td>
 							<form action="/lda/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
-								<input type="hidden" name="action" value="lda-russia" />
-								<div class="progress-container progress-container4">
-								{% if action|stringformat:"s" == "lda-russia" %}&#9754;{% endif %}
+								<input type="hidden" name="action" value="lda-russia-5" />
+								<div class="progress-container progress-container5">
+								{% if action|stringformat:"s" == "lda-russia-5" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-success btn-small lda-button" />
+							</form>
+						</td>
+						<td>
+							<form action="/lda/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="lda-russia-10" />
+								<div class="progress-container progress-container5">
+								{% if action|stringformat:"s" == "lda-russia-10" %}&#9754;{% endif %}
 								</div>
 								<input type="submit" value="Go" class="btn btn-success btn-small lda-button" />
 							</form>
