@@ -30,7 +30,7 @@ def index(request):
 		if action[:3] == 'lda':
 			words = action.split('-')
 			topic = words[1]
-			numTopics = words[2]
+			numTopics = (int)(words[2])
 			sa = SentimentAnalysis()
 			ldaTopics = sa.ldaTopics(topic, numTopics)
 			context['result'] = {}

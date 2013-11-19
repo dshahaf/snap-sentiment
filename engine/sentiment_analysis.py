@@ -698,7 +698,7 @@ class SentimentAnalysis:
 
 	def ldaTopics(self, topic, numTopics = 5):
 		c = Corpus()
-		rawTopics = c.SNAP_ldaTopicsForTopic(topic)
+		rawTopics = c.SNAP_ldaTopicsForTopic(topic, numTopics)
 		ret = []
 		for rawTopic in rawTopics:
 			ret.append(self.processRawLDATopicString(rawTopic))

@@ -492,7 +492,7 @@ class Corpus:
 	Returns a list of strings
 	"""
 	def SNAP_ldaTopicsForTopic(self, topic, numTopics = 10):
-		if numTopics not in [10, 20, 30]:
+		if numTopics not in [5, 10, 20, 30]:
 			print("[ERROR] Invalid numTopics")
 			return
 		inPath = os.path.join(
