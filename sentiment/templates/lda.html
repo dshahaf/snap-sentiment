@@ -178,6 +178,52 @@
 						</td>
 					</tr>
 
+					<tr>
+						<!-- Bieber -->
+						<td>Justin Bieber</td>
+						<td>
+							<form action="/lda/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="lda-bieber-5" />
+								<div class="progress-container progress-container5">
+								{% if action|stringformat:"s" == "lda-bieber-5" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-success btn-small lda-button" />
+							</form>
+						</td>
+						<td>
+							<form action="/lda/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="lda-bieber-10" />
+								<div class="progress-container progress-container5">
+								{% if action|stringformat:"s" == "lda-bieber-10" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-primary btn-small lda-button" />
+							</form>
+						</td>
+					</tr>
+
+					<tr>
+						<!-- Miley -->
+						<td>Miley Cyrus</td>
+						<td>
+							<form action="/lda/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="lda-cyrus-5" />
+								<div class="progress-container progress-container5">
+								{% if action|stringformat:"s" == "lda-cyrus-5" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-success btn-small lda-button" />
+							</form>
+						</td>
+						<td>
+							<form action="/lda/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="lda-cyrus-10" />
+								<div class="progress-container progress-container5">
+								{% if action|stringformat:"s" == "lda-cyrus-10" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-primary btn-small lda-button" />
+							</form>
+						</td>
+					</tr>
+
 				</tbody>
 
 			</table>
