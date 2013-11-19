@@ -3,3 +3,4 @@ venv
 staticfiles
 data
 *~
+engine/snap_data/gensim_snap_lda_*
