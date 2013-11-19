@@ -465,11 +465,11 @@ class Corpus:
 	Saves the file to,
 	"snap_data/gensim_snap_lda_<topic>_<numTopics>"
 	"""
-	def SNAP_generateLDAForTopic(self, topic, numTopics = 10):
+	def SNAP_generateLDAForTopic(self, topic, numTopics = 5):
 		if (topic == 'all'):
-			topics = ['bieber', 'cyrus', 'syria', 'ufo']
+			topics = ['syria', 'ufo', 'movie', 'celebrity', 'russia'] # bieber, cyrus
 			for t in topics:
-				for nt in [10, 20, 30]:
+				for nt in [5, 10]:
 					self.SNAP_generateLDAForTopic(t, nt)
 			return
 		id2word = self.SNAP_id2word()

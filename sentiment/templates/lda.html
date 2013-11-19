@@ -64,8 +64,8 @@
 				<tbody>
 
 					<tr>
-						<!-- Movie Reviews -->
-						<td>Movie Reviews</td>
+						<!-- Movie -->
+						<td>Movie </td>
 						<td>
 							<form action="/lda/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
 								<input type="hidden" name="action" value="lda-movie" />
@@ -113,6 +113,20 @@
 								<input type="hidden" name="action" value="lda-syria" />
 								<div class="progress-container progress-container4">
 								{% if action|stringformat:"s" == "lda-syria" %}&#9754;{% endif %}
+								</div>
+								<input type="submit" value="Go" class="btn btn-success btn-small lda-button" />
+							</form>
+						</td>
+					</tr>
+
+					<tr>
+						<!-- Russia -->
+						<td>Russia</td>
+						<td>
+							<form action="/lda/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+								<input type="hidden" name="action" value="lda-russia" />
+								<div class="progress-container progress-container4">
+								{% if action|stringformat:"s" == "lda-russia" %}&#9754;{% endif %}
 								</div>
 								<input type="submit" value="Go" class="btn btn-success btn-small lda-button" />
 							</form>
