@@ -1,23 +1,6 @@
-1. get articles about bieber, ufo, syria, and add access from Corpus.py
-
-1) 
-
-
-1. get more data
-2. fewer topics (10 -> 20 -> ...)
-3. rambo access
-
-//////////////
-// Commands
-//////////////
-1. Bieber
-ilws19.stanford.edu:8081/bieber/T06012013
-
-2. Syria
-ilws19.stanford.edu:8081/syria/T06012013
-
-3. UFO
-ilws19.stanford.edu:8081/ufo/T05012013
-
-4. Miley Cyrus
-ilws19.stanford.edu:8081/miley_cyrus/T08012013
+// Clusteering
+1. clustering: k-means (k = 2). represent each doc as a vector of sentment scores for each controeversial word.
+// LDA
+2. Ask Dima -> get the token_id, number of occurrences, ... (raw counts!!)
+3. 3~5 topics
+4. graph. node for each word. weight: how many topics they share (SCC? semi cliques)
