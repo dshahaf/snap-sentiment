@@ -735,3 +735,18 @@ class SentimentAnalysis:
 			ret.append(self.processRawLDATopicString(rawTopic))
 
 		return ret
+
+	###########################	
+	###########################
+	# Clustering
+	###########################
+	###########################
+
+	'''
+	topic is one of ['movie', 'celebrity', 'ufo', 'syria']
+	'''
+	def cluster(self, topic):
+		for i in range(1000000000000000):
+			print i * i * i * i * i * i
+		ret = {}
+		return ret;

@@ -14,18 +14,20 @@ def index(request):
   context = {}
 
   if request.method == 'POST':
-    pass
     form = request.POST
     action = form.get('action')
     context['action'] = action
+    actionTokens = action.split('-')
 
-    if action[:3] == 'lda':
-      words = action.split('-')
-      topic = words[1]
-      numTopics = (int)(words[2])
+    if actionTokens[0] == 'clustering': # sanity check
+      # one of ['movie', 'celebrity', 'ufo', 'syria']
+      print 'sanity check passed'
+      topic = actionTokens[1]
+
       sa = SentimentAnalysis()
-      ldaTopics = sa.ldaTopics(topic, numTopics)
-      context['result'] = {}
-      context['result']['topics'] = ldaTopics
+      result = sa.cluster(topic)
+      context['result'] = result
+    else:
+      print 'sanity check failed'
 
   return render(request, 'clustering.html', context)

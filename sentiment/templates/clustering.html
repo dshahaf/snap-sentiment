@@ -11,6 +11,7 @@
 {% block body %}
 <script>
   function registerAddDocumentButton() {
+    return;
     var $button = $('.user-input-form-wrapper .add-document-button').first();
     $button.click(function(event) {
       var $formEl = $('.form-user-input');
@@ -53,7 +54,7 @@
 </div>
 <div class="row">
   <div class="span12 text-center" style="margin-bottom:10px;">
-    OPTION 1: Use available data sets
+    <!-- OPTION 1: Use available data sets -->
   </div>
   <div class="offset2 span8">
     <table class="table-centered table table-condensed table-bordered table-striped table-action">
@@ -124,6 +125,7 @@
   </div>
 </div>
 
+<!--
 <div class="row">
   <div class="span12">
     <div class="text-center" style=""><h4>OR</h4></div>
@@ -156,6 +158,7 @@
     </form>
   </div>
 </div>
+-->
 
 <div class="row" style="margin-top:20px; margin-bottom:50px;">
   <div class="span12">
