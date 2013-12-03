@@ -4,8 +4,6 @@
 Useful methods of class CleanSentimentAnalysis:
 
 def getScoresFromRawText(self, rawText, detailed = False)
-def getControversyScoreFromCountsWithCache(self, posCount, negCount, cache = {})
-def getControversyScoreFromCounts(self, posCount, negCount)
 """
 
 # import nltk, os
@@ -98,6 +96,10 @@ class CleanSentimentAnalysis:
       return self.getScoresFromSimpleSentencesDetailed(simpleSentences)
     return
 
+  ##############################################
+  # Helpers
+  ##############################################
+
   def getControversyScoreFromCounts(self, posCount, negCount):
     # cacheKey = self.getOrderedPair(posCount, negCount)
     # if cacheKey in self.controversyScoreCache:
@@ -125,10 +127,6 @@ class CleanSentimentAnalysis:
     ret = self.getControversyScoreFromCounts(posCount, negCount)
     cache[tup] = ret
     return ret
-
-  ##############################################
-  # Helpers
-  ##############################################
 
   """
   @param taggedSentences is the result of CleanTagger.getTaggedSentencesFromPreprocessedText() with detailed = True
