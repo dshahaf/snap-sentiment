@@ -48,12 +48,10 @@ class CleanTester:
     self.testCorpus()
     return
 
-  ##################
-  # Helpers
-  ##################
-
   def testCorpus(self):
+    self.cc.console('Testing CleanCorpus...')
     self.cc.console('TEST BEGINS')
+    self.askForContinuation()
     topics = self.corpus.getSupportedTopics()
     maxCount = 2
     for topic in topics:
@@ -67,12 +65,21 @@ class CleanTester:
     return
 
   def testCleanTextProcessor(self):
-    self.cc.console('TEST BEGINS')
     self.cc.console('Testing CleanTextProcessor...')
-    rawText = 'I went to the school. It was pretty fun. I learned a lot.'
+    self.cc.console('TEST BEGINS')
+    self.askForContinuation()
+    rawText = 'Yesterday was terribly bad. Today is a good day.'
     preprocessedText = self.tp.preprocessText(rawText)
-    detailedTagResult = self.tp.tagPreprocessedText(preprocessedText)
+    detailedTagResult = self.tagger.tagPreprocessedText(preprocessedText, True)
     self.cc.console('processed text:'); self.cc.printObject(preprocessedText)
     self.cc.console('detailedTagResult'); self.cc.printObject(detailedTagResult)
     self.cc.console('TEST ENDS')
     return
+
+  ##################
+  # Helpers
+  ##################
+  def askForContinuation(self):
+    ret = self.cc.askYesOrNo('Continue?')
+    if not ret:
+      exit()

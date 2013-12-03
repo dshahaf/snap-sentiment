@@ -7,6 +7,7 @@ def console(self, s)
 def printObject(self, obj)
 def isDirPath(self, path)
 def getFilesFromDirectory(self, pathToDir)
+def askYesOrNo(self, question)
 """
 
 import os, pprint
@@ -46,3 +47,17 @@ class CleanConsole:
         content = f.read()
         ret.append(content)
     return ret
+
+  """
+  @return True if yes, False if no
+  """
+  def askYesOrNo(self, question):
+    prompt = "%s (y/n)" % question
+    userInput = ''
+    while True:
+      self.console(prompt)
+      userInput = raw_input()
+      if userInput == 'y' or userInput == 'n':
+        break
+      self.console('Invalid input. Please try again.')
+    return (userInput == 'y')
