@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+
+from clean_corpus import CleanCorpus
+
 """
 Parent class for sentiment analysis classes
 """

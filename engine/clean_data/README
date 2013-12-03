@@ -1,0 +1,5 @@
+each subdirectory can have only the following directories: pos, neg, any
+
+pos: known to be of positive sentiment
+neg: known to be of negative sentiment
+any: sentiment unknown
