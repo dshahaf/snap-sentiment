@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
+"""
+Useful methods of class CleanCorpus:
+def getDocuments(self, topic, maxCount = 50)
+"""
+
 import os
 
-"""
-Useful methods:
-def getDocuments(self, topic, maxCount = 50)
-
-"""
 class CleanCorpus:
 
   #############################
@@ -33,6 +33,7 @@ class CleanCorpus:
     False
   @notes
     maxCount applies to each sentiment ('pos', 'neg', 'any'), not these combined
+
   """
   def getDocuments(self, topic, maxCount = 50):
     pathToDir = os.path.join(
@@ -71,7 +72,7 @@ class CleanCorpus:
     return ret
 
   #############################
-  # Helper Methods
+  # Helpers
   #############################
 
   """

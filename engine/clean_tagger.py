@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 
-import os
-
 """
-Useful Methods:
+Useful methods of class CleanTagger:
 def isPositive(self, word)
 def isNegative(self, word)
 def isStopWord(self, word)
+def isNounWordTag(self, word, tag)
+def isAdjectiveWordTag(self, word, tag)
 """
+
+import os
 
 class CleanTagger:
 
@@ -51,7 +53,17 @@ class CleanTagger:
   def isStopWord(self, word):
     return word in stopWords
 
+  def isNounTag(self, tag):
+    return tag[:2] == 'NN'
 
+  def isAdjectiveTag(self, tag):
+    return tag[:2] == 'JJ'
+
+  def isNounWordTag(self, word, tag):
+    return self.isNounTag(tag) and len(word) > 1
+
+  def isAdjectiveWordTag(self, word, tag):
+    return self.isAdjectiveTag(tag)
 
   #########################
   # Helpers

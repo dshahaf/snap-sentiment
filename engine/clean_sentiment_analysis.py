@@ -1,30 +1,39 @@
 #!/usr/bin/env python
 
+"""
+Useful methods of class CleanSentimentAnalysis:
+def getControversyScoreFromCounts(self, posCount, negCount)
+"""
+
 import nltk, os
 from nltk import pos_tag
-from nltk.tokenize import word_tokenize, wordpunct_tokenize, sent_tokenize
 from lib.porter2 import stem
-from clean_corpus import CleanCorpus
 from math import log, sqrt
+from clean_corpus import CleanCorpus
+from clean_text_processor import CleanTextProcessor
+from clean_tagger import CleanTagger
 
-"""
-Parent class for sentiment analysis classes
-
-Useful Methods:
-def getControversyScoreFromCounts(self, posCount, negCount)
-
-"""
 class CleanSentimentAnalysis:
+
+  """
+  tp = CleanTextProcessor()
+  corpus = CleanCorpus()
+  tagger = CleanTagger()
+  """
 
   ##################
   # Public Methods
   ##################
 
   def __init__(self):
+    self.tp = CleanTextProcessor()
+    self.corpus = CleanCorpus()
+    self.tagger = CleanTagger()
     return
 
   def getControversialWords(self, text, max = 10):
-    
+
+    return
 
   def getControversyScoreFromCounts(self, posCount, negCount):
     # cacheKey = self.getOrderedPair(posCount, negCount)
