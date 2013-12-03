@@ -69,7 +69,7 @@ class CleanSentimentAnalysis:
           {
             'descriptor' : string,
             'count' : int,
-            'occurrences' : [string, ...] # sentences
+            'sentences' : [string, ...] # sentences
           },
           ...
         ],
@@ -89,8 +89,10 @@ class CleanSentimentAnalysis:
 
     simpleSentences = self.getSimpleSentencesFromTaggedSentences(taggedSentences)
 
-    # TODO continue from here
-
+    if not detailed:
+      return self.getScoresFromSimpleSentencesNotDetailed(simpleSentences)
+    else:
+      return self.getScoresFromSimpleSentencesDetailed(simpleSentences)
     return
 
   def getControversyScoreFromCounts(self, posCount, negCount):
@@ -127,6 +129,7 @@ class CleanSentimentAnalysis:
 
   """
   @param taggedSentences is the result of CleanTagger.getTaggedSentencesFromPreprocessedText() with detailed = True
+
   @returnVal:
   [
     # sentence 1 begins
@@ -182,5 +185,127 @@ class CleanSentimentAnalysis:
             entry['neg_descriptors'].append(word)
 
       ret.append(entry)
+
+    return ret
+
+  """
+  Helper for getScoresFromRawText
+  """
+  def getScoresFromSimpleSentencesNotDetailed(self, simpleSentences):
+
+    stemToEntry = {}
+
+    # 1. stemToEntry: get equivalent_nouns (in dict form) and counts
+    for simpleSentence in simpleSentences:
+      sentenceString = simpleSentence['sentenceString']
+      nouns = simpleSentence['nouns'] # { 'word' : string, 'stem' : string }
+      posDescriptors = simpleSentence['pos_descriptors']
+      negDescriptors = simpleSentence['neg_descriptors']
+      numPosDescriptors = len(posDescriptors)
+      numNegDescriptors = len(negDescriptors)
+
+      for noun in nouns:
+        stem = noun['stem']
+        word = noun['word']
+        # 1. create an entry if it doesn't exist
+        if stem not in stemToEntry:
+          stemToEntry[stem] = {
+            'equivalent_nouns' : {}, # word => True
+            'scores' : {
+              'controversy' : 0.0,
+              'sentiment' : 0.0,
+            },
+            'counts' : {
+              'pos' : 0,
+              'neg' : 0,
+            }
+          }
+        entry = stemToEntry[stem]
+        # 2. update the entry
+        if word not in entry['equivalent_nouns']:
+          entry['equivalent_nouns'][word] = True
+        entry['counts']['pos'] += numPosDescriptors
+        entry['counts']['neg'] += numNegDescriptors
+
+    # 2. stemToEntry: get scores
+    controversyScoreCache = {}
+    for stem in stemToEntry.keys():
+      entry = stemToEntry[stem]
+      posCount = entry['counts']['pos']
+      negCount = entry['counts']['neg']
+      entry['scores']['sentiment'] = posCount - negCount
+      entry['scores']['controversy'] = self.getControversyScoreFromCountsWithCache(posCount, negCount, controversyScoreCache)
+
+    # 3. change format & order
+    ret = []
+
+    for stem in stemToEntry.keys():
+      entry = stemToEntry[stem]
+      retEntry = {
+        'equivalent_nouns' : sorted(entry['equivalent_nouns'].keys()),
+        'scores' : entry['scores']
+      }
+      ret.append(retEntry)
+
+    return ret
+
+  """
+  Helper for getScoresFromRawText
+  """
+  def getScoresFromSimpleSentencesDetailed(self, simpleSentences):
+
+    stemToEntry = {}
+
+    # 1. stemToEntry: get equivalent_nouns (in dict form) and counts
+    for simpleSentence in simpleSentences:
+      sentenceString = simpleSentence['sentenceString']
+      nouns = simpleSentence['nouns'] # { 'word' : string, 'stem' : string }
+      posDescriptors = simpleSentence['pos_descriptors']
+      negDescriptors = simpleSentence['neg_descriptors']
+      numPosDescriptors = len(posDescriptors)
+      numNegDescriptors = len(negDescriptors)
+
+      for noun in nouns:
+        stem = noun['stem']
+        word = noun['word']
+        # 1. create an entry if it doesn't exist
+        if stem not in stemToEntry:
+          stemToEntry[stem] = {
+            'equivalent_nouns' : {}, # word => True
+            'scores' : {
+              'controversy' : 0.0,
+              'sentiment' : 0.0,
+            },
+            'counts' : {
+              'pos' : 0,
+              'neg' : 0,
+            }
+          }
+        entry = stemToEntry[stem]
+        # 2. update the entry
+        if word not in entry['equivalent_nouns']:
+          entry['equivalent_nouns'][word] = True
+        entry['counts']['pos'] += numPosDescriptors
+        entry['counts']['neg'] += numNegDescriptors
+
+    # 2. stemToEntry: get scores
+    controversyScoreCache = {}
+    for stem in stemToEntry.keys():
+      entry = stemToEntry[stem]
+      posCount = entry['counts']['pos']
+      negCount = entry['counts']['neg']
+      entry['scores']['sentiment'] = posCount - negCount
+      entry['scores']['controversy'] = self.getControversyScoreFromCountsWithCache(posCount, negCount, controversyScoreCache)
+
+    # 3. change format & order
+    ret = []
+
+    for stem in stemToEntry.keys():
+      entry = stemToEntry[stem]
+      retEntry = {
+        'equivalent_nouns' : sorted(entry['equivalent_nouns'].keys()),
+        'scores' : entry['scores']
+      }
+      ret.append(retEntry)
 
     return ret
