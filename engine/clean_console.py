@@ -8,6 +8,7 @@ def printObject(self, obj)
 def isDirPath(self, path)
 def getFilesFromDirectory(self, pathToDir)
 def askYesOrNo(self, question)
+def error(self, s)
 """
 
 import os, pprint
@@ -29,6 +30,9 @@ class CleanConsole:
 
   def printObject(self, obj):
     self.pp.pprint(obj)
+
+  def error(self, s):
+    self.console('[ERROR] %s' % s)
 
   def isDirPath(self, path):
     return os.path.exists(path) and os.path.isdir(path)

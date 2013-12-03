@@ -84,12 +84,13 @@ class CleanSentimentAnalysis:
   """
   def getScoresFromRawText(self, rawText, detailed = False):
     preprocessedText = self.tp.preprocessedText(rawText)
-    detailedTagResult = self.tagger.tagPreprocessedText(preprocessedText, True)
 
-    simplifiedSentences = []
+    
+    detailedTagResult = self.tagger.tagPreprocessedText(preprocessedText, True)
+    sentenceStrings = self.tagger.getSentencesFromPreprocessedText(preprocessedText)
 
     for sentenceData in detailedTagResult:
-      simplifiedSentences.append(self.getSimplifiedSentenceData(sentenceData))
+      simplifiedSentencesData.append(self.getSimplifiedSentenceData(sentenceData))
 
     # TODO
 
@@ -152,4 +153,6 @@ class CleanSentimentAnalysis:
       isNegative = wordData['isNegative']
       stem = wordData['stem']
       # 2.
+
+    # TODO
     return ret

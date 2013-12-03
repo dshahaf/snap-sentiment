@@ -68,11 +68,11 @@ class CleanTester:
     self.cc.console('Testing CleanTextProcessor...')
     self.cc.console('TEST BEGINS')
     self.askForContinuation()
-    rawText = 'Yesterday was terribly bad. Today is a good day.'
+    rawText = 'Yesterday was a terrible day. Today is a good day.'
     preprocessedText = self.tp.preprocessText(rawText)
-    detailedTagResult = self.tagger.tagPreprocessedText(preprocessedText, True)
+    taggedSentences = self.tagger.getTaggedSentencesFromPreprocessedText(preprocessedText, True)
     self.cc.console('processed text:'); self.cc.printObject(preprocessedText)
-    self.cc.console('detailedTagResult'); self.cc.printObject(detailedTagResult)
+    self.cc.console('taggedSentences:'); self.cc.printObject(taggedSentences)
     self.cc.console('TEST ENDS')
     return
 

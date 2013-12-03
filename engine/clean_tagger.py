@@ -8,15 +8,17 @@ def isNegative(self, word)
 def isStopWord(self, word)
 def isNounWordTag(self, word, tag)
 def isAdjectiveWordTag(self, word, tag)
-def tagPreprocessedText(self, preprocessedText, detailed = False)
 def stem(self, word)
 def stemWithCache(self, word, cache = {})
+def getTaggedSentencesFromPreprocessedText(self, preprocessedText, detailed = False)
+def getSentencesFromPreprocessedText(self, preprocessedText)
 """
 
 import os
 from lib.porter2 import stem as pstem
 from nltk.tokenize import word_tokenize, wordpunct_tokenize, sent_tokenize
 from nltk import pos_tag
+from clean_console import CleanConsole
 
 class CleanTagger:
 
@@ -26,6 +28,7 @@ class CleanTagger:
   posWords = {} # { posWord : True }
   negWords = {} # { negWord : True }
   stopWords = {} # { stopWord : True } # light version
+  console = CleanConsole()
   """
 
   #########################
@@ -37,6 +40,7 @@ class CleanTagger:
     self.posWords = {}
     self.negWords = {}
     self.stopWords = {}
+    self.console = CleanConsole()
 
     # 2. fill variables with data
     data = [
@@ -83,6 +87,86 @@ class CleanTagger:
     ret = self.stem(word)
     cache[word] = ret
     return ret
+
+  def getSentencesFromPreprocessedText(self, preprocessedText):
+    return sent_tokenize(preprocessedText)
+
+  """
+  @param
+  @return
+    case 1) detailed = False
+    [
+      # sentence 1 begins
+      {
+        'sentenceString' : string,
+        'sentenceData' : [
+          # word 1 begins
+          { 'tag' : string, 'word' : string, },
+          ...
+        ]
+      }
+      ,
+      ...
+    ],
+    case 2) detailed = True
+    [
+      # sentence 1 begins
+      {
+        'sentenceString' : string,
+        'sentenceData' : [
+          # word 1 begins
+          {
+            'tag' : string,
+            'word' : string,
+            'isAdjective' : boolean,
+            'isNoun' : boolean,
+            'isStopWord' : boolean,
+            'isPositive' : boolean,
+            'isNegative' : boolean,
+            'stem' : string,
+          },
+        ]
+      }
+      ,
+      ...
+    ],
+
+  """
+  def getTaggedSentencesFromPreprocessedText(self, preprocessedText, detailed = False):
+    sentences = self.getSentencesFromPreprocessedText(preprocessedText)
+    tagResults = self.tagPreprocessedText(preprocessedText, detailed)
+    ret = []
+    if len(sentences) is not len(tagResults):
+      self.console.error('CleanTagger.getTaggedSentencesFromPreprocessedText: lengths do not match')
+      return []
+    count = len(sentences)
+    for i in range(count):
+      sentence = sentences[i]
+      tagResult = tagResults[i]
+      ret.append({
+        'sentenceString' : sentence,
+        'sentenceData' : tagResult
+      })
+    return ret
+
+  #########################
+  # Helpers
+  #########################
+
+  def initDictHelper(self, dictVar, path):
+    if (not os.path.exists(path)) or os.path.isdir(path):
+      # bad
+      return
+
+    # ret = {}
+    with open(path, 'r') as f:
+      for line in f:
+        word = line.rstrip() # \n
+        if word not in dictVar:
+          dictVar[word] = True
+
+    # dictVar = ret
+    return
 
   """
   @param
@@ -164,22 +248,3 @@ class CleanTagger:
       newRet.append(newSentence)
 
     return newRet
-
-  #########################
-  # Helpers
-  #########################
-
-  def initDictHelper(self, dictVar, path):
-    if (not os.path.exists(path)) or os.path.isdir(path):
-      # bad
-      return
-
-    # ret = {}
-    with open(path, 'r') as f:
-      for line in f:
-        word = line.rstrip() # \n
-        if word not in dictVar:
-          dictVar[word] = True
-
-    # dictVar = ret
-    return
