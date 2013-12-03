@@ -89,7 +89,7 @@ class CleanSentimentAnalysis:
 
     simpleSentences = self.getSimpleSentencesFromTaggedSentences(taggedSentences)
 
-    # TODO
+    # TODO continue from here
 
     return
 
