@@ -758,8 +758,6 @@ class SentimentAnalysis:
   }
   """
   def cluster(self, topic):
-    
-    
     ret = {
     	'summary': {
     		'topic' : "",
