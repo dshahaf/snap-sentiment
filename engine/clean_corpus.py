@@ -3,7 +3,7 @@
 """
 Useful methods of class CleanCorpus:
 
-def getDocuments(self, topic, maxCount = 50)
+def getRawDocuments(self, topic, maxCount = 50)
 def getSupportedTopics(self)
 """
 
@@ -43,7 +43,7 @@ class CleanCorpus:
     maxCount applies to each sentiment ('pos', 'neg', 'any'), not these combined
 
   """
-  def getDocuments(self, topic, maxCount = 50):
+  def getRawDocuments(self, topic, maxCount = 50):
     if topic not in self.getSupportedTopics():
       # unsupported topic
       return False

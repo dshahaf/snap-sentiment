@@ -3,10 +3,10 @@
 """
 Useful methods of class CleanTextProcessor:
 
-def preprocessText(self, text, doLowercase = True)
+def preprocessText(self, rawText, doLowercase = True)
 def stem(self, word)
 def stemWithCache(self, word, cache = {})
-def tagText(self, text, detailed = False) # call preprocessText before
+def tagPreprocessedText(self, preprocessedText, detailed = False)
 """
 
 from lib.porter2 import stem as pstem
@@ -30,8 +30,8 @@ class CleanTextProcessor:
     self.tagger = CleanTagger()
     return
 
-  def preprocessText(self, text, doLowercase = True):
-    ret = text
+  def preprocessText(self, rawText, doLowercase = True):
+    ret = rawText
     if doLowercase:
       ret = ret.lower()
     return ret
@@ -48,7 +48,6 @@ class CleanTextProcessor:
 
   """
   @param
-    text is (preferrably) preprocessed before being passed
   @return
     case 1) detailed = False
     [
@@ -82,9 +81,9 @@ class CleanTextProcessor:
       ...
     ]
   """
-  def tagText(self, text, detailed = False):
+  def tagPreprocessedText(self, preprocessedText, detailed = False):
     ret = []
-    sentences = sent_tokenize(text)
+    sentences = sent_tokenize(preprocessedText)
     for sentence in sentences:
       sentenceData = []
       words = word_tokenize(sentence)

@@ -3,6 +3,7 @@
 """
 Useful methods of class CleanSentimentAnalysis:
 
+def getScoresFromRawText(self, rawText, detailed = False)
 def getControversyScoreFromCounts(self, posCount, negCount)
 """
 
@@ -34,8 +35,33 @@ class CleanSentimentAnalysis:
     self.tagger = CleanTagger()
     return
 
-  def getControversialWords(self, text, max = 10):
-    
+  """
+  @param rawText, detailed
+  @return
+  case 1) detailed is False
+  [
+    # word group 1 begins
+    {
+      'words' : [string, ...], # group of equivalent words (currently determined by stems),
+      'scores' : {
+        'controversy' : float,
+        'sentiment' : float,
+      },
+    },
+    ...
+  ]
+  case 2) detailed is True
+  [
+    # word group 1 begins
+    {
+      'words' : [string, ...], # group of equivalent words (currently determined by stems),
+
+    },
+    ...
+  ]
+
+  """
+  def getScoresFromRawText(self, rawText, detailed = False):
     return
 
   def getControversyScoreFromCounts(self, posCount, negCount):

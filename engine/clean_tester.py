@@ -7,7 +7,7 @@ def run(self)
 """
 
 """
-Command for running on python interpreter:
+Command to run on python interpreter:
 
 from engine.clean_tester import CleanTester; tester = CleanTester(); tester.run()
 """
@@ -58,7 +58,7 @@ class CleanTester:
     maxCount = 2
     for topic in topics:
       self.cc.console("topic %s's sample documents:" % topic)
-      docs = self.corpus.getDocuments(topic, maxCount)
+      docs = self.corpus.getRawDocuments(topic, maxCount)
       for doc in docs:
         self.cc.console('DOCUMENT BEGINS (topic:%s)' % topic)
         self.cc.printObject(doc)
@@ -69,10 +69,10 @@ class CleanTester:
   def testCleanTextProcessor(self):
     self.cc.console('TEST BEGINS')
     self.cc.console('Testing CleanTextProcessor...')
-    text = 'I went to the school. It was pretty fun. I learned a lot.'
-    processedText = self.tp.preprocessText(text)
-    detailedTagResult = self.tp.tagText(processedText)
-    self.cc.console('processed text:'); self.cc.printObject(processedText)
+    rawText = 'I went to the school. It was pretty fun. I learned a lot.'
+    preprocessedText = self.tp.preprocessText(rawText)
+    detailedTagResult = self.tp.tagPreprocessedText(preprocessedText)
+    self.cc.console('processed text:'); self.cc.printObject(preprocessedText)
     self.cc.console('detailedTagResult'); self.cc.printObject(detailedTagResult)
     self.cc.console('TEST ENDS')
     return
