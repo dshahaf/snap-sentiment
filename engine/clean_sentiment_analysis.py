@@ -54,11 +54,7 @@ class CleanSentimentAnalysis:
     return self.getScoresFromRawText(rawDocsCombined, detailed)
 
   """
-  @returnVal
-  [
-    # equivalent noun group 1 begins
-    [string, ...],
-  ]
+  See getMostControversialWordsFromRawText() for the return value
   """
   def getMostControversialWordsFromTopic(self, topic, maxCount = 5):
     rawDocsCombined = self.corpus.getRawDocuments(topic, combined = True)
@@ -72,13 +68,23 @@ class CleanSentimentAnalysis:
   @returnVal
   [
     # equivalent noun group 1 begins
-    [string, ...],
+    {
+      'equivalent_nouns' : [],
+      'controversy_score' : float,
+    }
   ]
+
   """
   def getMostControversialWordsFromRawText(self, rawText, maxCount = 5):
     scoresNotDetailed = self.getScoresFromRawText(rawText)
     scoresNotDetailedTrimmed = self.util.getBeginningOfList(scoresNotDetailed, maxCount)
-    return [entry['equivalent_nouns'] for entry in scoresNotDetailedTrimmed]
+    ret = []
+    for entry in scoresNotDetailedTrimmed:
+      retEntry = {}
+      retEntry['equivalent_nouns'] = entry['equivalent_nouns']
+      retEntry['controversy_score'] = entry['scores']['controversy']
+      ret.append(retEntry)
+    return ret
 
   """
   @param rawText, detailed

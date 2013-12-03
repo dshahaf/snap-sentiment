@@ -44,7 +44,7 @@ class CleanTester:
     return
 
   def run(self):
-    # self.testScores()
+    self.testScores()
     self.testMostControversialWords()
     self.testCleanSentimentAnalysis()
     self.testCleanTextProcessor()
@@ -55,9 +55,13 @@ class CleanTester:
     self.testStart('Scores')
     topics = self.corpus.getSupportedTopics()
     for topic in topics:
-      scoresDetailed = self.sa.getScoresFromTopic(topic, True)
-      self.cc.console('detailed scores for topic %s:' % topic)
-      self.cc.printObject(scoresDetailed)
+      if topic == 'ufo':
+        scoresDetailed = self.sa.getScoresFromTopic(topic, True)
+        self.cc.console('detailed scores for topic %s:' % topic)
+        self.cc.printObject(scoresDetailed)
+      else:
+        # takes too long
+        pass
     self.testEnd()
     return
 
