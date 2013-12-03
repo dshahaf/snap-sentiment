@@ -4,6 +4,7 @@
 Useful methods of class CleanSentimentAnalysis:
 
 def getScoresFromRawText(self, rawText, detailed = False)
+def getControversyScoreFromCountsWithCache(self, posCount, negCount, cache = {})
 def getControversyScoreFromCounts(self, posCount, negCount)
 """
 
@@ -50,18 +51,39 @@ class CleanSentimentAnalysis:
     },
     ...
   ]
+
   case 2) detailed is True
   [
     # word group 1 begins
     {
       'words' : [string, ...], # group of equivalent words (currently determined by stems),
-
+      'scores' : {
+        'controversy' : float,
+        'sentiment' : float,
+      },
+      'descriptors' : {
+        'pos_count' : int,
+        'neg_count' : int,
+        'pos_descriptors' : [
+          {
+            'word' : string,
+            'count' : int,
+            'occurrences' : [string, ...] # sentences
+          },
+          ...
+        ],
+        'neg_descriptors' : [
+          ... # same as in pos
+        ],
+      },
     },
     ...
   ]
 
   """
   def getScoresFromRawText(self, rawText, detailed = False):
+    preprocessedText = self.tp.preprocessedText(rawText)
+    
     return
 
   def getControversyScoreFromCounts(self, posCount, negCount):
@@ -80,6 +102,16 @@ class CleanSentimentAnalysis:
 
     ret = log(sN * dF)
     # self.controversyScoreCache[cacheKey] = ret
+    return ret
+
+  def getControversyScoreFromCountsWithCache(self, posCount, negCount, cache = {}):
+    smallerCount = min(posCount, negCount)
+    biggerCount = max(posCount, negCount)
+    tup = (smallerCount, biggerCount)
+    if tup in cache:
+      return cache[tup]
+    ret = self.getControversyScoreFromCounts(posCount, negCount)
+    cache[tup] = ret
     return ret
 
   ##################

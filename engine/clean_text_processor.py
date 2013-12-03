@@ -30,6 +30,7 @@ class CleanTextProcessor:
     self.tagger = CleanTagger()
     return
 
+  # TODO perhaps add asciiOnly?
   def preprocessText(self, rawText, doLowercase = True):
     ret = rawText
     if doLowercase:
