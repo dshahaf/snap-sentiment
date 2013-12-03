@@ -31,9 +31,9 @@ class CleanTagger:
   console = CleanConsole()
   """
 
-  #########################
+  ##################################################
   # Public Methods
-  #########################
+  ##################################################
 
   def __init__(self):
     # 1. create empty variables
@@ -136,8 +136,8 @@ class CleanTagger:
     sentences = self.getSentencesFromPreprocessedText(preprocessedText)
     tagResults = self.tagPreprocessedText(preprocessedText, detailed)
     ret = []
-    if len(sentences) is not len(tagResults):
-      self.console.error('CleanTagger.getTaggedSentencesFromPreprocessedText: lengths do not match')
+    if len(sentences) != len(tagResults):
+      self.console.error('CleanTagger.getTaggedSentencesFromPreprocessedText: lengths do not match (# of sentences: %d, # of tagResults: %d)' % (len(sentences), len(tagResults)))
       return []
     count = len(sentences)
     for i in range(count):
@@ -149,9 +149,9 @@ class CleanTagger:
       })
     return ret
 
-  #########################
+  ##################################################
   # Helpers
-  #########################
+  ##################################################
 
   def initDictHelper(self, dictVar, path):
     if (not os.path.exists(path)) or os.path.isdir(path):
