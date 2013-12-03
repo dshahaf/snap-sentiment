@@ -47,7 +47,7 @@ class CleanSentimentAnalysisClustering(CleanSentimentAnalysis):
   # Helpers
   ##########################################
 
-  def getClusterResultsFromTopicNotDetailed(topic, controversialWordStems):
+  def getClusterResultsFromTopicNotDetailed(self, topic, controversialWordStems):
     rawDocuments = self.corpus.getRawDocuments(topic)
     vectors = []
     heads = []
@@ -66,7 +66,7 @@ class CleanSentimentAnalysisClustering(CleanSentimentAnalysis):
     return []
 
   # TODO
-  def getClusterResultsFromTopicDetailed(topic, controversialWordStems):
+  def getClusterResultsFromTopicDetailed(self, topic, controversialWordStems):
     return []
 
   def getControversialWordStemsFromTopic(self, topic):

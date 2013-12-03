@@ -43,7 +43,7 @@ class CleanTester:
     self.tp = CleanTextProcessor()
     self.sa = CleanSentimentAnalysis()
     self.cc = CleanConsole()
-    selc.sac = CleanSentimentAnalysisClustering()
+    self.sac = CleanSentimentAnalysisClustering()
     return
 
   def run(self):
@@ -56,10 +56,14 @@ class CleanTester:
     return
 
   def testCleanSentimentAnalysisClustering(self):
-    self.testStart('Scores')
+    self.testStart('Clustering')
     topics = self.corpus.getSupportedTopics()
     for topic in topics:
-      self.sac.getClusterResultsFromTopic(topic)
+      if topic == 'ufo':
+        self.sac.getClusterResultsFromTopic(topic)
+      else:
+        # takes too long
+        pass
     self.testEnd()
     return
 
