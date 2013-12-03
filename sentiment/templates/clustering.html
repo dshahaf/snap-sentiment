@@ -14,11 +14,11 @@
   function registerVideoTriggerButtons() {
     var $targetDiv = $('#video-div');
     var $targetIframe = $('#video-iframe');
-    var $buttons = $('.lda-button');
+    var $buttons = $('.video-button');
     $buttons.each(function() {
       $(this).click(function() {
         if ($targetDiv.length > 0) {
-          //$targetDiv.show();
+          // $targetDiv.show();
           $targetDiv.slideToggle();
         }
       });
@@ -94,7 +94,7 @@
               <div class="progress-container progress-container7">
               {% if action|stringformat:"s" == "clustering-movie" %}&#9754;{% endif %}
               </div>
-              <input type="submit" value="Go" class="btn btn-success btn-small" />
+              <input type="submit" value="Go" class="btn btn-success btn-small video-button" />
             </form>
           </td>
         </tr>
@@ -106,7 +106,7 @@
               <div class="progress-container progress-container7">
               {% if action|stringformat:"s" == "clustering-celebrity" %}&#9754;{% endif %}
               </div>
-              <input type="submit" value="Go" class="btn btn-success btn-small" />
+              <input type="submit" value="Go" class="btn btn-success btn-small video-button" />
             </form>
           </td>
         </tr>
@@ -118,7 +118,7 @@
               <div class="progress-container progress-container7">
               {% if action|stringformat:"s" == "clustering-ufo" %}&#9754;{% endif %}
               </div>
-              <input type="submit" value="Go" class="btn btn-success btn-small" />
+              <input type="submit" value="Go" class="btn btn-success btn-small video-button" />
             </form>
           </td>
         </tr>
@@ -130,7 +130,7 @@
               <div class="progress-container progress-container7">
               {% if action|stringformat:"s" == "clustering-syria" %}&#9754;{% endif %}
               </div>
-              <input type="submit" value="Go" class="btn btn-success btn-small" />
+              <input type="submit" value="Go" class="btn btn-success btn-small video-button" />
             </form>
           </td>
         </tr>

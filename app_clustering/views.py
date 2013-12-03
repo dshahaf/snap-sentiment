@@ -21,7 +21,6 @@ def index(request):
 
     if actionTokens[0] == 'clustering': # sanity check
       # one of ['movie', 'celebrity', 'ufo', 'syria']
-      print 'sanity check passed'
       topic = actionTokens[1]
 
       sa = SentimentAnalysis()
