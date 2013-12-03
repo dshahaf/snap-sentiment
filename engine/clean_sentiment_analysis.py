@@ -35,7 +35,7 @@ class CleanSentimentAnalysis:
     return
 
   def getControversialWords(self, text, max = 10):
-
+    
     return
 
   def getControversyScoreFromCounts(self, posCount, negCount):

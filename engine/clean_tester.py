@@ -7,7 +7,8 @@ def run(self)
 """
 
 """
-Commands for copying and pasting:
+Command for running on python interpreter:
+
 from engine.clean_tester import CleanTester; tester = CleanTester(); tester.run()
 """
 
