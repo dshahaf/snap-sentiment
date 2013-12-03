@@ -8,9 +8,10 @@ def getControversyScoreFromCountsWithCache(self, posCount, negCount, cache = {})
 def getControversyScoreFromCounts(self, posCount, negCount)
 """
 
-import nltk, os
-from nltk import pos_tag
-from lib.porter2 import stem
+# import nltk, os
+# from nltk import pos_tag
+# from lib.porter2 import stem
+import os
 from math import log, sqrt
 from clean_corpus import CleanCorpus
 from clean_text_processor import CleanTextProcessor
@@ -41,9 +42,9 @@ class CleanSentimentAnalysis:
   @return
   case 1) detailed is False
   [
-    # word group 1 begins
+    # noun group 1 begins
     {
-      'words' : [string, ...], # group of equivalent words (currently determined by stems),
+      'equivalent_nouns' : [string, ...], # group of equivalent nouns (currently determined by stems),
       'scores' : {
         'controversy' : float,
         'sentiment' : float,
@@ -54,9 +55,9 @@ class CleanSentimentAnalysis:
 
   case 2) detailed is True
   [
-    # word group 1 begins
+    # noun group 1 begins
     {
-      'words' : [string, ...], # group of equivalent words (currently determined by stems),
+      'equivalent_nouns' : [string, ...], # group of equivalent nouns (currently determined by stems),
       'scores' : {
         'controversy' : float,
         'sentiment' : float,
@@ -66,7 +67,7 @@ class CleanSentimentAnalysis:
         'neg_count' : int,
         'pos_descriptors' : [
           {
-            'word' : string,
+            'descriptor' : string,
             'count' : int,
             'occurrences' : [string, ...] # sentences
           },
@@ -83,7 +84,15 @@ class CleanSentimentAnalysis:
   """
   def getScoresFromRawText(self, rawText, detailed = False):
     preprocessedText = self.tp.preprocessedText(rawText)
-    
+    detailedTagResult = self.tagger.tagPreprocessedText(preprocessedText, True)
+
+    simplifiedSentences = []
+
+    for sentenceData in detailedTagResult:
+      simplifiedSentences.append(self.getSimplifiedSentenceData(sentenceData))
+
+    # TODO
+
     return
 
   def getControversyScoreFromCounts(self, posCount, negCount):
@@ -117,3 +126,30 @@ class CleanSentimentAnalysis:
   ##################
   # Helpers
   ##################
+  
+  """
+  @param sentenceData is the return value of CleanTagger.tagPreprocessedText() with detailed = True
+  @return,
+  {
+    'sentence' : string,
+    'nouns' : [string, ...],
+    'pos_descriptors' : [string, ...],
+    'neg_descriptors' : [string, ...],
+  }
+
+  """
+  def getSimplifiedSentenceData(self, sentenceData):
+    ret = {}
+
+    for wordData in sentenceData:
+      # 1. get fields from data
+      tag = wordData['tag']
+      word = wordData['word']
+      isAdjective = wordData['isAdjective']
+      isNoun = wordData['isNoun']
+      isStopWord = wordData['isStopWord']
+      isPositive = wordData['isPositive']
+      isNegative = wordData['isNegative']
+      stem = wordData['stem']
+      # 2.
+    return ret
