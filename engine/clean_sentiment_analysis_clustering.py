@@ -21,6 +21,11 @@ class CleanSentimentAnalysisClustering(CleanSentimentAnalysis):
     'stems' : [],
     'center1' : [],
     'center2' : [],
+    'cluster1_num_pos' : int,
+    'cluster1_num_neg' : int,
+    'cluster2_num_pos' : int,
+    'cluster2_num_neg' : int,
+
     'cluster1' : [
       {
         'head' : string, # first 3 sentences
@@ -112,6 +117,10 @@ class CleanSentimentAnalysisClustering(CleanSentimentAnalysis):
       'center2' : center2,
       'cluster1' : [],
       'cluster2' : [],
+      'cluster1_num_pos' : 0,
+      'cluster1_num_neg' : 0,
+      'cluster2_num_pos' : 0,
+      'cluster2_num_neg' : 0,
     }
 
     for index in cluster1Indexes:
@@ -121,6 +130,10 @@ class CleanSentimentAnalysisClustering(CleanSentimentAnalysis):
         'vector' : vectors[index],
       }
       ret['cluster1'].append(entry)
+      if sentiments[index] == 'pos':
+        ret['cluster1_num_pos'] += 1
+      elif sentiments[index] == 'neg':
+        ret['cluster1_num_neg'] += 1
 
     for index in cluster2Indexes:
       entry = {
@@ -129,7 +142,10 @@ class CleanSentimentAnalysisClustering(CleanSentimentAnalysis):
         'vector' : vectors[index],
       }
       ret['cluster2'].append(entry)
-
+      if sentiments[index] == 'pos':
+        ret['cluster2_num_pos'] += 1
+      elif sentiments[index] == 'neg':
+        ret['cluster2_num_neg'] += 1
 
     return ret
 
