@@ -2,12 +2,19 @@
 
 import os
 
+"""
+Useful Methods:
+def isPositive(self, word)
+def isNegative(self, word)
+def isStopWord(self, word)
+"""
+
 class CleanTagger:
 
   """
   posWords = {} # { posWord : True }
   negWords = {} # { negWord : True }
-  stopWords = {} # { stopWord : True }
+  stopWords = {} # { stopWord : True } # light version
   """
 
   #########################
@@ -34,6 +41,17 @@ class CleanTagger:
       )
       self.initDictHelper(entry['variable'], fullPath)
     return
+
+  def isPositive(self, word):
+    return word in posWords
+
+  def isNegative(self, word):
+    return word in negWords
+
+  def isStopWord(self, word):
+    return word in stopWords
+
+
 
   #########################
   # Helpers
