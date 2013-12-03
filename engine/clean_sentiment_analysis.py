@@ -2,10 +2,11 @@
 
 """
 Useful methods of class CleanSentimentAnalysis:
+
 def getMostControversialWordsFromTopic(self, topic, maxCount = 5)
 def getMostControversialWordsFromRawText(self, rawText, maxCount = 5)
-def getScoresFromRawText(self, rawText, detailed = False)
 def getScoresFromTopic(self, topic, detailed = False)
+def getScoresFromRawText(self, rawText, detailed = False)
 """
 
 # import nltk, os
@@ -48,7 +49,7 @@ class CleanSentimentAnalysis:
   """
   def getScoresFromTopic(self, topic, detailed = False):
     rawDocsCombined = self.corpus.getRawDocuments(topic, combined = True)
-    if rawDocsCombined is False:
+    if not rawDocsCombined:
       self.cc.error('CleanSentimentAnalysis.getScoresFromTopic: Unsuppored topic %s. See CleanCorpus.getSupportedTopics' % topic)
       return []
     return self.getScoresFromRawText(rawDocsCombined, detailed)
@@ -58,7 +59,7 @@ class CleanSentimentAnalysis:
   """
   def getMostControversialWordsFromTopic(self, topic, maxCount = 5):
     rawDocsCombined = self.corpus.getRawDocuments(topic, combined = True)
-    if rawDocsCombined is False:
+    if not rawDocsCombined:
       # unsupported topic
       # see CleanCorpus.getSupportedTopics
       return []
@@ -96,7 +97,7 @@ class CleanSentimentAnalysis:
       'equivalent_nouns' : [string, ...], # group of equivalent nouns (currently determined by stems),
       'scores' : {
         'controversy' : float,
-        'sentiment' : float,
+        'sentiment' : float, # probably an int
       },
     },
     ...

@@ -24,10 +24,12 @@ def index(request):
       # one of ['movie', 'celebrity', 'ufo', 'syria']
       topic = actionTokens[1]
 
+      """
       sa = CleanSentimentAnalysisClustering()
       result = sa.cluster(topic)
       print "result: %s" % result
       context['result'] = result
+      """
     else:
       print 'sanity check failed'
 
