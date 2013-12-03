@@ -18,6 +18,7 @@ from clean_text_processor import CleanTextProcessor
 from clean_corpus import CleanCorpus
 from clean_tagger import CleanTagger
 from clean_console import CleanConsole
+from clean_sentiment_analysis_clustering import CleanSentimentAnalysisClustering
 
 class CleanTester:
 
@@ -28,6 +29,7 @@ class CleanTester:
   corpus = CleanCorpus()
   tp = CleanTextProcessor()
   sa = CleanSentimentAnalysis()
+  sac = CleanSentimentAnalysisClustering
   cc = CleanConsole()
   """
 
@@ -41,14 +43,24 @@ class CleanTester:
     self.tp = CleanTextProcessor()
     self.sa = CleanSentimentAnalysis()
     self.cc = CleanConsole()
+    selc.sac = CleanSentimentAnalysisClustering()
     return
 
   def run(self):
+    self.testCleanSentimentAnalysisClustering()
     self.testScores()
     self.testMostControversialWords()
     self.testCleanSentimentAnalysis()
     self.testCleanTextProcessor()
     self.testCleanCorpus()
+    return
+
+  def testCleanSentimentAnalysisClustering(self):
+    self.testStart('Scores')
+    topics = self.corpus.getSupportedTopics()
+    for topic in topics:
+      self.sac.getClusterResultsFromTopic(topic)
+    self.testEnd()
     return
 
   def testScores(self):

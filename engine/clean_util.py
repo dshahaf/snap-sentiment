@@ -2,6 +2,8 @@
 
 from math import sqrt
 from clean_console import CleanConsole
+from numpy import array
+from scipy.cluster.vq import vq, kmeans, whiten
 
 """
 Useful methods of class CleanUtil:
@@ -18,6 +20,7 @@ def vectorMagnitude(self, v)
 def vectorDot(self, v1, v2)
 def vectorNormalize(self, v)
 
+def doKmeans2(self, vectors)
 """
 
 class CleanUtil:
@@ -113,3 +116,8 @@ class CleanUtil:
       else:
         ret.append(elem)
     return ret
+
+  def doKmeans2(self, vectors):
+    features = array(vectors)
+    whitened = whiten(features)
+    return kmeans(whitened, 2)
