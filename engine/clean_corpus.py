@@ -4,6 +4,7 @@
 Useful methods of class CleanCorpus:
 
 def getDocuments(self, topic, maxCount = 50)
+def getSupportedTopics(self)
 """
 
 import os
@@ -27,9 +28,7 @@ class CleanCorpus:
 
   """
   @param
-    topic is one of the following:
-    ['movie', 'celebrity', 'syria', 'ufo']
-    The topic should match the name of the directory within engine/clean_data
+    topic should be supported (see getSupportedTopics)
   @return
     [
       {
@@ -45,6 +44,10 @@ class CleanCorpus:
 
   """
   def getDocuments(self, topic, maxCount = 50):
+    if topic not in self.getSupportedTopics():
+      # unsupported topic
+      return False
+
     pathToDir = os.path.join(
       os.path.dirname(os.path.abspath(__file__)),
       'clean_data',
@@ -79,6 +82,13 @@ class CleanCorpus:
         })
 
     return ret
+
+  """
+  @return list of topics that are supported
+  Each supported topic should match the name of the directory within engine/clean_data
+  """
+  def getSupportedTopics(self):
+    return ['movie', 'celebrity', 'syria', 'ufo']
 
   #############################
   # Helpers

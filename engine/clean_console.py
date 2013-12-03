@@ -24,7 +24,7 @@ class CleanConsole:
     return
 
   def console(self, s):
-    print("\n>> %s" % s)
+    print("\n> %s" % s)
 
   def printObject(self, obj):
     self.pp.pprint(obj)
