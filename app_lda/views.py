@@ -1,4 +1,6 @@
-# Create your views here.
+"""
+LDA analysis
+"""
 from django.shortcuts import render
 from django.template import RequestContext, loader
 from django import forms

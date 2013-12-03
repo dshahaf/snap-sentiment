@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+{% load staticfiles %}
+<script type="text/javascript" src="{% static 'javascript/showSpinner1.js' %}"></script>
+{% endblock %}
+
+{% block title %}Clustering{% endblock %}
+
+{% block body %}
+<script>
+  function onloadFunction() {
+    return;
+  }
+  window.onload = window.onloadFunction;
+</script>
+{% endblock %}
+
+{% block navbar_clustering %}<li class="active"><a href="/clustering">Clustering</a></li>{% endblock %}
+
+{% block main-title %}Clustering{% endblock %}
+
+{% block main-description %}
+<p>The goal is to cluster a set of documents into two groups: positive or negative.</p>
+<p>Steps: 1) Identify the controversial nouns of the current topic using the controversy scores, 2) Convert each document into a vector of its sentiment score for each of the controversial nouns, 3) Use the k-means (<code>k = 2</code>) algorithm to cluster the vectors.</p>
+{% endblock %}
+
+{% block main-content %}
+
+
+
+{% endblock %}

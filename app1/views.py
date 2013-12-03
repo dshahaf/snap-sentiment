@@ -1,4 +1,7 @@
-# Create your views here.
+"""
+Simple Analysis
+"""
+
 from django.shortcuts import render
 from django.template import RequestContext, loader
 from django import forms

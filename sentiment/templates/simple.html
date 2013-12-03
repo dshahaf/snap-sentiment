@@ -12,6 +12,7 @@
 <script>
 	function onloadFunction() {
 		window.loadSpinnerHandlers();
+		return;
 		var outputHeader = $('.h-output');
 		if (outputHeader.length > 0) {
 			var top = outputHeader.position().top - 40; // navbar
@@ -27,7 +28,9 @@
 {% block main-title %}Simple Analysis{% endblock %}
 
 {% block main-description %}
-	<p>The sentiment is determined based on the number of positive and negative words that are present.</p>
+	<p>The goal is to try a very simple model for determining the sentiment of a document, where the sentiment is determined based <strong>on the number of positive and negative words</strong> that are present.</p>
+	<p>Please see the home page for the source of the list of positive/negative words.</p>
+
 {% endblock %}
 
 {% block main-content %}

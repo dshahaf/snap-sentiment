@@ -95,7 +95,8 @@
 {% block main-title %}Noun Analysis{% endblock %}
 
 {% block main-description %}
-<p>We determine the sentiment of each sentence based on the number of positive/negative words used. Then we identify the nouns in these sentences to fathom the author's sentiment for these objects.</p>
+<p>The main goal is to identify the list of controversial nouns given a document (or a combined body of documents).</p>
+<p>We compute the controversy score (greater means more controversial) of a noun based on the number of positive and negative "neighbors". A neighbor is an adjective that appears in the same sentence as the noun.</p>
 {% endblock %}
 
 {% block main-content %}

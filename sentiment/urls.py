@@ -19,4 +19,5 @@ urlpatterns = patterns('',
 	url(r'^simple/', include('app1.urls')),
 	url(r'^noun/', include('app2.urls')),
 	url(r'^lda/', include('app_lda.urls')),
+	url(r'^clustering/', include('app_clustering.urls')),
 )
