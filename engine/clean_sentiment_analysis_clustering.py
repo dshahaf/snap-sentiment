@@ -47,38 +47,54 @@ class CleanSentimentAnalysisClustering(CleanSentimentAnalysis):
   # Helpers
   ##########################################
 
+  # TODO
+  def getClusterResultsFromTopicDetailed(self, topic, controversialWordStems):
+    return []
+
   def getClusterResultsFromTopicNotDetailed(self, topic, controversialWordStems):
     rawDocuments = self.corpus.getRawDocuments(topic)
     vectors = []
     heads = []
+    sentiments = []
 
-    for rawDocument in rawDocuments:
+    for rawDocumentWrapper in rawDocuments:
+      rawDocument = rawDocumentWrapper['document']
+      sentiment = rawDocumentWrapper['sentiment']
+
       countVectorDict = self.getCountVectorDictFromRawDocument(rawDocument, controversialWordStems)
       countVector = self.util.getListFromDict(countVectorDict)
       normalizedVector = self.util.vectorNormalize(countVector)
       head = self.getHeadFromRawDocument(rawDocument)
       vectors.append(normalizedVector)
       heads.append(head)
+      sentiments.append(sentiment)
 
-    self.util.doKmeans(vectors)
+    self.util.doKmeans2(vectors)
 
     # TODO
     return []
 
-  # TODO
-  def getClusterResultsFromTopicDetailed(self, topic, controversialWordStems):
-    return []
-
+  """
+  @returnVal
+  list of controversial word stems
+  """
   def getControversialWordStemsFromTopic(self, topic):
     controversialWordsList = self.getMostControversialWordsFromTopic(topic) # this has scores too
     equivalentNounsList = [elem['equivalent_nouns'] for elem in controversialWordsList]
     ret = []
     for equivalentNouns in equivalentNounsList:
-      if len(equivalentNouns) > 0:
+      if len(equivalentNouns) > 0: # just in case
         stem = self.tagger.stem(equivalentNouns[0])
         ret.append(stem)
     return ret
 
+  """
+  @returnVal
+  {
+    stem => sentimentScore,
+    ...
+  }
+  """
   def getCountVectorDictFromRawDocument(self, rawDocument, controversialWordStems):
     ret = {}
     for controversialWordStem in controversialWordStems:
