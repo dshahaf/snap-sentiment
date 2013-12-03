@@ -10,6 +10,21 @@
 
 {% block body %}
 <script>
+
+  function registerVideoTriggerButtons() {
+    var $targetDiv = $('#video-div');
+    var $targetIframe = $('#video-iframe');
+    var $buttons = $('.lda-button');
+    $buttons.each(function() {
+      $(this).click(function() {
+        if ($targetDiv.length > 0) {
+          //$targetDiv.show();
+          $targetDiv.slideToggle();
+        }
+      });
+    });
+  }
+
   function registerAddDocumentButton() {
     return;
     var $button = $('.user-input-form-wrapper .add-document-button').first();
@@ -29,7 +44,9 @@
   }
 
   function onloadFunction() {
+    loadSpinnerHandlers();
     registerAddDocumentButton();
+    registerVideoTriggerButtons();
     return;
   }
   window.onload = window.onloadFunction;
@@ -47,17 +64,21 @@
 
 {% block main-content %}
 
+<!--
 <div class="row">
   <div class="span12">
     <div class="text-center" style=""><h3>~ Input ~</h3></div>
   </div>
 </div>
+-->
+
 <div class="row">
   <div class="span12 text-center" style="margin-bottom:10px;">
     <!-- OPTION 1: Use available data sets -->
   </div>
   <div class="offset2 span8">
     <table class="table-centered table table-condensed table-bordered table-striped table-action">
+      <caption><strong>Available Data Sets</strong></caption>
       <thead>
         <tr class="">
           <th>Data Set Name</th>
@@ -70,7 +91,7 @@
           <td>
             <form action="/clustering/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
               <input type="hidden" name="action" value="clustering-movie" />
-              <div class="progress-container progress-container6">
+              <div class="progress-container progress-container7">
               {% if action|stringformat:"s" == "clustering-movie" %}&#9754;{% endif %}
               </div>
               <input type="submit" value="Go" class="btn btn-success btn-small" />
@@ -82,7 +103,7 @@
           <td>
             <form action="/clustering/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
               <input type="hidden" name="action" value="clustering-celebrity" />
-              <div class="progress-container progress-container6">
+              <div class="progress-container progress-container7">
               {% if action|stringformat:"s" == "clustering-celebrity" %}&#9754;{% endif %}
               </div>
               <input type="submit" value="Go" class="btn btn-success btn-small" />
@@ -94,7 +115,7 @@
           <td>
             <form action="/clustering/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
               <input type="hidden" name="action" value="clustering-ufo" />
-              <div class="progress-container progress-container6">
+              <div class="progress-container progress-container7">
               {% if action|stringformat:"s" == "clustering-ufo" %}&#9754;{% endif %}
               </div>
               <input type="submit" value="Go" class="btn btn-success btn-small" />
@@ -106,7 +127,7 @@
           <td>
             <form action="/clustering/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
               <input type="hidden" name="action" value="clustering-syria" />
-              <div class="progress-container progress-container6">
+              <div class="progress-container progress-container7">
               {% if action|stringformat:"s" == "clustering-syria" %}&#9754;{% endif %}
               </div>
               <input type="submit" value="Go" class="btn btn-success btn-small" />
@@ -160,9 +181,14 @@
 </div>
 -->
 
+<div id="video-div" style="text-align:center; display:none;">
+  <h4>Here's something to watch while you're waiting. Click to play! :)</h4>
+  <iframe width="560" height="315" src="//www.youtube.com/embed/uNr6uxjvfb4" frameborder="0" allowfullscreen id="video-iframe"></iframe>
+</div>
+
 <div class="row" style="margin-top:20px; margin-bottom:50px;">
   <div class="span12">
-    <div class="text-center" style=""><h3>~ Output ~</h3></div>
+    <div class="text-center" style=""><h3>Output</h3></div>
   </div>
 </div>
 

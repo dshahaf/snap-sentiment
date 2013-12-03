@@ -88,6 +88,9 @@ form.form-user-input .progress-container .spinner {
 .tr-lightgrey {
   background: #f8f8f8;
 }
+.container {
+  padding: 0 10px;
+}
 .app-sentence form.form-user-input .progress-container {
   position: absolute;
   margin-top: 14px;
@@ -134,8 +137,8 @@ form.form-user-input .progress-container .spinner {
 .table-action .progress-container5 {
   margin-left: 150px;
 }
-.table-action .progress-container6 {
-  margin-left: 135px;
+.progress-container7 {
+  margin-left: 125px !important;
 }
 .my-small-text-button {
   font-weight: normal !important;

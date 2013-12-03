@@ -746,7 +746,7 @@ class SentimentAnalysis:
 	topic is one of ['movie', 'celebrity', 'ufo', 'syria']
 	'''
 	def cluster(self, topic):
-		for i in range(1000000000000000):
+		for i in range(100000):
 			print i * i * i * i * i * i
 		ret = {}
 		return ret;
