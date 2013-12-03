@@ -44,15 +44,24 @@ class CleanTester:
     return
 
   def run(self):
+    self.testMostControversialWords()
     self.testCleanSentimentAnalysis()
     self.testCleanTextProcessor()
-    self.testCorpus()
+    self.testCleanCorpus()
     return
 
+  def testMostControversialWords(self):
+    self.testStart('MostControversialWords')
+    topics = self.corpus.getSupportedTopics()
+    for topic in topics:
+      mostControversialWords = self.sa.getMostControversialWordsOnTopic(topic)
+      self.cc.console('most controversial words for topic %s:' % topic)
+      self.cc.printObject(mostControversialWords)
+    self.testEnd()
+    return;
+
   def testCleanSentimentAnalysis(self):
-    self.cc.console('Testing CleanSentimentAnalysis...')
-    self.cc.console('TEST BEGINS')
-    self.askForContinuation()
+    self.testStart('CleanSentimentAnalysis')
     rawText = 'Basketball is great. Golf is terrible.'
     scoresNotDetailed = self.sa.getScoresFromRawText(rawText, False)
     scoresDetailed = self.sa.getScoresFromRawText(rawText, True)
@@ -61,13 +70,11 @@ class CleanTester:
     self.cc.printObject(scoresNotDetailed)
     self.cc.console('scores (detailed):')
     self.cc.printObject(scoresDetailed)
-    self.cc.console('TEST ENDS')
+    self.testEnd()
     return    
 
-  def testCorpus(self):
-    self.cc.console('Testing CleanCorpus...')
-    self.cc.console('TEST BEGINS')
-    self.askForContinuation()
+  def testCleanCorpus(self):
+    self.testStart('CleanCorpus')
     topics = self.corpus.getSupportedTopics()
     maxCount = 2
     for topic in topics:
@@ -77,19 +84,17 @@ class CleanTester:
         self.cc.console('DOCUMENT BEGINS (topic:%s)' % topic)
         self.cc.printObject(doc)
         self.cc.console('DOCUMENT ENDS')
-    self.cc.console('TEST ENDS')
+    self.testEnd()
     return
 
   def testCleanTextProcessor(self):
-    self.cc.console('Testing CleanTextProcessor...')
-    self.cc.console('TEST BEGINS')
-    self.askForContinuation()
+    self.testStart('CleanTextProcessor')
     rawText = 'Yesterday was a terrible day. Today is a good day.'
     preprocessedText = self.tp.preprocessText(rawText)
     taggedSentences = self.tagger.getTaggedSentencesFromPreprocessedText(preprocessedText, True)
     self.cc.console('processed text:'); self.cc.printObject(preprocessedText)
     self.cc.console('taggedSentences:'); self.cc.printObject(taggedSentences)
-    self.cc.console('TEST ENDS')
+    self.testEnd()
     return
 
   ##################
@@ -99,3 +104,12 @@ class CleanTester:
     ret = self.cc.askYesOrNo('Continue?')
     if not ret:
       exit()
+
+  def testStart(self, testName):
+    self.cc.console('Testing %s...' % testName)
+    self.cc.console('TEST BEGIN')
+    self.askForContinuation()
+    return
+
+  def testEnd(self):
+    self.cc.console('TEST END')

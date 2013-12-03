@@ -219,10 +219,10 @@ class CleanTagger:
       ret.append(sentenceData)
 
     if not detailed:
-      print('detailed is False')
+      # print('detailed is False')
       return ret
 
-    print('detailed is True')
+    # print('detailed is True')
     # details requested. add the following infos:
     #   isAdjective, isNoun, isStopWord, isPositive, isNegative, stem
 

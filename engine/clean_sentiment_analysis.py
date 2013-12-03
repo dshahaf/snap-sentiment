@@ -39,13 +39,20 @@ class CleanSentimentAnalysis:
     self.util = CleanUtil()
     return
 
+  """
+  @returnVal
+  [
+    # equivalent noun group 1 begins
+    [string, ...],
+  ]
+  """
   def getMostControversialWordsOnTopic(self, topic, maxCount = 5):
     rawDocsCombined = self.corpus.getRawDocuments(topic, maxCount, True)
     if rawDocsCombined is False:
       # unsupported topic
       # see CleanCorpus.getSupportedTopics
       return []
-    return self.getMostControversialWordsFromRawText(topic, rawDocsCombined, maxCount)
+    return self.getMostControversialWordsFromRawText(rawDocsCombined, maxCount)
 
   """
   @returnVal

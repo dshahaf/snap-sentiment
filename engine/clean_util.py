@@ -23,5 +23,5 @@ class CleanUtil:
     length = len(l)
     if length <= maxCount:
       return l
-    else
+    else:
       return l[:maxCount]
