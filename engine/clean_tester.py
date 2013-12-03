@@ -44,21 +44,32 @@ class CleanTester:
     return
 
   def run(self):
+    # self.testScores()
     self.testMostControversialWords()
     self.testCleanSentimentAnalysis()
     self.testCleanTextProcessor()
     self.testCleanCorpus()
     return
 
+  def testScores(self):
+    self.testStart('Scores')
+    topics = self.corpus.getSupportedTopics()
+    for topic in topics:
+      scoresDetailed = self.sa.getScoresFromTopic(topic, True)
+      self.cc.console('detailed scores for topic %s:' % topic)
+      self.cc.printObject(scoresDetailed)
+    self.testEnd()
+    return
+
   def testMostControversialWords(self):
     self.testStart('MostControversialWords')
     topics = self.corpus.getSupportedTopics()
     for topic in topics:
-      mostControversialWords = self.sa.getMostControversialWordsOnTopic(topic)
+      mostControversialWords = self.sa.getMostControversialWordsFromTopic(topic)
       self.cc.console('most controversial words for topic %s:' % topic)
       self.cc.printObject(mostControversialWords)
     self.testEnd()
-    return;
+    return
 
   def testCleanSentimentAnalysis(self):
     self.testStart('CleanSentimentAnalysis')

@@ -2,9 +2,10 @@
 
 """
 Useful methods of class CleanSentimentAnalysis:
-def getMostControversialWordsOnTopic(self, topic, maxCount = 5)
+def getMostControversialWordsFromTopic(self, topic, maxCount = 5)
 def getMostControversialWordsFromRawText(self, rawText, maxCount = 5)
 def getScoresFromRawText(self, rawText, detailed = False)
+def getScoresFromTopic(self, topic, detailed = False)
 """
 
 # import nltk, os
@@ -16,6 +17,7 @@ from clean_corpus import CleanCorpus
 from clean_text_processor import CleanTextProcessor
 from clean_tagger import CleanTagger
 from clean_util import CleanUtil
+from clean_console import CleanConsole
 
 class CleanSentimentAnalysis:
 
@@ -26,6 +28,7 @@ class CleanSentimentAnalysis:
   corpus = CleanCorpus()
   tagger = CleanTagger()
   util = CleanUtil()
+  cc = CleanConsole()
   """
 
   ##############################################
@@ -37,7 +40,18 @@ class CleanSentimentAnalysis:
     self.corpus = CleanCorpus()
     self.tagger = CleanTagger()
     self.util = CleanUtil()
+    self.cc = CleanConsole()
     return
+
+  """
+  See getScoresFromRawText() for the return value
+  """
+  def getScoresFromTopic(self, topic, detailed = False):
+    rawDocsCombined = self.corpus.getRawDocuments(topic, combined = True)
+    if rawDocsCombined is False:
+      self.cc.error('CleanSentimentAnalysis.getScoresFromTopic: Unsuppored topic %s. See CleanCorpus.getSupportedTopics' % topic)
+      return []
+    return self.getScoresFromRawText(rawDocsCombined, detailed)
 
   """
   @returnVal
@@ -46,8 +60,8 @@ class CleanSentimentAnalysis:
     [string, ...],
   ]
   """
-  def getMostControversialWordsOnTopic(self, topic, maxCount = 5):
-    rawDocsCombined = self.corpus.getRawDocuments(topic, maxCount, True)
+  def getMostControversialWordsFromTopic(self, topic, maxCount = 5):
+    rawDocsCombined = self.corpus.getRawDocuments(topic, combined = True)
     if rawDocsCombined is False:
       # unsupported topic
       # see CleanCorpus.getSupportedTopics
