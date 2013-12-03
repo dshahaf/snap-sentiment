@@ -2,6 +2,7 @@
 
 """
 Useful methods of class CleanTagger:
+
 def isPositive(self, word)
 def isNegative(self, word)
 def isStopWord(self, word)
@@ -14,6 +15,8 @@ import os
 class CleanTagger:
 
   """
+  ivars:
+
   posWords = {} # { posWord : True }
   negWords = {} # { negWord : True }
   stopWords = {} # { stopWord : True } # light version

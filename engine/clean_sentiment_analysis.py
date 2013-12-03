@@ -2,6 +2,7 @@
 
 """
 Useful methods of class CleanSentimentAnalysis:
+
 def getControversyScoreFromCounts(self, posCount, negCount)
 """
 
@@ -16,6 +17,8 @@ from clean_tagger import CleanTagger
 class CleanSentimentAnalysis:
 
   """
+  ivars:
+
   tp = CleanTextProcessor()
   corpus = CleanCorpus()
   tagger = CleanTagger()

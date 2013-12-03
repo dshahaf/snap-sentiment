@@ -2,6 +2,7 @@
 
 """
 Useful methods of class CleanTextProcessor:
+
 def preprocessText(self, text, doLowercase = True)
 def stem(self, word)
 def stemWithCache(self, word, cache = {})
@@ -16,6 +17,8 @@ from nltk import pos_tag
 class CleanTextProcessor:
 
   """
+  ivars:
+
   tagger = CleanTagger()
   """
 

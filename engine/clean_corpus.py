@@ -2,18 +2,27 @@
 
 """
 Useful methods of class CleanCorpus:
+
 def getDocuments(self, topic, maxCount = 50)
 """
 
 import os
+from clean_console import CleanConsole
 
 class CleanCorpus:
+
+  """
+  ivars:
+
+  cc = CleanConsole()
+  """
 
   #############################
   # Public Methods
   #############################
 
   def __init__(self):
+    self.cc = CleanConsole()
     return
 
   """
@@ -42,7 +51,7 @@ class CleanCorpus:
       topic
     )
 
-    if not self.isDirPath(pathToDir):
+    if not self.cc.isDirPath(pathToDir):
       # bad
       return False
 
@@ -55,7 +64,7 @@ class CleanCorpus:
       })
 
     for entry in data:
-      entry['docs'] = self.getFilesFromDirectory(
+      entry['docs'] = self.cc.getFilesFromDirectory(
         os.path.join(pathToDir, entry['subdir'])
       )
       if len(entry['docs']) > maxCount:
@@ -74,21 +83,3 @@ class CleanCorpus:
   #############################
   # Helpers
   #############################
-
-  """
-  @return list of documents, [] if none found
-  """
-  def getFilesFromDirectory(self, pathToDir):
-    if not self.isDirPath(pathToDir):
-      return []
-    ret = []
-    filenames = os.listdir(pathToDir)
-    for filename in filenames:
-      path = os.path.join(pathToDir, filename)
-      with open(path, 'r') as f:
-        content = f.read()
-        ret.append(content)
-    return ret
-
-  def isDirPath(self, path):
-    return os.path.exists(path) and os.path.isdir(path)

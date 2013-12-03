@@ -2,6 +2,7 @@
 
 """
 Useful methods of class CleanTester:
+
 def run(self)
 """
 
@@ -15,15 +16,18 @@ from clean_sentiment_analysis import CleanSentimentAnalysis
 from clean_text_processor import CleanTextProcessor
 from clean_corpus import CleanCorpus
 from clean_tagger import CleanTagger
+from clean_console import CleanConsole()
 
 class CleanTester:
 
   """
+  ivars:
+
   tagger = CleanTagger()
   corpus = CleanCorpus()
   tp = CleanTextProcessor()
   sa = CleanSentimentAnalysis()
-  pp = pprint.PrettyPrinter(indent = 4)
+  cc = CleanConsole()
   """
 
   ##################
@@ -35,28 +39,27 @@ class CleanTester:
     self.corpus = CleanCorpus()
     self.tp = CleanTextProcessor()
     self.sa = CleanSentimentAnalysis()
-    self.pp = pprint.PrettyPrinter(indent = 4)
+    self.cc = CleanConsole()
     return
 
   def run(self):
     self.testCleanTextProcessor()
+    self.testCorpus()
     return
 
   ##################
   # Helpers
   ##################
 
+  def testCorpus(self):
+    
+    return
+
   def testCleanTextProcessor(self):
-    self.console('Testing CleanTextProcessor...')
+    self.cc.console('Testing CleanTextProcessor...')
     text = 'I went to the school. It was pretty fun. I learned a lot.'
     processedText = self.tp.preprocessText(text)
     detailedTagResult = self.tp.tagText(processedText)
-    self.console('processed text:'); self.printObject(processedText)
-    self.console('detailedTagResult'); self.printObject(detailedTagResult)
+    self.cc.console('processed text:'); self.cc.printObject(processedText)
+    self.cc.console('detailedTagResult'); self.cc.printObject(detailedTagResult)
     return
-
-  def console(self, s):
-    print("\n>> %s" % s)
-
-  def printObject(self, obj):
-    self.pp.pprint(obj)
