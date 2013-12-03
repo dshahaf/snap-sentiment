@@ -20,11 +20,11 @@ class CleanTextProcessor:
   def __init__(self):
     return
 
-  # TODO perhaps add asciiOnly?
   def preprocessText(self, rawText, doLowercase = True):
     ret = rawText
     if doLowercase:
       ret = ret.lower()
+    ret = ret.replace('<br />', '\n')
     return ret
 
   ##################
