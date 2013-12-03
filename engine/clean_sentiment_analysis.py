@@ -16,6 +16,7 @@ from math import log, sqrt
 from clean_corpus import CleanCorpus
 from clean_text_processor import CleanTextProcessor
 from clean_tagger import CleanTagger
+from clean_util import CleanUtil
 
 class CleanSentimentAnalysis:
 
@@ -25,6 +26,7 @@ class CleanSentimentAnalysis:
   tp = CleanTextProcessor()
   corpus = CleanCorpus()
   tagger = CleanTagger()
+  util = CleanUtil()
   """
 
   ##################
@@ -35,6 +37,7 @@ class CleanSentimentAnalysis:
     self.tp = CleanTextProcessor()
     self.corpus = CleanCorpus()
     self.tagger = CleanTagger()
+    self.util = CleanUtil()
     return
 
   """
@@ -204,6 +207,7 @@ class CleanSentimentAnalysis:
       numPosDescriptors = len(posDescriptors)
       numNegDescriptors = len(negDescriptors)
 
+      currNounStems = {}
       for noun in nouns:
         stem = noun['stem']
         word = noun['word']
@@ -224,8 +228,10 @@ class CleanSentimentAnalysis:
         # 2. update the entry
         if word not in entry['equivalent_nouns']:
           entry['equivalent_nouns'][word] = True
-        entry['counts']['pos'] += numPosDescriptors
-        entry['counts']['neg'] += numNegDescriptors
+        if stem not in currNounStems:
+          entry['counts']['pos'] += numPosDescriptors
+          entry['counts']['neg'] += numNegDescriptors
+          currNounStems[stem] = True
 
     # 2. stemToEntry: get scores
     controversyScoreCache = {}
@@ -262,12 +268,17 @@ class CleanSentimentAnalysis:
       nouns = simpleSentence['nouns'] # { 'word' : string, 'stem' : string }
       posDescriptors = simpleSentence['pos_descriptors']
       negDescriptors = simpleSentence['neg_descriptors']
+      posDescriptorsCountDict = self.util.getCountDictFromList(posDescriptors)
+      negDescriptorsCountDict = self.util.getCountDictFromList(negDescriptors)
       numPosDescriptors = len(posDescriptors)
       numNegDescriptors = len(negDescriptors)
+
+      currNounStems = {}
 
       for noun in nouns:
         stem = noun['stem']
         word = noun['word']
+
         # 1. create an entry if it doesn't exist
         if stem not in stemToEntry:
           stemToEntry[stem] = {
@@ -276,24 +287,61 @@ class CleanSentimentAnalysis:
               'controversy' : 0.0,
               'sentiment' : 0.0,
             },
-            'counts' : {
-              'pos' : 0,
-              'neg' : 0,
+            'descriptors' : {
+              'pos_count' : 0,
+              'neg_count' : 0,
+              'pos_descriptors' : {
+                """
+                descriptor : {
+                  'count' : 0,
+                  'sentences' : [string, ...]
+                }
+                """
+              },
+              'neg_descriptors' : {
+                # ...
+              },
             }
           }
         entry = stemToEntry[stem]
+
         # 2. update the entry
         if word not in entry['equivalent_nouns']:
           entry['equivalent_nouns'][word] = True
-        entry['counts']['pos'] += numPosDescriptors
-        entry['counts']['neg'] += numNegDescriptors
+
+        if stem not in currNounStems:
+          currNounStems[stem] = True
+          entry['descriptors']['pos_count'] += numPosDescriptors
+          entry['descriptors']['neg_count'] += numNegDescriptors
+          currPosDescriptorsDict = entry['descriptors']['pos_descriptors']
+          for posDescriptor in posDescriptorsCountDict.keys():
+            posDescriptorCount = posDescriptorsCountDict[posDesecriptor]
+            if posDescriptor not in currPosDescriptorsDict:
+              currPosDescriptorsDict[posDescriptor] = {
+                'count' : 0,
+                'sentences' : [],
+              }
+            currPosDescriptorsDict[posDescriptor]['count'] += posDescriptorCount
+            currPosDescriptorsDict[posDescriptor]['sentences'].append(sentenceString)
+          currNegDescriptorsDict = entry['descriptors']['neg_descriptors']
+          for negDescriptor in negDescriptorsCountDict.keys():
+            negDescriptorCount = negDescriptorsCountDict[negDesecriptor]
+            if negDescriptor not in currNegDescriptorsDict:
+              currNegDescriptorsDict[negDescriptor] = {
+                'count' : 0,
+                'sentences' : [],
+              }
+            currNegDescriptorsDict[negDescriptor]['count'] += negDescriptorCount
+            currNegDescriptorsDict[negDescriptor]['sentences'].append(sentenceString)
+
+      # end of for noun in nouns:
 
     # 2. stemToEntry: get scores
     controversyScoreCache = {}
     for stem in stemToEntry.keys():
       entry = stemToEntry[stem]
-      posCount = entry['counts']['pos']
-      negCount = entry['counts']['neg']
+      posCount = entry['descriptors']['pos_count']
+      negCount = entry['descriptors']['neg_count']
       entry['scores']['sentiment'] = posCount - negCount
       entry['scores']['controversy'] = self.getControversyScoreFromCountsWithCache(posCount, negCount, controversyScoreCache)
 
@@ -302,10 +350,34 @@ class CleanSentimentAnalysis:
 
     for stem in stemToEntry.keys():
       entry = stemToEntry[stem]
+
       retEntry = {
         'equivalent_nouns' : sorted(entry['equivalent_nouns'].keys()),
-        'scores' : entry['scores']
+        'scores' : entry['scores'],
+        'descriptors' : {
+          'pos_count' : entry['descriptors']['pos_count'],
+          'neg_count' : entry['descriptors']['neg_count'],
+          'pos_descriptors' : [],
+          'neg_descriptors' : [],
+        },
       }
+
+      posDescriptorsSorted = sorted(entry['descriptors']['pos_descriptors'].keys())
+      for posDescriptor in posDescriptorsSorted:
+        retEntry['descriptors']['pos_descriptors'].append({
+          'descriptor' : posDescriptor,
+          'count' : entry['descriptors']['pos_descriptors'][posDescriptor]['count'],
+          'sentences' : entry['descriptors']['pos_descriptors'][posDescriptor]['sentences'],
+        })
+
+      negDescriptorsSorted = sorted(entry['descriptors']['neg_descriptors'].keys())
+      for negDescriptor in negDescriptorsSorted:
+        retEntry['descriptors']['neg_descriptors'].append({
+          'descriptor' : negDescriptor,
+          'count' : entry['descriptors']['neg_descriptors'][negDescriptor]['count'],
+          'sentences' : entry['descriptors']['neg_descriptors'][negDescriptor]['sentences'],
+        })
+
       ret.append(retEntry)
 
     return ret
