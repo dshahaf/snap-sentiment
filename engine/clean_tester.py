@@ -59,11 +59,9 @@ class CleanTester:
     self.testStart('Clustering')
     topics = self.corpus.getSupportedTopics()
     for topic in topics:
-      if topic == 'ufo':
-        self.sac.getClusterResultsFromTopic(topic)
-      else:
-        # takes too long
-        pass
+      ret = self.sac.getClusterResultsFromTopic(topic)
+      self.cc.console('topic:%s' % topic)
+      self.cc.printObject(ret)
     self.testEnd()
     return
 

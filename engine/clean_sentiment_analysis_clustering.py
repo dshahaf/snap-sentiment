@@ -17,21 +17,23 @@ class CleanSentimentAnalysisClustering(CleanSentimentAnalysis):
   """
   @returnVal
   1) detailed is False
-  [
-    # cluster 1 begins
-    [
-      # cluster 1's document 1 begins
+  {
+    'stems' : [],
+    'center1' : [],
+    'center2' : [],
+    'cluster1' : [
       {
         'head' : string, # first 3 sentences
+        'sentiment' : string, # 'pos' or 'neg',
+        'vector' : [],
       },
       ...
-    ]
-    ,
-    # cluster 2 begins
-    [
-      ...
     ],
-  ]
+    'cluster2' : [
+      ...
+    ]
+  }
+
   2) detailed is True
   TODO
 
@@ -72,23 +74,64 @@ class CleanSentimentAnalysisClustering(CleanSentimentAnalysis):
       heads.append(head)
       sentiments.append(sentiment)
 
-    # debugging
     l = len(vectors)
-    self.cc.console('stems:')
-    self.cc.printObject(controversialWordStems)
+
+    if False:
+      # debugging
+      self.cc.console('stems:')
+      self.cc.printObject(controversialWordStems)
+
+      for i in range(l):
+        self.cc.console('sentiment:')
+        self.cc.printObject(sentiments[i])
+        self.cc.console('head:')
+        self.cc.printObject(heads[i])
+        self.cc.console('vector:')
+        self.cc.printObject(vectors[i])
+
+    res = self.util.doKmeans2(vectors)
+    center1 = res[0][0]
+    center2 = res[0][1]
+    distortion = res[1]
+
+    cluster1Indexes = []
+    cluster2Indexes = []
 
     for i in range(l):
-      self.cc.console('sentiment:')
-      self.cc.printObject(sentiments[i])
-      self.cc.console('head:')
-      self.cc.printObject(heads[i])
-      self.cc.console('vector:')
-      self.cc.printObject(vectors[i])
+      vector = vectors[i]
+      distToCenter1 = self.util.vectorDist(vector, center1)
+      distToCenter2 = self.util.vectorDist(vector, center2)
+      if distToCenter1 < distToCenter2:
+        cluster1Indexes.append(i)
+      else:
+        cluster2Indexes.append(i)
 
-    self.util.doKmeans2(vectors)
+    ret = {
+      'stems' : controversialWordStems,
+      'center1' : center1,
+      'center2' : center2,
+      'cluster1' : [],
+      'cluster2' : [],
+    }
 
-    # TODO
-    return []
+    for index in cluster1Indexes:
+      entry = {
+        'head' : heads[index],
+        'sentiment' : sentiments[index],
+        'vector' : vectors[index],
+      }
+      ret['cluster1'].append(entry)
+
+    for index in cluster2Indexes:
+      entry = {
+        'head' : heads[index],
+        'sentiment' : sentiments[index],
+        'vector' : vectors[index],
+      }
+      ret['cluster2'].append(entry)
+
+
+    return ret
 
   """
   @returnVal

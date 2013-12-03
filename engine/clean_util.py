@@ -19,6 +19,7 @@ def vectorDictNormalize(self, vd)
 def vectorMagnitude(self, v)
 def vectorDot(self, v1, v2)
 def vectorNormalize(self, v)
+def vectorDist(self, v1, v2)
 
 def doKmeans2(self, vectors)
 """
@@ -116,6 +117,18 @@ class CleanUtil:
       else:
         ret.append(elem)
     return ret
+
+  def vectorDist(self, v1, v2):
+    ret = 0
+    l1 = len(v1); l2 = len(v2)
+    if l1 != l2:
+      self.cc.error('CleanUtil.vectorDist: lengths do not match')
+      return ret
+    l = len(v1)
+    for i in range(l):
+      val1 = v1[i]; val2 = v2[i];
+      ret += (val1 - val2) * (val1 - val2)
+    return sqrt(ret)
 
   def doKmeans2(self, vectors):
     features = array(vectors)
