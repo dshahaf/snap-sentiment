@@ -5,12 +5,13 @@ Useful methods of class CleanTextProcessor:
 def preprocessText(self, text, doLowercase = True)
 def stem(self, word)
 def stemWithCache(self, word, cache = {})
-def tagText(self, text, detailed = False)
+def tagText(self, text, detailed = False) # call preprocessText before
 """
 
 from lib.porter2 import stem as pstem
 from nltk.tokenize import word_tokenize, wordpunct_tokenize, sent_tokenize
 from clean_tagger import CleanTagger
+from nltk import pos_tag
 
 class CleanTextProcessor:
 
@@ -114,6 +115,7 @@ class CleanTextProcessor:
           'stem' : self.stemWithCache(word, stemCache)
         }
 
+    return ret
 
   ##################
   # Helpers
