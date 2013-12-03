@@ -85,12 +85,9 @@ class CleanSentimentAnalysis:
   def getScoresFromRawText(self, rawText, detailed = False):
     preprocessedText = self.tp.preprocessedText(rawText)
 
-    
-    detailedTagResult = self.tagger.tagPreprocessedText(preprocessedText, True)
-    sentenceStrings = self.tagger.getSentencesFromPreprocessedText(preprocessedText)
+    taggedSentences = self.tagger.getTaggedSentencesFromPreprocessedText(preprocessedText, True)
 
-    for sentenceData in detailedTagResult:
-      simplifiedSentencesData.append(self.getSimplifiedSentenceData(sentenceData))
+    simpleSentences = self.getSimpleSentencesFromTaggedSentences(taggedSentences)
 
     # TODO
 
@@ -127,32 +124,63 @@ class CleanSentimentAnalysis:
   ##################
   # Helpers
   ##################
-  
-  """
-  @param sentenceData is the return value of CleanTagger.tagPreprocessedText() with detailed = True
-  @return,
-  {
-    'sentence' : string,
-    'nouns' : [string, ...],
-    'pos_descriptors' : [string, ...],
-    'neg_descriptors' : [string, ...],
-  }
 
   """
-  def getSimplifiedSentenceData(self, sentenceData):
-    ret = {}
+  @param taggedSentences is the result of CleanTagger.getTaggedSentencesFromPreprocessedText() with detailed = True
+  @returnVal:
+  [
+    # sentence 1 begins
+    {
+      'sentenceString' : string,
+      'nouns' : [
+        # noun 1 begins
+        {
+          'word' : string,
+          'stem' : string,
+        },
+        ...
+      ],
+      'pos_descriptors' : [string, ...],
+      'neg_descriptors' : [string, ...],
+    },
+    ...
+  ]
 
-    for wordData in sentenceData:
-      # 1. get fields from data
-      tag = wordData['tag']
-      word = wordData['word']
-      isAdjective = wordData['isAdjective']
-      isNoun = wordData['isNoun']
-      isStopWord = wordData['isStopWord']
-      isPositive = wordData['isPositive']
-      isNegative = wordData['isNegative']
-      stem = wordData['stem']
-      # 2.
+  """
+  def getSimpleSentencesFromTaggedSentences(self, taggedSentences):
+    ret = []
+    for taggedSentence in taggedSentences:
+      entry = {
+        'sentenceString' : '',
+        'nouns' : [],
+        'pos_descriptors' : [],
+        'neg_descriptors' : [],
+      }
+      entry['sentenceString'] = taggedSentences['sentenceString']
 
-    # TODO
+      for wordData in taggedSentence['sentenceData']:
+        # 1. get fields from data
+        tag = wordData['tag']
+        word = wordData['word']
+        isAdjective = wordData['isAdjective']
+        isNoun = wordData['isNoun']
+        isStopWord = wordData['isStopWord']
+        isPositive = wordData['isPositive']
+        isNegative = wordData['isNegative']
+        stem = wordData['stem']
+
+        # 2. fill in the rest of the entry
+        if isNoun:
+          entry['nouns'].append({
+            'word' : word,
+            'stem' : stem,
+          })
+        elif isAdjective:
+          if isPositive:
+            entry['pos_descriptors'].append(word)
+          elif isNegative:
+            entry['neg_descriptors'].append(word)
+
+      ret.append(entry)
+
     return ret
