@@ -44,19 +44,23 @@ class CleanTester:
     return
 
   def run(self):
+    self.testCleanSentimentAnalysis()
     self.testCleanTextProcessor()
     self.testCorpus()
-    self.testCleanSentimentAnalysis()
     return
 
   def testCleanSentimentAnalysis(self):
-    self.cc.console('Testing CleanCorpus...')
+    self.cc.console('Testing CleanSentimentAnalysis...')
     self.cc.console('TEST BEGINS')
     self.askForContinuation()
     rawText = 'Basketball is great. Golf is terrible.'
-    scores = self.sa.getScoresFromRawText(rawText, False)
+    scoresNotDetailed = self.sa.getScoresFromRawText(rawText, False)
+    scoresDetailed = self.sa.getScoresFromRawText(rawText, True)
+    self.cc.console('raw text:%s' % rawText)
     self.cc.console('scores (not detailed):')
-    self.cc.printObject(scores)
+    self.cc.printObject(scoresNotDetailed)
+    self.cc.console('scores (detailed):')
+    self.cc.printObject(scoresDetailed)
     self.cc.console('TEST ENDS')
     return    
 

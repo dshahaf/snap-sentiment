@@ -29,9 +29,9 @@ class CleanSentimentAnalysis:
   util = CleanUtil()
   """
 
-  ##################
+  ##############################################
   # Public Methods
-  ##################
+  ##############################################
 
   def __init__(self):
     self.tp = CleanTextProcessor()
@@ -86,7 +86,7 @@ class CleanSentimentAnalysis:
 
   """
   def getScoresFromRawText(self, rawText, detailed = False):
-    preprocessedText = self.tp.preprocessedText(rawText)
+    preprocessedText = self.tp.preprocessText(rawText)
 
     taggedSentences = self.tagger.getTaggedSentencesFromPreprocessedText(preprocessedText, True)
 
@@ -126,9 +126,9 @@ class CleanSentimentAnalysis:
     cache[tup] = ret
     return ret
 
-  ##################
+  ##############################################
   # Helpers
-  ##################
+  ##############################################
 
   """
   @param taggedSentences is the result of CleanTagger.getTaggedSentencesFromPreprocessedText() with detailed = True
@@ -162,7 +162,7 @@ class CleanSentimentAnalysis:
         'pos_descriptors' : [],
         'neg_descriptors' : [],
       }
-      entry['sentenceString'] = taggedSentences['sentenceString']
+      entry['sentenceString'] = taggedSentence['sentenceString']
 
       for wordData in taggedSentence['sentenceData']:
         # 1. get fields from data
@@ -291,12 +291,7 @@ class CleanSentimentAnalysis:
               'pos_count' : 0,
               'neg_count' : 0,
               'pos_descriptors' : {
-                """
-                descriptor : {
-                  'count' : 0,
-                  'sentences' : [string, ...]
-                }
-                """
+                # descriptor => { 'count' : 0, 'sentences' : [string, ... ] }
               },
               'neg_descriptors' : {
                 # ...
@@ -313,9 +308,10 @@ class CleanSentimentAnalysis:
           currNounStems[stem] = True
           entry['descriptors']['pos_count'] += numPosDescriptors
           entry['descriptors']['neg_count'] += numNegDescriptors
+
           currPosDescriptorsDict = entry['descriptors']['pos_descriptors']
           for posDescriptor in posDescriptorsCountDict.keys():
-            posDescriptorCount = posDescriptorsCountDict[posDesecriptor]
+            posDescriptorCount = posDescriptorsCountDict[posDescriptor]
             if posDescriptor not in currPosDescriptorsDict:
               currPosDescriptorsDict[posDescriptor] = {
                 'count' : 0,
@@ -323,9 +319,10 @@ class CleanSentimentAnalysis:
               }
             currPosDescriptorsDict[posDescriptor]['count'] += posDescriptorCount
             currPosDescriptorsDict[posDescriptor]['sentences'].append(sentenceString)
+
           currNegDescriptorsDict = entry['descriptors']['neg_descriptors']
           for negDescriptor in negDescriptorsCountDict.keys():
-            negDescriptorCount = negDescriptorsCountDict[negDesecriptor]
+            negDescriptorCount = negDescriptorsCountDict[negDescriptor]
             if negDescriptor not in currNegDescriptorsDict:
               currNegDescriptorsDict[negDescriptor] = {
                 'count' : 0,
