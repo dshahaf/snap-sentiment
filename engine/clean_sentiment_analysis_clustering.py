@@ -53,21 +53,37 @@ class CleanSentimentAnalysisClustering(CleanSentimentAnalysis):
 
   def getClusterResultsFromTopicNotDetailed(self, topic, controversialWordStems):
     rawDocuments = self.corpus.getRawDocuments(topic)
+
     vectors = []
     heads = []
     sentiments = []
 
     for rawDocumentWrapper in rawDocuments:
       rawDocument = rawDocumentWrapper['document']
-      sentiment = rawDocumentWrapper['sentiment']
 
       countVectorDict = self.getCountVectorDictFromRawDocument(rawDocument, controversialWordStems)
-      countVector = self.util.getListFromDict(countVectorDict)
+      countVector = [countVectorDict[stem] for stem in controversialWordStems]
+
       normalizedVector = self.util.vectorNormalize(countVector)
       head = self.getHeadFromRawDocument(rawDocument)
+      sentiment = rawDocumentWrapper['sentiment']
+
       vectors.append(normalizedVector)
       heads.append(head)
       sentiments.append(sentiment)
+
+    # debugging
+    l = len(vectors)
+    self.cc.console('stems:')
+    self.cc.printObject(controversialWordStems)
+
+    for i in range(l):
+      self.cc.console('sentiment:')
+      self.cc.printObject(sentiments[i])
+      self.cc.console('head:')
+      self.cc.printObject(heads[i])
+      self.cc.console('vector:')
+      self.cc.printObject(vectors[i])
 
     self.util.doKmeans2(vectors)
 
