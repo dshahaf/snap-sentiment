@@ -18,3 +18,10 @@ class CleanUtil:
         ret[elem] = 0
       ret[elem] += 1
     return ret
+
+  def getBeginningOfList(self, l, maxCount):
+    length = len(l)
+    if length <= maxCount:
+      return l
+    else
+      return l[:maxCount]

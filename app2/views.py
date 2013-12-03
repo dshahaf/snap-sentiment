@@ -1,6 +1,7 @@
 """
 Noun Analysis
 """
+
 from django.shortcuts import render
 from django.template import RequestContext, loader
 from django import forms
@@ -21,6 +22,7 @@ See sentiment_analysis.py for the content of context.
 		]
 	}
 }
+
 """
 def index(request):
 	context = {}

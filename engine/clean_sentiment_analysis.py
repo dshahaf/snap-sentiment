@@ -2,7 +2,8 @@
 
 """
 Useful methods of class CleanSentimentAnalysis:
-
+def getMostControversialWordsOnTopic(self, topic, maxCount = 5)
+def getMostControversialWordsFromRawText(self, rawText, maxCount = 5)
 def getScoresFromRawText(self, rawText, detailed = False)
 """
 
@@ -37,6 +38,26 @@ class CleanSentimentAnalysis:
     self.tagger = CleanTagger()
     self.util = CleanUtil()
     return
+
+  def getMostControversialWordsOnTopic(self, topic, maxCount = 5):
+    rawDocsCombined = self.corpus.getRawDocuments(topic, maxCount, True)
+    if rawDocsCombined is False:
+      # unsupported topic
+      # see CleanCorpus.getSupportedTopics
+      return []
+    return self.getMostControversialWordsFromRawText(topic, rawDocsCombined, maxCount)
+
+  """
+  @returnVal
+  [
+    # equivalent noun group 1 begins
+    [string, ...],
+  ]
+  """
+  def getMostControversialWordsFromRawText(self, rawText, maxCount = 5):
+    scoresNotDetailed = self.getScoresFromRawText(rawText)
+    scoresNotDetailedTrimmed = self.util.getBeginningOfList(scoresNotDetailed, maxCount)
+    return [entry['equivalent_nouns'] for entry in scoresNotDetailedTrimmed]
 
   """
   @param rawText, detailed
@@ -251,7 +272,7 @@ class CleanSentimentAnalysis:
       }
       ret.append(retEntry)
 
-    return ret
+    return sorted(ret, key = lambda elem : elem['scores']['controversy'], reverse = True)
 
   """
   Helper for getScoresFromRawText
@@ -375,4 +396,4 @@ class CleanSentimentAnalysis:
 
       ret.append(retEntry)
 
-    return ret
+    return sorted(ret, key = lambda elem : elem['scores']['controversy'], reverse = True)

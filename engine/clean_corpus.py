@@ -3,7 +3,7 @@
 """
 Useful methods of class CleanCorpus:
 
-def getRawDocuments(self, topic, maxCount = 50)
+def getRawDocuments(self, topic, maxCount = 50, combined = False)
 def getSupportedTopics(self)
 """
 
@@ -30,6 +30,7 @@ class CleanCorpus:
   @param
     topic should be supported (see getSupportedTopics)
   @return
+    1) no error
     [
       {
         'sentiment' : string, # 'pos', 'neg', or 'any'
@@ -37,13 +38,15 @@ class CleanCorpus:
       },
       ...
     ]
+    2) combined
+    string
     3) error (can't find directory, etc)
     False
   @notes
     maxCount applies to each sentiment ('pos', 'neg', 'any'), not these combined
 
   """
-  def getRawDocuments(self, topic, maxCount = 50):
+  def getRawDocuments(self, topic, maxCount = 50, combined = False):
     if topic not in self.getSupportedTopics():
       # unsupported topic
       return False
@@ -81,7 +84,11 @@ class CleanCorpus:
           'document' : doc,
         })
 
-    return ret
+    if not combined:
+      return ret
+    else:
+      allDocs = [elem['document'] for elem in ret]
+      return '\n\n\n\n\n'.join(allDocs)
 
   """
   @return list of topics that are supported
