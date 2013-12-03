@@ -10,7 +10,25 @@
 
 {% block body %}
 <script>
+  function registerAddDocumentButton() {
+    var $button = $('.user-input-form-wrapper .add-document-button').first();
+    $button.click(function(event) {
+      var $formEl = $('.form-user-input');
+      var $documentsWrapper = $formEl.find('.documents-wrapper');
+      var $copy = $('.templates .document-wrapper').clone();
+      var $numUserInputsField = $formEl.find('input[name="num-user-inputs"]');
+      var numUserInputs = parseInt($numUserInputsField.val());
+      $copy.find('.document-number-label').html(numUserInputs + 1);
+      $copy.find('textarea').first().attr('name', 'input' + numUserInputs);
+      $numUserInputsField.val(numUserInputs + 1);
+      $copy.hide();
+      $documentsWrapper.append($copy);
+      $copy.slideToggle();
+    });
+  }
+
   function onloadFunction() {
+    registerAddDocumentButton();
     return;
   }
   window.onload = window.onloadFunction;
@@ -22,12 +40,127 @@
 {% block main-title %}Clustering{% endblock %}
 
 {% block main-description %}
-<p>The goal is to cluster a set of documents into two groups: positive or negative.</p>
-<p>Steps: 1) Identify the controversial nouns of the current topic using the controversy scores, 2) Convert each document into a vector of its sentiment score for each of the controversial nouns, 3) Use the k-means (<code>k = 2</code>) algorithm to cluster the vectors.</p>
+<p>The goal is to cluster a set of documents into two groups: positive and negative.</p>
+<p>Steps: 1) Identify the controversial nouns of the current topic using the controversy scores, 2) Convert each document into a vector of its sentiment score for each of the controversial nouns, 3) Use the k-means algorithm to cluster the vectors, where <code>k = 2</code>.</p>
 {% endblock %}
 
 {% block main-content %}
 
+<div class="row">
+  <div class="span12">
+    <div class="text-center" style=""><h3>~ Input ~</h3></div>
+  </div>
+</div>
+<div class="row">
+  <div class="span12 text-center" style="margin-bottom:10px;">
+    OPTION 1: Use available data sets
+  </div>
+  <div class="offset2 span8">
+    <table class="table-centered table table-condensed table-bordered table-striped table-action">
+      <thead>
+        <tr class="">
+          <th>Data Set Name</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Movie Reviews</td>
+          <td>
+            <form action="/clustering/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+              <input type="hidden" name="action" value="clustering-movie" />
+              <div class="progress-container progress-container6">
+              {% if action|stringformat:"s" == "clustering-movie" %}&#9754;{% endif %}
+              </div>
+              <input type="submit" value="Go" class="btn btn-success btn-small" />
+            </form>
+          </td>
+        </tr>
+        <tr>
+          <td>Celebrities News</td>
+          <td>
+            <form action="/clustering/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+              <input type="hidden" name="action" value="clustering-celebrity" />
+              <div class="progress-container progress-container6">
+              {% if action|stringformat:"s" == "clustering-celebrity" %}&#9754;{% endif %}
+              </div>
+              <input type="submit" value="Go" class="btn btn-success btn-small" />
+            </form>
+          </td>
+        </tr>
+        <tr>
+          <td>UFO</td>
+          <td>
+            <form action="/clustering/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+              <input type="hidden" name="action" value="clustering-ufo" />
+              <div class="progress-container progress-container6">
+              {% if action|stringformat:"s" == "clustering-ufo" %}&#9754;{% endif %}
+              </div>
+              <input type="submit" value="Go" class="btn btn-success btn-small" />
+            </form>
+          </td>
+        </tr>
+        <tr>
+          <td>Syrian Conflict</td>
+          <td>
+            <form action="/clustering/" method="POST" style="margin-bottom: 0px;">{% csrf_token %}
+              <input type="hidden" name="action" value="clustering-syria" />
+              <div class="progress-container progress-container6">
+              {% if action|stringformat:"s" == "clustering-syria" %}&#9754;{% endif %}
+              </div>
+              <input type="submit" value="Go" class="btn btn-success btn-small" />
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div> <!-- offset2 span8 -->
+</div> <!-- row -->
 
+<div class="templates" style="display:none;">
+  <div class="text-center document-wrapper">
+    <div class="document-number-label label label-inverse" style="margin-bottom:10px; font-size:20px; width:30px height:40px; padding:10px 20px;">1</div>
+    <textarea class="" style="width:100%; float:right; margin-bottom:10px;" rows="5" name="input0"></textarea>
+  </div>
+</div>
+
+<div class="row">
+  <div class="span12">
+    <div class="text-center" style=""><h4>OR</h4></div>
+  </div>
+</div>
+
+<div class="row" style="margin-top:10px;">
+  <div class="span12">
+    <div class="text-center">
+      OPTION 2: Use your own inputs.
+    </div>
+  </div>
+  <div class="span12 user-input-form-wrapper" style="margin-top:20px;">
+    <form action="/clustering/" method="POST" class="form-user-input">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="user-input" />
+      <input type="hidden" name="num-user-inputs" value="1" />
+      <div class="documents-wrapper">
+        <div class="text-center document-wrapper">
+          <div class="document-number-label label label-inverse" style="margin-bottom:10px; font-size:20px; width:30px height:40px; padding:10px 20px;">1</div>
+          <textarea class="" style="width:100%; float:right; margin-bottom:10px;" rows="5" name="input0"></textarea>
+        </div>
+      </div>
+      <div class="text-center">
+        <a role="button" class="btn btn-primary btn-small add-document-button">Add Document</a>
+      </div>
+      <div class="text-center" style="margin-top:30px;">
+        <button class="btn btn-large btn-success" style="width:100px;">Go</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="row" style="margin-top:20px; margin-bottom:50px;">
+  <div class="span12">
+    <div class="text-center" style=""><h3>~ Output ~</h3></div>
+  </div>
+</div>
 
 {% endblock %}
