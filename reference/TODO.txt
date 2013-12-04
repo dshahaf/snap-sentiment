@@ -1,3 +1,34 @@
+*2. more raw documents (no response from dima => email dafna)
+*6. identify where clustering doesn't agree with me, and why
+4. Presentation
+
+1) very clear motivation:
+- point of view. what does it mean?
+2) problem we're trying to sovle:
+3) how you define controversy score
+4) vectors representations, clustering
+5) demo
+6) current challenges
+- lda
+- sentiment analysis
+- examples
+7) future work
+
+5. email the story to Dafna by Tuesday
+
+1. normalization consisderation
+3. more complex sentiment analysis
+
+
+
+
+
+
+
+
+
+
+
 // Clusteering
 1. clustering: k-means (k = 2). represent each doc as a vector of sentment scores for each controeversial word.
 // LDA
