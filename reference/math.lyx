@@ -216,5 +216,47 @@
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset space ~
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $sum=numPos+numNeg+1$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $diff=|numPos-numNeg|$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $diffRatio=\frac{diff}{sum}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $penalty=1-(diffRatio^{2})\cdot(1-\frac{1}{\sqrt{sum}})$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $controversyScore=sum\times penalty$
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document

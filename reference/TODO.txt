@@ -1,3 +1,16 @@
+- Why we need better sentimnet analyzer
+robert sheaffer, a ufo investigator with skeptical inquirer magazine and author of the "bad ufos blog, told discovery news, it s remarkable how so many people, when they see lights in the sky, immediately jump to the conclusion that they might be seeing (an alien spacecraft) in reality there are many different possible explanations for lights in the sky, all of them more likely than alien visitors.
+------------------------------------------------
+Abstract:
+
+There is often more than one way to tell the story about a subject. For example, Republicans' story on the unrolling of Obamcare may differ significantly from that of Democrats. Similarly, recent events about Justin Bieber can be narrated very differently from a Belieber's perspective as opposed to a non-Belieber's perspective.
+
+How can we identify such controversial subjects? Also, how can we separate the polarized viewpoints on them? James Nam tried to answer these questions in his senior project research, under the guidance of Dafna Shahaf. By using sentiment analysis, a controversy scoring function, and vector clustering, we were able to get some preliminary results. In this talk, James will present his research as well as a demo on several toy datasets.
+
+
+
+
+------------------------------------------------
 *2. more raw documents (no response from dima => email dafna)
 *6. identify where clustering doesn't agree with me, and why
 4. Presentation
