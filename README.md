@@ -1,6 +1,13 @@
 Sentiment Analysis (SNAP)
 ===
 
+- <a href="https://docs.google.com/document/d/1BG4XprlzmA6gWXnRbsbvDcN7C2D12BL1qNXU24ypXT0/edit" target="_blank">Documentation</a>
+
+
+---
+
+
+
 Links
 ---
 ###Most Useful
